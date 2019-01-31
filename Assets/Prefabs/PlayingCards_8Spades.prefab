@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33479205474690422}
   - component: {fileID: 23700119920891590}
   - component: {fileID: 61829172287997364}
+  - component: {fileID: 505916195741739163}
   m_Layer: 0
   m_Name: PlayingCards_8Spades
   m_TagString: Untagged
@@ -104,3 +105,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.06350246, y: 0.0889003}
   m_EdgeRadius: 0
+--- !u!114 &505916195741739163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713895045755436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flower: 3
+  number: 7

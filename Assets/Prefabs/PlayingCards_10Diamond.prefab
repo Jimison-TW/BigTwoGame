@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33776272233825002}
   - component: {fileID: 23062527242767990}
   - component: {fileID: 61841167131521818}
+  - component: {fileID: 1610670533272132086}
   m_Layer: 0
   m_Name: PlayingCards_10Diamond
   m_TagString: Untagged
@@ -104,3 +105,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.06350037, y: 0.08890009}
   m_EdgeRadius: 0
+--- !u!114 &1610670533272132086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196281761221472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flower: 1
+  number: 9

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33482347963236942}
   - component: {fileID: 23012465950104930}
   - component: {fileID: 61017977270058778}
+  - component: {fileID: 1538890060756198192}
   m_Layer: 0
   m_Name: PlayingCards_8Diamond
   m_TagString: Untagged
@@ -104,3 +105,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.06350098, y: 0.08890009}
   m_EdgeRadius: 0
+--- !u!114 &1538890060756198192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1448546948689186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flower: 1
+  number: 7

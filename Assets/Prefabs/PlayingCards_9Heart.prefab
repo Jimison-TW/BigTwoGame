@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33536847991769446}
   - component: {fileID: 23094941736165870}
   - component: {fileID: 61599166741131642}
+  - component: {fileID: 526277819098165251}
   m_Layer: 0
   m_Name: PlayingCards_9Heart
   m_TagString: Untagged
@@ -104,3 +105,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.06350006, y: 0.08890009}
   m_EdgeRadius: 0
+--- !u!114 &526277819098165251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611219674563352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flower: 2
+  number: 8
