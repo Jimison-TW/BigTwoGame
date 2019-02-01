@@ -4,6 +4,7 @@
 /[Tt]emp/
 /[Oo]bj/
 /.vs/
+/.vscode/
  
 # unity ignore file
 *.csproj
