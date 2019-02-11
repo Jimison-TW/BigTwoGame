@@ -1,19 +1,14 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Game
+namespace Assets.Scripts.Handler
 {
     public class CardStack
     {
         private List<int> numberPool = new List<int>();
         private int getCardPlayer = 1;
 
-        private void Start()
-        {
-            init();
-        }
-
-        private void init()
+        public CardStack()
         {
             for (int i = 0; i < 52; i++)
             {
@@ -35,25 +30,28 @@ namespace Assets.Scripts.Game
             }
         }
 
+        public List<int> getAllNumber()
+        {
+            return numberPool;
+        }
+
         /// <summary>
         /// 玩家取得13張手牌
         /// </summary>
         /// <returns></returns>
-        public List<int> getCards()
+        public int[] getCards()
         {
             if (getCardPlayer > 4) return null;
 
-            List<int> cards = new List<int>();
+            int[] cards = new int[13];
             for (int i = 0; i < 13; i++)
             {
-                cards.Add(numberPool[i * getCardPlayer]);
+                cards[i] = numberPool[i * getCardPlayer];
             }
             Debug.Log($"第{getCardPlayer}位玩家拿牌");
             getCardPlayer++;
 
             return cards;
         }
-
-        
     }
 }

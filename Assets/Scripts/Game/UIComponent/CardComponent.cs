@@ -3,8 +3,10 @@ using Assets.Scripts.Type;
 
 namespace Assets.Scripts.Game
 {
-    public class Card : MonoBehaviour
+    public class CardComponent : MonoBehaviour
     {
+        public GameObject cardObject;
+        public Transform cardTransform;
         public eCardFlower flower;
         public eCardNumber number;
     }

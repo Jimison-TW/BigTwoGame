@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Handler
 {
-    public class GameLogic
+    public class Player
     {
 
     }
