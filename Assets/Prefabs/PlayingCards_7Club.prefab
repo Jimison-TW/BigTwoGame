@@ -117,5 +117,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardObject: {fileID: 1927852039362550}
+  cardTransform: {fileID: 4264558522760746}
   flower: 0
   number: 6

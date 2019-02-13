@@ -7,21 +7,26 @@ namespace Assets.Scripts.Game.UIComponent
     {
         public Transform selfPos;
         public CardComponent[] cardPrefabs = new CardComponent[52];
-        public PlayerComponent[] players = new PlayerComponent[4];
+        public List<CardComponent> cardObjects = new List<CardComponent>();
 
         public void createCardStack(List<int> cardNumber)
         {
             foreach (var i in cardNumber)
             {
-                Instantiate(cardPrefabs[i], selfPos.position, Quaternion.identity, selfPos);
+                CardComponent obj = Instantiate(cardPrefabs[i], selfPos.position, Quaternion.identity, transform);
+                cardObjects.Add(obj);
             }
+            Debug.Log(cardObjects.Count);
         }
 
-        public void dealCards(PlayerComponent[] players)
+        private int cardId = 0;
+        public void dealCards(PlayerComponent players, int playerIndex)
         {
-            foreach(var player in players)
+            for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
-                //player.resetCards();
+                Debug.Log(cardId);
+                players.resetCard(cardObjects[i]);
+                cardId++;
             }
         }
     }

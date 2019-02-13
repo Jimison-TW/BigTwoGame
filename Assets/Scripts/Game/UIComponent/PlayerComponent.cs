@@ -1,18 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Game.UIComponent
 {
     public class PlayerComponent : MonoBehaviour
     {
-        private CardComponent[] cardObjs;
+        private List<CardComponent> cardObjs = new List<CardComponent>();
 
-        public void resetCards(CardComponent[] cards)
+        public void resetCard(CardComponent card)
         {
-            cardObjs = cards;
-            foreach(var card in cardObjs)
-            {
-                card.cardTransform.Translate(transform.position);
-            }
+            cardObjs.Add(card);
+            card.cardTransform.SetParent(transform);
+            card.cardTransform.Translate(transform.position);
         }
 
 

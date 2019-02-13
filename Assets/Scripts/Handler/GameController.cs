@@ -24,6 +24,7 @@ namespace Assets.Scripts.Handler
         private void Start()
         {
             init();
+            dealCardsToPlayer();
         }
 
         private void init()
@@ -35,7 +36,11 @@ namespace Assets.Scripts.Handler
 
         private void dealCardsToPlayer()
         {
-            _cardStackComponent.dealCards(_playerComponent);
+            for (int i = 0; i < gameData.playerCount; i++)
+            {
+                Debug.Log("開始發牌給玩家" + _playerComponent[i].name);
+                _cardStackComponent.dealCards(_playerComponent[i], i);
+            }
         }
     }
 }
