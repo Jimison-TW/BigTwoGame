@@ -22,12 +22,14 @@ namespace Assets.Scripts.Game.UIComponent
         private int cardId = 0;
         public void dealCards(PlayerComponent players, int playerIndex)
         {
+            string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
-                Debug.Log(cardId);
                 players.resetCard(cardObjects[i]);
                 cardId++;
+                logTxt += cardObjects[i].name+",";
             }
+            Debug.Log($"{players.name}收到編號第{logTxt}張牌");
         }
     }
 }
