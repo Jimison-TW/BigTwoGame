@@ -14,6 +14,7 @@ namespace Assets.Scripts.Game.UIComponent
             foreach (var i in cardNumber)
             {
                 CardComponent obj = Instantiate(cardPrefabs[i], selfPos.position, Quaternion.identity, transform);
+                obj.cardIndex = i;
                 cardObjects.Add(obj);
             }
             Debug.Log(cardObjects.Count);
@@ -27,7 +28,7 @@ namespace Assets.Scripts.Game.UIComponent
             {
                 players.resetCard(cardObjects[i]);
                 cardId++;
-                logTxt += cardObjects[i].name+",";
+                logTxt += cardObjects[i].name + ",";
             }
             Debug.Log($"{players.name}收到編號第{logTxt}張牌");
         }
