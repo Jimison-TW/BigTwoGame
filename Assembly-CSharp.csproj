@@ -75,6 +75,7 @@
     <Compile Include="Assets\Scripts\Handler\GameController.cs" />
     <Compile Include="Assets\Scripts\Handler\Player.cs" />
     <Compile Include="Assets\Scripts\Type\eCardProperty.cs" />
+    <Compile Include="Assets\Scripts\Type\ePlayer.cs" />
     <None Include="Assets\Resource\Demigiant\DOTween\readme.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/UnityProject/BigTwoGame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

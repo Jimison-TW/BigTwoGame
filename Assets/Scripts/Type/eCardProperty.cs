@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts.Type
+﻿namespace Assets.Scripts.Type
 {
     public enum eCardFlower
     {

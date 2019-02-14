@@ -8,7 +8,7 @@ namespace Assets.Scripts.Data
 
         public GameData()
         {
-            playerCount = 1;
+            playerCount = 4;
         }
     }
 }
