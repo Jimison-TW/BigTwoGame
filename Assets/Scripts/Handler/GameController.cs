@@ -9,8 +9,8 @@ namespace Assets.Scripts.Handler
     {
         #region 外部物件
 
-        [SerializeField] private CardStackComponent _cardStackComponent;
-        [SerializeField] private PlayerComponent[] _playerComponent;
+        [SerializeField] private CardStackComponent _cardStackComponent = null;
+        [SerializeField] private PlayerComponent[] _playerComponent = null;
 
         #endregion
 

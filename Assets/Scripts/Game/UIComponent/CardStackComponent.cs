@@ -13,11 +13,12 @@ namespace Assets.Scripts.Game.UIComponent
         {
             foreach (var i in cardNumber)
             {
-                CardComponent obj = Instantiate(cardPrefabs[i], selfPos.position, Quaternion.identity, transform);
+                Vector3 objPos = selfPos.position;
+                objPos.z -= 0.0001f * i;
+                CardComponent obj = Instantiate(cardPrefabs[i], objPos, Quaternion.identity, transform);
                 obj.cardIndex = i;
                 cardObjects.Add(obj);
             }
-            Debug.Log(cardObjects.Count);
         }
 
         private int cardId = 0;
@@ -26,9 +27,9 @@ namespace Assets.Scripts.Game.UIComponent
             string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
-                players.resetCard(cardObjects[i]);
+                players.resetHandCard(cardObjects[i]);
                 cardId++;
-                logTxt += cardObjects[i].name + ",";
+                logTxt += cardObjects[i].cardIndex + ",";
             }
             Debug.Log($"{players.name}收到編號第{logTxt}張牌");
         }

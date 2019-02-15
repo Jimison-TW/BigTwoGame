@@ -16,6 +16,7 @@ namespace Assets.Scripts.Handler
             }
 
             randomCards();
+            sortCards();
         }
 
         /* 隨機排列52張牌的順序 */
@@ -27,6 +28,21 @@ namespace Assets.Scripts.Handler
                 int intRnd = Mathf.FloorToInt(Random.value * 52);
                 numberPool[j] = numberPool[intRnd];
                 numberPool[intRnd] = tmp;
+            }
+        }
+
+        /* 排序玩家手牌 */
+        private void sortCards()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                List<int> tmpNumber = numberPool.GetRange(13 * i, 13);
+                tmpNumber.Sort();
+                for (int j = 0; j < 13; j++)
+                {
+                    int index = 13 * i + j;
+                    numberPool[index] = tmpNumber[j];
+                }
             }
         }
 

@@ -12,10 +12,10 @@ namespace Assets.Scripts.Game.UIComponent
         private float Offset = 0.023f;
         private List<CardComponent> handCards = new List<CardComponent>();
 
-        public void resetCard(CardComponent card)
+        public void resetHandCard(CardComponent card)
         {
             handCards.Add(card);
-            card.cardTransform.SetParent(transform);
+            card.transform.SetParent(transform);
             Vector3 endPos = transform.position;
             Vector3 endRotation = transform.rotation.eulerAngles;
             switch (position)
@@ -34,9 +34,10 @@ namespace Assets.Scripts.Game.UIComponent
                     endPos.y -= zeroPos + Offset * handCards.Count;
                     break;
             }
-            Debug.Log(endPos);
-            card.cardTransform.DOMove(endPos, 1);
-            card.cardTransform.DORotate(endRotation, 1);
+            endPos.z = card.transform.position.z;
+
+            card.transform.DOMove(endPos, 1);
+            card.transform.DORotate(endRotation, 1);
         }
 
 
