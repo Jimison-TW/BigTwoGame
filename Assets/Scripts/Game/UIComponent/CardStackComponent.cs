@@ -7,7 +7,8 @@ namespace Assets.Scripts.Game.UIComponent
     {
         public Transform selfPos;
         public CardComponent[] cardPrefabs = new CardComponent[52];
-        public List<CardComponent> cardObjects = new List<CardComponent>();
+
+        private List<CardComponent> cardObjects = new List<CardComponent>();
 
         public void createCardStack(List<int> cardNumber)
         {
@@ -29,7 +30,7 @@ namespace Assets.Scripts.Game.UIComponent
             {
                 players.resetHandCard(cardObjects[i]);
                 cardId++;
-                logTxt += cardObjects[i].cardIndex + ",";
+                logTxt += cardObjects[i].cardIndex + cardObjects[i].flower + "" + cardObjects[i].number + ",";
             }
             Debug.Log($"{players.name}收到編號第{logTxt}張牌");
         }

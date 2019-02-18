@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 4163051434320430}
   - component: {fileID: 33819056463217288}
   - component: {fileID: 23983058547883546}
-  - component: {fileID: 61562870281092558}
   - component: {fileID: 1994248715909198189}
+  - component: {fileID: 1474248809415851630}
+  - component: {fileID: 1071046387171301371}
   m_Layer: 0
   m_Name: PlayingCards_6Diamond
   m_TagString: Untagged
@@ -79,32 +80,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!61 &61562870281092558
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1085390013699920}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.000000018626451, y: -0.000000007450581}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.06350307, y: 0.08890009}
-  m_EdgeRadius: 0
 --- !u!114 &1994248715909198189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,7 +92,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardObject: {fileID: 1085390013699920}
-  cardTransform: {fileID: 4163051434320430}
   flower: 1
   number: 5
+  isSetEventTrigger: 0
+--- !u!114 &1474248809415851630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085390013699920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
+  delegates: []
+--- !u!65 &1071046387171301371
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085390013699920}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06350307, y: 0.08890009, z: 0.000049929455}
+  m_Center: {x: 0.000000018626451, y: -0.000000007450581, z: -0.000000011392331}
