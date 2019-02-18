@@ -23,16 +23,17 @@ namespace Assets.Scripts.Game.Object
         }
 
         private int cardId = 0;
-        public void dealCards(PlayerComponent players, int playerIndex)
+        public void dealCards(PlayerComponent pComponent, int playerIndex)
         {
+            pComponent.init();
             string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
-                players.resetHandCard(cardObjects[i]);
+                pComponent.resetHandCard(cardObjects[i]);
                 cardId++;
                 logTxt += cardObjects[i].cardIndex + cardObjects[i].cardFlower + "" + cardObjects[i].cardNumber + ",";
             }
-            Debug.Log($"{players.name}收到編號第{logTxt}張牌");
+            Debug.Log($"{pComponent.name}收到編號第{logTxt}張牌");
         }
     }
 }

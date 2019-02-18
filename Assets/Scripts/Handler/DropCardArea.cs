@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Handler
 {
-    public class Player
+    public class DropCardArea
     {
 
     }

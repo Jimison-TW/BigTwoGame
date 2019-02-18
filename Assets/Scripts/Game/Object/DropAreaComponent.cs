@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Game.Object
 {
-    public class DropCardArea : MonoBehaviour
+    public class DropAreaComponent : MonoBehaviour
     {
         public void resetDropCard(List<CardComponent> cards)
         {
