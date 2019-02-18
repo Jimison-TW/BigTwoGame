@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Data;
-using Assets.Scripts.Game;
-using Assets.Scripts.Game.UIComponent;
+using Assets.Scripts.Game.Object;
 using UnityEngine;
 
 namespace Assets.Scripts.Handler

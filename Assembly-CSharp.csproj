@@ -68,14 +68,15 @@
     <Compile Include="Assets\Resource\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
     <Compile Include="Assets\Resource\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
-    <Compile Include="Assets\Scripts\Game\UIComponent\CardComponent.cs" />
-    <Compile Include="Assets\Scripts\Game\UIComponent\CardStackComponent.cs" />
-    <Compile Include="Assets\Scripts\Game\UIComponent\PlayerComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\Object\CardComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\Object\CardStackComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\Object\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Handler\CardStack.cs" />
     <Compile Include="Assets\Scripts\Handler\GameController.cs" />
     <Compile Include="Assets\Scripts\Handler\Player.cs" />
     <Compile Include="Assets\Scripts\Type\eCardProperty.cs" />
     <Compile Include="Assets\Scripts\Type\ePlayer.cs" />
+    <Compile Include="Assets\Scripts\Type\ICardInfo.cs" />
     <None Include="Assets\Resource\Demigiant\DOTween\readme.txt" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/UnityProject/BigTwoGame/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.UIComponent
+namespace Assets.Scripts.Game.Object
 {
     public class CardStackComponent : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Game.UIComponent
             {
                 players.resetHandCard(cardObjects[i]);
                 cardId++;
-                logTxt += cardObjects[i].cardIndex + cardObjects[i].flower + "" + cardObjects[i].number + ",";
+                logTxt += cardObjects[i].cardIndex + cardObjects[i].cardFlower + "" + cardObjects[i].cardNumber + ",";
             }
             Debug.Log($"{players.name}收到編號第{logTxt}張牌");
         }

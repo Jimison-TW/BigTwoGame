@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Assets.Scripts.Data
+﻿namespace Assets.Scripts.Data
 {
     public class GameData
     {
