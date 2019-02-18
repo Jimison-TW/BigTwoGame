@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
     <Compile Include="Assets\Scripts\Game\Object\CardComponent.cs" />
     <Compile Include="Assets\Scripts\Game\Object\CardStackComponent.cs" />
+    <Compile Include="Assets\Scripts\Game\Object\DropCardArea.cs" />
     <Compile Include="Assets\Scripts\Game\Object\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Handler\CardStack.cs" />
     <Compile Include="Assets\Scripts\Handler\GameController.cs" />
