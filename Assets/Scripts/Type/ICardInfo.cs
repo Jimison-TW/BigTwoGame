@@ -4,7 +4,9 @@
     {
         bool isChoosed { set; get; }
         int cardIndex { set; get; }
-        eCardFlower cardFlower { set; get; }
-        eCardNumber cardNumber { set; get; }
+        int cardFlower { set; get; }
+        int cardNumber { set; get; }
+
+        bool isBigger(ICardInfo info);
     }
 }

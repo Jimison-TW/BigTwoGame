@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Assets.Scripts.Game.Object
+namespace Assets.Scripts.Game.Component
 {
     public class PlayerComponent : MonoBehaviour
     {
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Game.Object
             clickAction = new UnityAction<ICardInfo>(clickCardAction);
         }
 
-        public void resetHandCard(CardComponent card)
+        public void getCards(CardComponent card)
         {
             handCards[card.cardIndex] = card;
             card.setClickCardAction(clickAction);

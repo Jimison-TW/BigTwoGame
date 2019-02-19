@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts.Game.Object
+namespace Assets.Scripts.Game.Component
 {
     public class DropAreaComponent : MonoBehaviour
     {

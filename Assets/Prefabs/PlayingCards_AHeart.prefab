@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33262385550510828}
   - component: {fileID: 23560412304249466}
   - component: {fileID: 8153006343862857870}
-  - component: {fileID: 4333956995409287840}
   - component: {fileID: 6103312862737653441}
   m_Layer: 0
   m_Name: PlayingCards_AHeart
@@ -92,23 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flower: 2
-  number: 0
-  isSetEventTrigger: 0
---- !u!114 &4333956995409287840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1006979405363870}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!65 &6103312862737653441
 BoxCollider:
   m_ObjectHideFlags: 0

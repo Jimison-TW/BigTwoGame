@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33306526993466076}
   - component: {fileID: 23853051921928806}
   - component: {fileID: 5823774784720263595}
-  - component: {fileID: 3512812144371876826}
   - component: {fileID: 6678353378841939200}
   m_Layer: 0
   m_Name: PlayingCards_6Heart
@@ -92,23 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flower: 2
-  number: 5
-  isSetEventTrigger: 0
---- !u!114 &3512812144371876826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1613257484056642}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!65 &6678353378841939200
 BoxCollider:
   m_ObjectHideFlags: 0

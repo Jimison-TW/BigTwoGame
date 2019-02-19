@@ -2,14 +2,14 @@
 using Assets.Scripts.Type;
 using UnityEngine.Events;
 
-namespace Assets.Scripts.Game
+namespace Assets.Scripts.Game.Component
 {
     public class CardComponent : MonoBehaviour, ICardInfo
     {
         public bool isChoosed { set; get; }
         public int cardIndex { set; get; }
-        public eCardFlower cardFlower { set; get; }
-        public eCardNumber cardNumber { set; get; }
+        public int cardFlower { set; get; }
+        public int cardNumber { set; get; }
 
         private UnityAction<ICardInfo> clickEvent;
 

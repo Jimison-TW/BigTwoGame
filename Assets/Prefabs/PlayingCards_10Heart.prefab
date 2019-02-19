@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33959034520891622}
   - component: {fileID: 23690584830790070}
   - component: {fileID: 5137289669236762570}
-  - component: {fileID: 517150306516439595}
   - component: {fileID: 3610772486942313268}
   m_Layer: 0
   m_Name: PlayingCards_10Heart
@@ -92,23 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flower: 2
-  number: 9
-  isSetEventTrigger: 0
---- !u!114 &517150306516439595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1247536813949590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!65 &3610772486942313268
 BoxCollider:
   m_ObjectHideFlags: 0

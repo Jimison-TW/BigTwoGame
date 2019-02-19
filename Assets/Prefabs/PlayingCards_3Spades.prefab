@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33721491315229482}
   - component: {fileID: 23658376454030386}
   - component: {fileID: 8324851478637162834}
-  - component: {fileID: 5615312657918044583}
   - component: {fileID: 2757836503184304906}
   m_Layer: 0
   m_Name: PlayingCards_3Spades
@@ -92,23 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flower: 3
-  number: 2
-  isSetEventTrigger: 0
---- !u!114 &5615312657918044583
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1204976275646032}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!65 &2757836503184304906
 BoxCollider:
   m_ObjectHideFlags: 0

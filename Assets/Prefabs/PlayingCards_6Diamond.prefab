@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33819056463217288}
   - component: {fileID: 23983058547883546}
   - component: {fileID: 1994248715909198189}
-  - component: {fileID: 1474248809415851630}
   - component: {fileID: 1071046387171301371}
   m_Layer: 0
   m_Name: PlayingCards_6Diamond
@@ -92,23 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flower: 1
-  number: 5
-  isSetEventTrigger: 0
---- !u!114 &1474248809415851630
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1085390013699920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!65 &1071046387171301371
 BoxCollider:
   m_ObjectHideFlags: 0

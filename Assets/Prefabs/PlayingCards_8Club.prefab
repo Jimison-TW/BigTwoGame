@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33196763929485600}
   - component: {fileID: 23638618055471908}
   - component: {fileID: 2206018969942541083}
-  - component: {fileID: 7600655978143602981}
   - component: {fileID: 428906732811158414}
   m_Layer: 0
   m_Name: PlayingCards_8Club
@@ -92,23 +91,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flower: 0
-  number: 7
-  isSetEventTrigger: 0
---- !u!114 &7600655978143602981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750982392670340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates: []
-  delegates: []
 --- !u!65 &428906732811158414
 BoxCollider:
   m_ObjectHideFlags: 0
