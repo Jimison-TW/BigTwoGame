@@ -2,10 +2,10 @@
 {
     public enum eCardFlower
     {
-        Club,
-        Diamond,
-        Heart,
-        Spade
+        Club = 1,
+        Diamond = 2,
+        Heart = 3,
+        Spade = 4
     }
 
     public enum eCardNumber

@@ -1,26 +1,45 @@
 ﻿using UnityEngine;
-using Assets.Scripts.Type;
 using UnityEngine.Events;
+using Assets.Scripts.Game.Interface;
 
 namespace Assets.Scripts.Game.Component
 {
-    public class CardComponent : MonoBehaviour, ICardInfo
+    public class CardComponent : MonoBehaviour
     {
-        public bool isChoosed { set; get; }
-        public int cardIndex { set; get; }
-        public int cardFlower { set; get; }
-        public int cardNumber { set; get; }
+        public bool isChoosed = false;
 
-        private UnityAction<ICardInfo> clickEvent;
+        private Card cardData;
 
-        public void setClickCardAction(UnityAction<ICardInfo> action)
+        private UnityAction<bool, CardComponent> clickEvent;
+
+        public void initCard(bool choosed, int index, int flower, int number)
+        {
+            cardData = new Card(index, flower, number);
+        }
+
+        public int getCardIndex()
+        {
+            return cardData.cardIndex;
+        }
+
+        public int getCardFlower()
+        {
+            return cardData.cardFlower;
+        }
+
+        public int getCardNumber()
+        {
+            return cardData.cardNumber;
+        }
+
+        public void setClickCardAction(UnityAction<bool, CardComponent> action)
         {
             clickEvent = action;
         }
 
         private void OnMouseUpAsButton()
         {
-            clickEvent.Invoke(this);
+            clickEvent.Invoke(isChoosed, this);
         }
     }
 }

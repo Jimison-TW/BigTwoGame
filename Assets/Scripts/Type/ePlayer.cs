@@ -2,6 +2,6 @@
 {
     public enum ePlayerPosition
     {
-        MySelf, RightSide, OppositeSide, LeftSide
+        MySelf = 0, RightSide = 1, OppositeSide = 2, LeftSide = 3
     }
 }

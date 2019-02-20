@@ -1,28 +1,33 @@
-﻿using Assets.Scripts.Type;
+﻿using Assets.Scripts.Game.Interface;
+using Assets.Scripts.Type;
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts.Game.Component
 {
-    public class PlayerComponent : MonoBehaviour
+    public class PlayerComponent : MonoBehaviour, IPlayerInfo
     {
-        public ePlayerPosition position;
+        public ePlayerPosition position { set; get; }
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
-        private List<CardComponent> dropCardPool = new List<CardComponent>();
-        private Dictionary<int, CardComponent> handCards = new Dictionary<int, CardComponent>();
-        private UnityAction<ICardInfo> clickAction;
+        public List<CardComponent> dropCardPool { set; get; }
+        public Dictionary<int, CardComponent> handCards { set; get; }
+        private UnityAction<bool, CardComponent> clickAction;
 
-        public void init()
+        public void init(int playerPos)
         {
-            clickAction = new UnityAction<ICardInfo>(clickCardAction);
+            position = (ePlayerPosition)playerPos;
+            clickAction = new UnityAction<bool, CardComponent>(clickCardAction);
+            dropCardPool = new List<CardComponent>();
+            handCards = new Dictionary<int, CardComponent>();
         }
 
         public void getCards(CardComponent card)
         {
-            handCards[card.cardIndex] = card;
+            handCards[card.getCardIndex()] = card;
             card.setClickCardAction(clickAction);
             card.transform.SetParent(transform);
             Vector3 endPos = transform.position;
@@ -54,20 +59,20 @@ namespace Assets.Scripts.Game.Component
 
         }
 
-        private void clickCardAction(ICardInfo info)
+        private void clickCardAction(bool choosed, CardComponent card)
         {
             if (position != ePlayerPosition.MySelf) return;
-            if (!info.isChoosed&&dropCardPool.Count < 5)
+            if (!choosed && dropCardPool.Count < 5)
             {
-                dropCardPool.Add(handCards[info.cardIndex]);
-                handCards[info.cardIndex].isChoosed = true;
-                handCards[info.cardIndex].transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
+                dropCardPool.Add(card);
+                handCards[card.getCardIndex()].isChoosed = true;
+                handCards[card.getCardIndex()].transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
             }
             else
             {
-                dropCardPool.Remove(handCards[info.cardIndex]);
-                handCards[info.cardIndex].isChoosed = false;
-                handCards[info.cardIndex].transform.DOMoveY(transform.position.y, 0.1f);
+                dropCardPool.Remove(card);
+                handCards[card.getCardIndex()].isChoosed = false;
+                handCards[card.getCardIndex()].transform.DOMoveY(transform.position.y, 0.1f);
             }
         }
     }

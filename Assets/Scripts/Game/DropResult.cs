@@ -13,7 +13,10 @@ namespace Assets.Scripts.Game
         
         public void setResult(eDropCardType type,int maxId,int maxFlower,int maxNumber)
         {
-
+            cardType = type;
+            maxCardIndex = maxId;
+            maxCardFlower = maxFlower;
+            maxCardNumber = maxNumber;
         }
     }
 }
