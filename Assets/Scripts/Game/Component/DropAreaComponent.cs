@@ -6,7 +6,7 @@ namespace Assets.Scripts.Game.Component
 {
     public class DropAreaComponent : MonoBehaviour
     {
-        public void resetDropCard(List<CardComponent> cards)
+        public void getDropCards(List<CardComponent> cards)
         {
             foreach (var card in cards)
             {

@@ -30,9 +30,9 @@
         Single,
         Pair,
         TwoPair,
-        Triple,
+        //Triple,
         Straight,
-        Flush,
+        //Flush,
         FullHouse,
         FourInOne,
         FlushStraight

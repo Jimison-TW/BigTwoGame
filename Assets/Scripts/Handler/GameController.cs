@@ -11,6 +11,7 @@ namespace Assets.Scripts.Handler
 
         [SerializeField] private CardStackComponent _cardStackComponent = null;
         [SerializeField] private PlayerComponent[] _playerComponents = null;
+        [SerializeField] private DropAreaComponent _dropAreaComponent = null;
 
         #endregion
 
@@ -26,7 +27,7 @@ namespace Assets.Scripts.Handler
 
         private void Awake()
         {
-            init();
+            Init();
         }
 
         private void Start()
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Handler
             dealCardsToPlayer();
         }
 
-        private void init()
+        private void Init()
         {
             gameData = new GameData();
             cardStack = new CardStack();
@@ -53,21 +54,26 @@ namespace Assets.Scripts.Handler
 
         public void onDropCardClick()
         {
-            DropResult drop = dropArea.checkCardType(_playerComponents[isWhoseTurn].dropCardPool);
+            if (_playerComponents[isWhoseTurn].getDropCardsData() == null) return;
+            DropResult drop = dropArea.checkCardType(_playerComponents[isWhoseTurn].getDropCardsData());
             if (drop != null)
             {
                 if (dropArea.canDropCard(drop))
                 {
-                    
+                    Debug.Log("玩家丟出了" + drop.cardType + "最大的牌id是" + drop.maxCardIndex);
+                    _dropAreaComponent.getDropCards(_playerComponents[isWhoseTurn].dropCardPool);
+                    _playerComponents[isWhoseTurn].DropCards();
                 }
                 else
                 {
                     //玩家出牌未超過上一位玩家
+                    Debug.LogWarning("玩家出牌未超過上一位玩家");
                 }
             }
             else
             {
                 //玩家牌型選擇錯誤的處理
+                Debug.LogWarning("玩家牌型選擇錯誤");
             }
         }
     }

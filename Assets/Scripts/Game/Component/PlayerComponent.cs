@@ -15,6 +15,7 @@ namespace Assets.Scripts.Game.Component
         private float Offset = 0.023f;
         public List<CardComponent> dropCardPool { set; get; }
         public Dictionary<int, CardComponent> handCards { set; get; }
+
         private UnityAction<bool, CardComponent> clickAction;
 
         public void init(int playerPos)
@@ -25,38 +26,64 @@ namespace Assets.Scripts.Game.Component
             handCards = new Dictionary<int, CardComponent>();
         }
 
-        public void getCards(CardComponent card)
+        public void GetCard(CardComponent card)
         {
             handCards[card.getCardIndex()] = card;
             card.setClickCardAction(clickAction);
             card.transform.SetParent(transform);
+            resetHandCards(card, handCards.Count);
+        }
+
+        public void DropCards()
+        {
+            foreach (var drop in dropCardPool)
+            {
+                handCards.Remove(drop.getCardIndex());
+            }
+            dropCardPool.Clear();
+            int cardOrder = 0;
+            foreach (KeyValuePair<int, CardComponent> item in handCards)
+            {
+                resetHandCards(item.Value,cardOrder);
+                cardOrder++;
+            }
+        }
+
+        public List<Card> getDropCardsData()
+        {
+            if (dropCardPool.Count == 0) return null;
+            List<Card> dropData = new List<Card>();
+            foreach (var card in dropCardPool)
+            {
+                dropData.Add(card.getCardInfo());
+            }
+            return dropData;
+        }
+
+        private void resetHandCards(CardComponent card, int cardOrder)
+        {
             Vector3 endPos = transform.position;
             Vector3 endRotation = transform.rotation.eulerAngles;
             switch (position)
             {
                 case ePlayerPosition.MySelf:
-                    endPos.x += zeroPos + Offset * handCards.Count;
+                    endPos.x += zeroPos + Offset * cardOrder;
                     endRotation.y += 180;
                     break;
                 case ePlayerPosition.RightSide:
-                    endPos.y += zeroPos + Offset * handCards.Count;
+                    endPos.y += zeroPos + Offset * cardOrder;
                     break;
                 case ePlayerPosition.OppositeSide:
-                    endPos.x -= zeroPos + Offset * handCards.Count;
+                    endPos.x -= zeroPos + Offset * cardOrder;
                     break;
                 case ePlayerPosition.LeftSide:
-                    endPos.y -= zeroPos + Offset * handCards.Count;
+                    endPos.y -= zeroPos + Offset * cardOrder;
                     break;
             }
             endPos.z = card.transform.position.z;
 
             card.transform.DOMove(endPos, 1);
             card.transform.DORotate(endRotation, 1);
-        }
-
-        public void setDropCardsAction()
-        {
-
         }
 
         private void clickCardAction(bool choosed, CardComponent card)

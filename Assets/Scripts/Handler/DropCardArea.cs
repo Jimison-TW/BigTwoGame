@@ -2,6 +2,7 @@
 using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Handler
@@ -19,20 +20,28 @@ namespace Assets.Scripts.Handler
                     if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     else return false;
                 case eDropCardType.Pair:
-                    return false;
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    else return false;
                 case eDropCardType.Triple:
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;
                 case eDropCardType.TwoPair:
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;
                 case eDropCardType.Straight:
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;
                 case eDropCardType.FullHouse:
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;
-                case eDropCardType.Flush:
-                    return false;
+                //case eDropCardType.Flush:
+                //    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                //    return false;
                 case eDropCardType.FourInOne:
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;
                 case eDropCardType.FlushStraight:
+                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;
                 default: return false;
             }
@@ -52,13 +61,16 @@ namespace Assets.Scripts.Handler
                     if (cards[0].cardNumber != cards[1].cardNumber) return null;
                     setInfoToResult(result, eDropCardType.Pair, cards[cards.Count - 1]);
                     return result;
-                case 3:
-                    if (cards[0].cardNumber != cards[1].cardNumber ||
-                        cards[1].cardNumber != cards[2].cardNumber) return null;
-                    setInfoToResult(result, eDropCardType.Triple, cards[cards.Count - 1]);
-                    return result;
+                //case 3:
+                //    if (cards[0].cardNumber != cards[1].cardNumber ||
+                //        cards[1].cardNumber != cards[2].cardNumber) return null;
+                //    setInfoToResult(result, eDropCardType.Triple, cards[cards.Count - 1]);
+                //    return result;
                 case 5:
-                    setInfoToResult(result, eDropCardType.Pair, cards[cards.Count - 1]);
+                    if (checkFiveCardType(result, cards) == null)
+                    {
+                        return null;
+                    }
                     return result;
                 default: return null;
             }
@@ -74,7 +86,6 @@ namespace Assets.Scripts.Handler
                 cardMap.Add(card.cardIndex, card);
             }
             indexList.Sort();
-            Debug.Log(indexList);
             cards.Clear();
             foreach (int id in indexList)
             {
@@ -82,6 +93,103 @@ namespace Assets.Scripts.Handler
             }
         }
 
+        private DropResult checkFiveCardType(DropResult result, List<Card> cards)
+        {
+            HashSet<int> flowers = new HashSet<int>();
+            HashSet<int> numbers = new HashSet<int>();
+            foreach (var card in cards)
+            {
+                flowers.Add(card.cardFlower);
+                numbers.Add(card.cardNumber);
+            }
+
+            if (numbers.Count == 5)
+            {
+                /*
+                FlushStraight or Straight
+                if (cards[4].cardNumber != 1 && cards[4].cardNumber != 2) //9 10 11 12 13
+                {
+                    theBig = cards[4];
+                }
+                else if (cards[4].cardNumber == 1) //10 J Q K A
+                {
+                    theBig = cards[4];
+                }
+                else if (cards[4].cardNumber == 2 && cards[3].cardNumber != 1) //2 3 4 5 6
+                {
+                    theBig = cards[4];
+                }
+                else if (cards[4].cardNumber == 2 && cards[3].cardNumber == 1) //1 2 3 4 5
+                {
+                    theBig = cards[2];
+                }
+                */
+
+                /* 將上方簡化為 */
+                Card theBig = null;
+                if (cards[4].cardNumber == 2 && cards[3].cardNumber == 1)
+                {
+                    theBig = cards[2];
+                }
+                else
+                {
+                    theBig = cards[4];
+                }
+
+                if (flowers.Count > 1)
+                {
+                    setInfoToResult(result, eDropCardType.Straight, theBig);
+                }
+                else
+                {
+                    setInfoToResult(result, eDropCardType.FlushStraight, theBig);
+                }
+            }
+            //else if (flowers.Count == 1)
+            //{
+            //    setInfoToResult(result, eDropCardType.Flush, cards[4]);
+            //}
+            else if (numbers.Count == 2)
+            {
+                if (cards[3].cardNumber == cards[4].cardNumber && cards[1].cardNumber == cards[0].cardNumber)
+                {
+                    //FullHouse
+                    if (cards[2].cardNumber != cards[3].cardNumber)
+                        setInfoToResult(result, eDropCardType.FullHouse, cards[2]);
+                    else
+                        setInfoToResult(result, eDropCardType.FullHouse, cards[4]);
+                }
+                else
+                {
+                    //FourInOne
+                    if (cards[4].cardNumber != cards[3].cardNumber)
+                        setInfoToResult(result, eDropCardType.FullHouse, cards[3]);
+                    else
+                        setInfoToResult(result, eDropCardType.FullHouse, cards[4]);
+                }
+
+            }
+            else if (numbers.Count == 3)
+            {
+                //TwoPair
+                if (cards[3].cardNumber != cards[4].cardNumber)
+                    setInfoToResult(result, eDropCardType.TwoPair, cards[3]);
+                else
+                    setInfoToResult(result, eDropCardType.TwoPair, cards[4]);
+            }
+            else
+            {
+                return null;
+            }
+            return result;
+        }
+
+        private void setInfoToResult(DropResult result, eDropCardType type, Card cardInfo)
+        {
+            result.setResult(type, cardInfo.cardIndex, cardInfo.cardFlower, cardInfo.cardNumber);
+        }
+
+        /*
         private bool isTwoPair(List<Card> cards)
         {
             if (cards[0].cardNumber != cards[1].cardNumber &&
@@ -114,26 +222,6 @@ namespace Assets.Scripts.Handler
             return true;
         }
 
-        private bool isFlush(List<Card> cards)
-        {
-            int tmpFlower = 0;
-            foreach (var card in cards)
-            {
-                if (tmpFlower == 0)
-                {
-                    tmpFlower = card.cardFlower;
-                }
-                else
-                {
-                    if (tmpFlower != card.cardFlower)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
         private bool isFullHouse(List<Card> cards)
         {
             int marker = 0;
@@ -159,6 +247,26 @@ namespace Assets.Scripts.Handler
             }
             if (marker == 0) return true;
             else return false;
+        }
+
+        private bool isFlush(List<Card> cards)
+        {
+            int tmpFlower = 0;
+            foreach (var card in cards)
+            {
+                if (tmpFlower == 0)
+                {
+                    tmpFlower = card.cardFlower;
+                }
+                else
+                {
+                    if (tmpFlower != card.cardFlower)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         private bool isFourInOne(List<Card> cards)
@@ -187,16 +295,6 @@ namespace Assets.Scripts.Handler
             if (marker == 2) return true;
             else return false;
         }
-
-        private bool isFlushStraight(List<Card> cards)
-        {
-            if (isFlush(cards) && isStraight(cards)) return true;
-            return false;
-        }
-
-        private void setInfoToResult(DropResult result, eDropCardType type, ICardInfo cardInfo)
-        {
-            result.setResult(type, cardInfo.cardIndex, cardInfo.cardFlower, cardInfo.cardNumber);
-        }
+        */
     }
 }

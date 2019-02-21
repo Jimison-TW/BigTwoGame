@@ -29,7 +29,7 @@ namespace Assets.Scripts.Game.Component
             string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
-                pComponent.getCards(cardObjects[i]);
+                pComponent.GetCard(cardObjects[i]);
                 cardId++;
                 logTxt += cardObjects[i].getCardIndex() + cardObjects[i].getCardFlower() + cardObjects[i].getCardNumber() + ",";
             }
@@ -43,62 +43,61 @@ namespace Assets.Scripts.Game.Component
             switch (index % 4)
             {
                 case 0:
-                    flower = 4;
-                    break;
-                case 1:
                     flower = 1;
                     break;
-                case 2:
+                case 1:
                     flower = 2;
                     break;
-                case 3:
+                case 2:
                     flower = 3;
                     break;
+                case 3:
+                    flower = 4;
+                    break;
             }
-            switch (index % 13)
+            switch (index / 4)
             {
                 case 0:
-                    number = 13;
-                    break;
-                case 1:
-                    number = 1;
-                    break;
-                case 2:
-                    number = 2;
-                    break;
-                case 3:
                     number = 3;
                     break;
-                case 4:
+                case 1:
                     number = 4;
                     break;
-                case 5:
+                case 2:
                     number = 5;
                     break;
-                case 6:
+                case 3:
                     number = 6;
                     break;
-                case 7:
+                case 4:
                     number = 7;
                     break;
-                case 8:
+                case 5:
                     number = 8;
                     break;
-                case 9:
+                case 6:
                     number = 9;
                     break;
-                case 10:
+                case 7:
                     number = 10;
                     break;
-                case 11:
+                case 8:
                     number = 11;
                     break;
-                case 12:
+                case 9:
                     number = 12;
                     break;
+                case 10:
+                    number = 13;
+                    break;
+                case 11:
+                    number = 1;
+                    break;
+                case 12:
+                    number = 2;
+                    break;
             }
-
-            card.initCard(false, cardId, flower, number);
+            card.initCard(false, index, flower, number);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 using Assets.Scripts.Game.Interface;
+using DG.Tweening;
 
 namespace Assets.Scripts.Game.Component
 {
@@ -8,28 +9,39 @@ namespace Assets.Scripts.Game.Component
     {
         public bool isChoosed = false;
 
-        private Card cardData;
+        private Card cardInfo;
 
         private UnityAction<bool, CardComponent> clickEvent;
 
         public void initCard(bool choosed, int index, int flower, int number)
         {
-            cardData = new Card(index, flower, number);
+            isChoosed = choosed;
+            cardInfo = new Card(index, flower, number);
+        }
+
+        public void Move(Vector3 endPos, float time)
+        {
+            transform.DOMove(endPos, time);
+        }
+
+        public Card getCardInfo()
+        {
+            return cardInfo;
         }
 
         public int getCardIndex()
         {
-            return cardData.cardIndex;
+            return cardInfo.cardIndex;
         }
 
         public int getCardFlower()
         {
-            return cardData.cardFlower;
+            return cardInfo.cardFlower;
         }
 
         public int getCardNumber()
         {
-            return cardData.cardNumber;
+            return cardInfo.cardNumber;
         }
 
         public void setClickCardAction(UnityAction<bool, CardComponent> action)
