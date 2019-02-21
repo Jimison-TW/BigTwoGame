@@ -2,8 +2,6 @@
 using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 namespace Assets.Scripts.Handler
 {
@@ -17,31 +15,31 @@ namespace Assets.Scripts.Handler
             switch (result.cardType)
             {
                 case eDropCardType.Single:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     else return false;
                 case eDropCardType.Pair:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     else return false;
                 //case eDropCardType.Triple:
-                //    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                //    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                 //    return false;
                 case eDropCardType.TwoPair:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     return false;
                 case eDropCardType.Straight:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     return false;
                 case eDropCardType.FullHouse:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     return false;
                 //case eDropCardType.Flush:
-                //    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                //    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                 //    return false;
                 case eDropCardType.FourInOne:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     return false;
                 case eDropCardType.FlushStraight:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                     return false;
                 default: return false;
             }
@@ -76,7 +74,7 @@ namespace Assets.Scripts.Handler
             }
         }
 
-        public void sortCardList(List<Card> cards)
+        private void sortCardList(List<Card> cards)
         {
             Dictionary<int, Card> cardMap = new Dictionary<int, Card>();
             List<int> indexList = new List<int>();
@@ -126,23 +124,23 @@ namespace Assets.Scripts.Handler
                 */
 
                 /* 將上方簡化為 */
-                Card theBig = null;
+                Card maxCard = null;
                 if (cards[4].cardNumber == 2 && cards[3].cardNumber == 1)
                 {
-                    theBig = cards[2];
+                    maxCard = cards[2];
                 }
                 else
                 {
-                    theBig = cards[4];
+                    maxCard = cards[4];
                 }
 
                 if (flowers.Count > 1)
                 {
-                    setInfoToResult(result, eDropCardType.Straight, theBig);
+                    setInfoToResult(result, eDropCardType.Straight, maxCard);
                 }
                 else
                 {
-                    setInfoToResult(result, eDropCardType.FlushStraight, theBig);
+                    setInfoToResult(result, eDropCardType.FlushStraight, maxCard);
                 }
             }
             //else if (flowers.Count == 1)
@@ -184,9 +182,9 @@ namespace Assets.Scripts.Handler
             return result;
         }
 
-        private void setInfoToResult(DropResult result, eDropCardType type, Card cardInfo)
+        private void setInfoToResult(DropResult result, eDropCardType type, Card maxCard)
         {
-            result.setResult(type, cardInfo.cardIndex, cardInfo.cardFlower, cardInfo.cardNumber);
+            result.setResult(type, maxCard);
         }
 
         /*

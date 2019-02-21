@@ -18,7 +18,7 @@ namespace Assets.Scripts.Game.Component
 
         private UnityAction<bool, CardComponent> clickAction;
 
-        public void init(int playerPos)
+        public void Init(int playerPos)
         {
             position = (ePlayerPosition)playerPos;
             clickAction = new UnityAction<bool, CardComponent>(clickCardAction);
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Game.Component
 
         public void GetCard(CardComponent card)
         {
-            handCards[card.getCardIndex()] = card;
+            handCards[card.cardIndex] = card;
             card.setClickCardAction(clickAction);
             card.transform.SetParent(transform);
             resetHandCards(card, handCards.Count);
@@ -38,7 +38,7 @@ namespace Assets.Scripts.Game.Component
         {
             foreach (var drop in dropCardPool)
             {
-                handCards.Remove(drop.getCardIndex());
+                handCards.Remove(drop.cardIndex);
             }
             dropCardPool.Clear();
             int cardOrder = 0;
@@ -92,14 +92,14 @@ namespace Assets.Scripts.Game.Component
             if (!choosed && dropCardPool.Count < 5)
             {
                 dropCardPool.Add(card);
-                handCards[card.getCardIndex()].isChoosed = true;
-                handCards[card.getCardIndex()].transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
+                handCards[card.cardIndex].isChoosed = true;
+                handCards[card.cardIndex].transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
             }
             else
             {
                 dropCardPool.Remove(card);
-                handCards[card.getCardIndex()].isChoosed = false;
-                handCards[card.getCardIndex()].transform.DOMoveY(transform.position.y, 0.1f);
+                handCards[card.cardIndex].isChoosed = false;
+                handCards[card.cardIndex].transform.DOMoveY(transform.position.y, 0.1f);
             }
         }
     }

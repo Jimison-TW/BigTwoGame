@@ -7,16 +7,12 @@ namespace Assets.Scripts.Game
     public class DropResult
     {
         public eDropCardType cardType { get; private set; }
-        public int maxCardIndex { get; private set; }
-        public int maxCardFlower { get; private set; }
-        public int maxCardNumber { get; private set; }
-        
-        public void setResult(eDropCardType type,int maxId,int maxFlower,int maxNumber)
+        public Card maxCard { get; private set; }
+
+        public void setResult(eDropCardType type,Card card)
         {
             cardType = type;
-            maxCardIndex = maxId;
-            maxCardFlower = maxFlower;
-            maxCardNumber = maxNumber;
+            maxCard = card;
         }
     }
 }

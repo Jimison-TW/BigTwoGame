@@ -1,22 +1,25 @@
-﻿using UnityEngine;
-using UnityEngine.Events;
-using Assets.Scripts.Game.Interface;
+﻿using Assets.Scripts.Game.Interface;
 using DG.Tweening;
+using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.Game.Component
 {
-    public class CardComponent : MonoBehaviour
+    public class CardComponent : MonoBehaviour, ICardInfo
     {
         public bool isChoosed = false;
-
-        private Card cardInfo;
+        public int cardIndex { set; get; }
+        public int cardFlower { set; get; }
+        public int cardNumber { set; get; }
 
         private UnityAction<bool, CardComponent> clickEvent;
 
         public void Init(bool choosed, int index, int flower, int number)
         {
             isChoosed = choosed;
-            cardInfo = new Card(index, flower, number);
+            cardIndex = index;
+            cardFlower = flower;
+            cardNumber = number;
         }
 
         public void Move(Vector3 endPos, float time)
@@ -26,22 +29,7 @@ namespace Assets.Scripts.Game.Component
 
         public Card getCardInfo()
         {
-            return cardInfo;
-        }
-
-        public int getCardIndex()
-        {
-            return cardInfo.cardIndex;
-        }
-
-        public int getCardFlower()
-        {
-            return cardInfo.cardFlower;
-        }
-
-        public int getCardNumber()
-        {
-            return cardInfo.cardNumber;
+            return new Card(cardIndex,cardFlower,cardNumber);
         }
 
         public void setClickCardAction(UnityAction<bool, CardComponent> action)

@@ -6,8 +6,11 @@ namespace Assets.Scripts.Game.Component
 {
     public class DropAreaComponent : MonoBehaviour
     {
-        public void getDropCards(List<CardComponent> cards)
+        private List<CardComponent> lastDropCard = new List<CardComponent>();
+
+        public void GetCards(List<CardComponent> cards)
         {
+            lastDropCard = cards;
             foreach (var card in cards)
             {
                 card.transform.SetParent(transform);
@@ -17,6 +20,11 @@ namespace Assets.Scripts.Game.Component
                 card.transform.DOMove(endPos, 1);
                 card.transform.DORotate(endRotation, 1);
             }
+        }
+
+        private void resetDropCard()
+        {
+
         }
     }
 }

@@ -25,13 +25,13 @@ namespace Assets.Scripts.Game.Component
         private int cardId = 0;
         public void dealCards(PlayerComponent pComponent, int playerIndex)
         {
-            pComponent.init(playerIndex);
+            pComponent.Init(playerIndex);
             string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
                 pComponent.GetCard(cardObjects[i]);
                 cardId++;
-                logTxt += cardObjects[i].getCardIndex() + cardObjects[i].getCardFlower() + cardObjects[i].getCardNumber() + ",";
+                logTxt += cardObjects[i].cardIndex + cardObjects[i].cardFlower + cardObjects[i].cardNumber + ",";
             }
             Debug.Log($"{pComponent.name}收到編號第{logTxt}張牌");
         }

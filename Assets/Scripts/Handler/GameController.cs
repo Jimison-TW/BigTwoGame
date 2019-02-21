@@ -1,5 +1,7 @@
-﻿using Assets.Scripts.Data;
+﻿using System;
+using Assets.Scripts.Data;
 using Assets.Scripts.Game;
+using Assets.Scripts.Type;
 using Assets.Scripts.Game.Component;
 using UnityEngine;
 
@@ -60,8 +62,8 @@ namespace Assets.Scripts.Handler
             {
                 if (dropArea.canDropCard(drop))
                 {
-                    Debug.Log("玩家丟出了" + drop.cardType + "最大的牌id是" + drop.maxCardIndex);
-                    _dropAreaComponent.getDropCards(_playerComponents[isWhoseTurn].dropCardPool);
+                    Debug.Log($"玩家丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}{(eCardNumber)drop.maxCard.cardNumber}");
+                    _dropAreaComponent.GetCards(_playerComponents[isWhoseTurn].dropCardPool);
                     _playerComponents[isWhoseTurn].DropCards();
                 }
                 else
