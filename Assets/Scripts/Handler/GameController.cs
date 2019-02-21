@@ -40,7 +40,7 @@ namespace Assets.Scripts.Handler
             gameData = new GameData();
             cardStack = new CardStack();
             dropArea = new DropCardArea();
-            _cardStackComponent.createCardStack(cardStack.getAllNumber());
+            _cardStackComponent.CreateCard(cardStack.getAllNumber());
         }
 
         private void dealCardsToPlayer()

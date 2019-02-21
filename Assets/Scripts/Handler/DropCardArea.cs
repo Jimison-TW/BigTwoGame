@@ -22,9 +22,9 @@ namespace Assets.Scripts.Handler
                 case eDropCardType.Pair:
                     if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     else return false;
-                case eDropCardType.Triple:
-                    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
-                    return false;
+                //case eDropCardType.Triple:
+                //    if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
+                //    return false;
                 case eDropCardType.TwoPair:
                     if (result.maxCardIndex > lastDrop.maxCardIndex) return true;
                     return false;

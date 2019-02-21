@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Component
 
         private List<CardComponent> cardObjects = new List<CardComponent>();
 
-        public void createCardStack(List<int> cardNumber)
+        public void CreateCard(List<int> cardNumber)
         {
             foreach (var i in cardNumber)
             {
@@ -97,7 +97,7 @@ namespace Assets.Scripts.Game.Component
                     number = 2;
                     break;
             }
-            card.initCard(false, index, flower, number);
+            card.Init(false, index, flower, number);
         }
     }
 }

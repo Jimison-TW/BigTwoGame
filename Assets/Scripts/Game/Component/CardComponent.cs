@@ -13,7 +13,7 @@ namespace Assets.Scripts.Game.Component
 
         private UnityAction<bool, CardComponent> clickEvent;
 
-        public void initCard(bool choosed, int index, int flower, int number)
+        public void Init(bool choosed, int index, int flower, int number)
         {
             isChoosed = choosed;
             cardInfo = new Card(index, flower, number);
