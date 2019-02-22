@@ -71,6 +71,7 @@
     <Compile Include="Assets\Scripts\Game\Interface\IPlayerInfo.cs" />
     <Compile Include="Assets\Scripts\Handler\CardStack.cs" />
     <Compile Include="Assets\Scripts\Handler\DropCardArea.cs" />
+    <Compile Include="Assets\Scripts\Handler\EnemyPlayer.cs" />
     <Compile Include="Assets\Scripts\Handler\GameController.cs" />
     <Compile Include="Assets\Scripts\Type\eCardProperty.cs" />
     <Compile Include="Assets\Scripts\Type\ePlayer.cs" />

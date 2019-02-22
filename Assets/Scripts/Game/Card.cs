@@ -15,7 +15,7 @@ namespace Assets.Scripts.Game
             cardNumber = number;
         }
 
-        public bool compareTo(Card info)
+        public bool compareTo(ICardInfo info)
         {
             if (cardIndex > info.cardIndex) return true;
             else return false;
