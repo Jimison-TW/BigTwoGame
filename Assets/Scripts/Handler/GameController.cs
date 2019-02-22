@@ -63,7 +63,7 @@ namespace Assets.Scripts.Handler
                 if (dropArea.canDropCard(drop))
                 {
                     Debug.Log($"玩家丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}{(eCardNumber)drop.maxCard.cardNumber}");
-                    _dropAreaComponent.GetCards(_playerComponents[isWhoseTurn].dropCardPool);
+                    _dropAreaComponent.GetDropCards(_playerComponents[isWhoseTurn].dropCardPool);
                     _playerComponents[isWhoseTurn].DropCards();
                 }
                 else
