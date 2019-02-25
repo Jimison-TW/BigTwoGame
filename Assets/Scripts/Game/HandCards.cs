@@ -5,8 +5,21 @@ namespace Assets.Scripts.Game
 {
     public class HandCards
     {
+        public int Count { get { return allCards.Count; } private set { } }
         private List<int>[] cardList = new List<int>[4];
         private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
+
+        public HandCards()
+        {
+            List<int> clubCard = new List<int>();
+            List<int> diamondCard = new List<int>();
+            List<int> heartCard = new List<int>();
+            List<int> spadeCard = new List<int>();
+            cardList[0] = clubCard;
+            cardList[1] = diamondCard;
+            cardList[2] = heartCard;
+            cardList[3] = spadeCard;
+        }
 
         public HandCards(List<CardComponent> cards)
         {
@@ -43,9 +56,30 @@ namespace Assets.Scripts.Game
             cardList[3] = spadeCard;
         }
 
-        public void RemoveCard(List<Card> cardInfo)
+        public CardComponent Find(int index)
         {
-            foreach(var card in cardInfo)
+            return allCards[index];
+        }
+
+        public void Get(CardComponent card)
+        {
+            allCards[card.cardIndex] = card;
+            cardList[card.cardFlower - 1].Add(card.cardNumber);
+        }
+
+        public CardComponent Drop(int cardIndex)
+        {
+            int cardOrder = 0;
+            foreach (KeyValuePair<int, CardComponent> item in allCards)
+            {
+                cardOrder++;
+            }
+            return allCards[cardIndex];
+        }
+
+        private void removeCard(List<Card> cardInfo)
+        {
+            foreach (var card in cardInfo)
             {
                 allCards.Remove(card.cardIndex);
                 cardList[card.cardFlower - 1].Remove(card.cardNumber);
