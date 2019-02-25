@@ -41,12 +41,12 @@ namespace Assets.Scripts.Handler
 
         private void findPossibleCard(Card enemyMaxCard)
         {
-            foreach (KeyValuePair<int, CardComponent> card in component.handCards)
-            {
-                if (!enemyMaxCard.compareTo(card.Value)){
-                    possibleCard.Add(card.Value.getCardInfo());
-                }
-            }
+            //foreach (KeyValuePair<int, CardComponent> card in component.handCards)
+            //{
+            //    if (!enemyMaxCard.compareTo(card.Value)){
+            //        possibleCard.Add(card.Value.getCardInfo());
+            //    }
+            //}
         }
     }
 }

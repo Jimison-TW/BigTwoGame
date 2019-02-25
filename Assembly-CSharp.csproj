@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{66C43898-54BE-F7A8-FE89-BF25CD18F98E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -62,13 +61,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Data\GameData.cs" />
-    <Compile Include="Assets\Scripts\Game\HandCards.cs" />
     <Compile Include="Assets\Scripts\Game\Card.cs" />
     <Compile Include="Assets\Scripts\Game\Component\CardComponent.cs" />
     <Compile Include="Assets\Scripts\Game\Component\CardStackComponent.cs" />
     <Compile Include="Assets\Scripts\Game\Component\DropAreaComponent.cs" />
     <Compile Include="Assets\Scripts\Game\Component\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Game\DropResult.cs" />
+    <Compile Include="Assets\Scripts\Game\HandCards.cs" />
     <Compile Include="Assets\Scripts\Game\Interface\ICardInfo.cs" />
     <Compile Include="Assets\Scripts\Game\Interface\IPlayerInfo.cs" />
     <Compile Include="Assets\Scripts\Handler\CardStack.cs" />

@@ -13,7 +13,7 @@ namespace Assets.Scripts.Game.Component
         public int cardNumber { set; get; }
 
         private UnityAction<bool, Card> clickEvent;
-        private UnityAction resetPosEvent;
+        private UnityAction<CardComponent, int> resetPosEvent;
 
         public void Init(bool choosed, int index, int flower, int number)
         {
@@ -28,6 +28,11 @@ namespace Assets.Scripts.Game.Component
             transform.DOMove(endPos, time);
         }
 
+        public void Reset(int cardOrder)
+        {
+            resetPosEvent.Invoke(this, cardOrder);
+        }
+
         public Card getCardInfo()
         {
             return new Card(cardIndex, cardFlower, cardNumber);
@@ -38,7 +43,7 @@ namespace Assets.Scripts.Game.Component
             clickEvent = action;
         }
 
-        public void setResetPosAction(UnityAction action)
+        public void setResetPosAction(UnityAction<CardComponent, int> action)
         {
             resetPosEvent = action;
         }

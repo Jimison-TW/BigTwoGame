@@ -11,8 +11,8 @@ namespace Assets.Scripts.Game.Component
     public class PlayerComponent : MonoBehaviour, IPlayerInfo
     {
         public ePlayerPosition position { set; get; }
-        public List<Card> dropCardPool { set; get; }
         public HandCards playerCards { set; get; }
+        public List<Card> dropCardPool = new List<Card>(); 
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
 
@@ -31,21 +31,27 @@ namespace Assets.Scripts.Game.Component
         {
             playerCards.Get(card);
             card.setClickCardAction(clickAction);
+            card.setResetPosAction(resetPosAction);
             card.transform.SetParent(transform);
             resetHandCards(card, playerCards.Count);
         }
 
+        public void CardReset()
+        {
+            playerCards.resetHandCards();
+        }
+
         public List<CardComponent> getDropCards()
         {
-            List<CardComponent> tmpArray = new List<CardComponent>();
+            List<CardComponent> dropArray = new List<CardComponent>();
             foreach (var drop in dropCardPool)
             {
                 CardComponent card = playerCards.Drop(drop.cardIndex);
-                tmpArray.Add(card);
+                dropArray.Add(card);
             }
             dropCardPool.Clear();
 
-            return tmpArray;
+            return dropArray;
         }
 
         public List<Card> getDropCardsData()

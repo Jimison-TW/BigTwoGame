@@ -69,12 +69,17 @@ namespace Assets.Scripts.Game
 
         public CardComponent Drop(int cardIndex)
         {
+            return allCards[cardIndex];
+        }
+
+        public void resetHandCards()
+        {
             int cardOrder = 0;
             foreach (KeyValuePair<int, CardComponent> item in allCards)
             {
+                item.Value.Reset(cardOrder);
                 cardOrder++;
             }
-            return allCards[cardIndex];
         }
 
         private void removeCard(List<Card> cardInfo)
