@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Game.Component;
 using Assets.Scripts.Game;
 using Assets.Scripts.Type;
-using Assets.Scripts.Game.Interface;
 using System.Collections.Generic;
 
 namespace Assets.Scripts.Handler
@@ -16,7 +15,6 @@ namespace Assets.Scripts.Handler
         public void Init(PlayerComponent comp)
         {
             component = comp;
-
         }
 
         public void CheckDropCard(DropResult result)
