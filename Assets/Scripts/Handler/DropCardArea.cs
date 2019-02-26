@@ -1,5 +1,4 @@
 ﻿using Assets.Scripts.Game;
-using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
 

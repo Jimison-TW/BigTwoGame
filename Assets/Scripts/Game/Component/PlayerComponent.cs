@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using DG.Tweening;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,17 +11,17 @@ namespace Assets.Scripts.Game.Component
     {
         public ePlayerPosition position { set; get; }
         public HandCards playerCards { set; get; }
-        public List<Card> dropCardPool = new List<Card>(); 
+        public List<ICardInfo> dropInfoPool = new List<ICardInfo>(); 
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
 
-        private UnityAction<bool, Card> clickAction;
+        private UnityAction<bool, ICardInfo> clickAction;
         private UnityAction<CardComponent, int> resetPosAction;
 
         public void Init(int playerPos)
         {
             position = (ePlayerPosition)playerPos;
-            clickAction = new UnityAction<bool, Card>(clickCardAction);
+            clickAction = new UnityAction<bool, ICardInfo>(clickCardAction);
             resetPosAction = new UnityAction<CardComponent, int>(resetHandCards);
             playerCards = new HandCards();
         }
@@ -44,20 +43,25 @@ namespace Assets.Scripts.Game.Component
         public List<CardComponent> getDropCards()
         {
             List<CardComponent> dropArray = new List<CardComponent>();
-            foreach (var drop in dropCardPool)
+            foreach (var drop in dropInfoPool)
             {
                 CardComponent card = playerCards.Drop(drop.cardIndex);
                 dropArray.Add(card);
             }
-            dropCardPool.Clear();
+            dropInfoPool.Clear();
 
             return dropArray;
         }
 
         public List<Card> getDropCardsData()
         {
-            if (dropCardPool.Count == 0) return null;
-            return dropCardPool;
+            if (dropInfoPool.Count == 0) return null;
+            List<Card> dropCards = new List<Card>();
+            foreach(var info in dropInfoPool)
+            {
+                dropCards.Add(new Card(info));
+            }
+            return dropCards;
         }
 
         private void resetHandCards(CardComponent card, int cardOrder)
@@ -86,18 +90,18 @@ namespace Assets.Scripts.Game.Component
             card.transform.DORotate(endRotation, 1);
         }
 
-        private void clickCardAction(bool choosed, Card card)
+        private void clickCardAction(bool choosed, ICardInfo card)
         {
             if (position != ePlayerPosition.MySelf) return;
-            if (!choosed && dropCardPool.Count < 5)
+            if (!choosed && dropInfoPool.Count < 5)
             {
-                dropCardPool.Add(card);
+                dropInfoPool.Add(card);
                 playerCards.Find(card.cardIndex).isChoosed = true;
                 playerCards.Find(card.cardIndex).transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
             }
             else
             {
-                dropCardPool.Remove(card);
+                dropInfoPool.Remove(card);
                 playerCards.Find(card.cardIndex).isChoosed = false;
                 playerCards.Find(card.cardIndex).transform.DOMoveY(transform.position.y, 0.1f);
             }

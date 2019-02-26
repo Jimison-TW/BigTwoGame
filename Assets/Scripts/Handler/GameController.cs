@@ -1,5 +1,4 @@
-﻿using System;
-using Assets.Scripts.Data;
+﻿using Assets.Scripts.Data;
 using Assets.Scripts.Game;
 using Assets.Scripts.Type;
 using Assets.Scripts.Game.Component;

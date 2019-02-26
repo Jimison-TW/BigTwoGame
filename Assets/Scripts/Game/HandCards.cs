@@ -69,7 +69,9 @@ namespace Assets.Scripts.Game
 
         public CardComponent Drop(int cardIndex)
         {
-            return allCards[cardIndex];
+            CardComponent card = allCards[cardIndex];
+            allCards.Remove(cardIndex);
+            return card;
         }
 
         public void resetHandCards()
