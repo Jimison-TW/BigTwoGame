@@ -7,7 +7,6 @@ namespace Assets.Scripts.Game.Component
     public class DropAreaComponent : MonoBehaviour
     {
         private List<CardComponent> lastDropCard = new List<CardComponent>();
-        private float zeroPos = -0.04f;
         private float offset = 0.023f;
 
         public void GetDropCards(List<CardComponent> cards)
@@ -24,8 +23,8 @@ namespace Assets.Scripts.Game.Component
                 Vector3 endRotation = transform.rotation.eulerAngles;
                 endRotation.y += 180;
 
-                card.transform.DOMove(endPos, 1);
-                card.transform.DORotate(endRotation, 1);
+                card.Move(endPos, 1);
+                card.Rotate(endRotation, 1);
                 lastDropCard.Add(card);
                 index++;
             }

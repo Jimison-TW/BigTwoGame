@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.Handler
 {
@@ -7,8 +9,9 @@ namespace Assets.Scripts.Handler
     {
         private List<int> numberPool = new List<int>();
         private int getCardPlayer = 1;
+        private int whoIsFirst;
 
-        public CardStack()
+        public CardStack(UnityAction<int> whoFirstCallback)
         {
             for (int i = 0; i < 52; i++)
             {
@@ -16,6 +19,8 @@ namespace Assets.Scripts.Handler
             }
 
             randomCards();
+            //回傳由誰開始
+            whoFirstCallback.Invoke(numberPool.IndexOf(0) / 13);
             sortCards();
         }
 

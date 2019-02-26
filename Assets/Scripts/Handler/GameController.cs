@@ -23,6 +23,7 @@ namespace Assets.Scripts.Handler
         private DropCardArea dropArea;
 
         private int isWhoseTurn = 0;
+        private bool startNextTurn = true;
 
         #endregion
 
@@ -36,10 +37,18 @@ namespace Assets.Scripts.Handler
             dealCardsToPlayer();
         }
 
+        private void Update()
+        {
+            if (startNextTurn)
+            {
+
+            }
+        }
+
         private void Init()
         {
             gameData = new GameData();
-            cardStack = new CardStack();
+            cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = whoFirst; });
             dropArea = new DropCardArea();
             _cardStackComponent.CreateCard(cardStack.getAllNumber());
         }

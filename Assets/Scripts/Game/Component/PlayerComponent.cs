@@ -2,6 +2,7 @@
 using Assets.Scripts.Type;
 using DG.Tweening;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,7 +12,7 @@ namespace Assets.Scripts.Game.Component
     {
         public ePlayerPosition position { set; get; }
         public HandCards playerCards { set; get; }
-        public List<ICardInfo> dropInfoPool = new List<ICardInfo>(); 
+        private List<ICardInfo> dropInfoPool = new List<ICardInfo>(); 
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
 
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Game.Component
 
         public void GetCard(CardComponent card)
         {
-            playerCards.Get(card);
+            playerCards.Add(card);
             card.setClickCardAction(clickAction);
             card.setResetPosAction(resetPosAction);
             card.transform.SetParent(transform);
@@ -53,11 +54,21 @@ namespace Assets.Scripts.Game.Component
             return dropArray;
         }
 
+        public void setDropCardPool(List<Card> cards)
+        {
+            dropInfoPool = cards.Cast<ICardInfo>().ToList();
+        }
+
+        public void setDropCardPool(Card card)
+        {
+            dropInfoPool.Add(card);
+        }
+
         public List<Card> getDropCardsData()
         {
             if (dropInfoPool.Count == 0) return null;
             List<Card> dropCards = new List<Card>();
-            foreach(var info in dropInfoPool)
+            foreach (var info in dropInfoPool)
             {
                 dropCards.Add(new Card(info));
             }
@@ -86,8 +97,8 @@ namespace Assets.Scripts.Game.Component
             }
             endPos.z = card.transform.position.z;
 
-            card.transform.DOMove(endPos, 1);
-            card.transform.DORotate(endRotation, 1);
+            card.Move(endPos, 1);
+            card.Rotate(endRotation, 1);
         }
 
         private void clickCardAction(bool choosed, ICardInfo card)

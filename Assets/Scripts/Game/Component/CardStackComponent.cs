@@ -10,6 +10,10 @@ namespace Assets.Scripts.Game.Component
 
         private List<CardComponent> cardObjects = new List<CardComponent>();
 
+        /// <summary>
+        /// 產生卡牌物件進入牌堆
+        /// </summary>
+        /// <param name="cardNumber"></param>
         public void CreateCard(List<int> cardNumber)
         {
             foreach (var i in cardNumber)
@@ -23,6 +27,11 @@ namespace Assets.Scripts.Game.Component
         }
 
         private int cardId = 0;
+        /// <summary>
+        /// 牌堆發牌並初始化卡牌資訊
+        /// </summary>
+        /// <param name="pComponent"></param>
+        /// <param name="playerIndex"></param>
         public void dealCards(PlayerComponent pComponent, int playerIndex)
         {
             pComponent.Init(playerIndex);
