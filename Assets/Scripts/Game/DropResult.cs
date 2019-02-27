@@ -7,12 +7,15 @@ namespace Assets.Scripts.Game
     public class DropResult
     {
         public eDropCardType cardType { get; private set; }
-        public Card maxCard { get; private set; }
+        public List<Card> dropCards { get; private set; }
+        public Card maxCard { get { return dropCards[dropCards.Count - 1]; } private set { } }
+        public Card minCard { get { return dropCards[0]; } private set { } }
 
-        public void setResult(eDropCardType type,Card card)
+        public void setResult(eDropCardType type, List<Card> cards)
         {
+            cards.Sort((x, y) => { return x.cardIndex.CompareTo(y.cardIndex); });
             cardType = type;
-            maxCard = card;
+            dropCards = cards;
         }
     }
 }

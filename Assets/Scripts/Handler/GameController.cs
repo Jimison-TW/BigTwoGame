@@ -3,6 +3,7 @@ using Assets.Scripts.Game;
 using Assets.Scripts.Type;
 using Assets.Scripts.Game.Component;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Handler
 {
@@ -22,14 +23,15 @@ namespace Assets.Scripts.Handler
         private CardStack cardStack;
         private DropCardArea dropArea;
 
-        private int isWhoseTurn = 0;
+        private ePlayerPosition isWhoseTurn = 0;
         private bool startNextTurn = true;
+        private Dictionary<ePlayerPosition, Player> opponent = new Dictionary<ePlayerPosition, Player>();
 
         #endregion
 
         private void Awake()
         {
-            Init();
+            initialUtils();
         }
 
         private void Start()
@@ -41,16 +43,27 @@ namespace Assets.Scripts.Handler
         {
             if (startNextTurn)
             {
-
+                startNextTurn = false;
+                if (isWhoseTurn != ePlayerPosition.MySelf)
+                {
+                    Player enemy = opponent[isWhoseTurn];
+                    enemy.ThinkResult(dropArea.getLastDrop());
+                    onDropCardClick();
+                }
             }
         }
 
-        private void Init()
+        private void initialUtils()
         {
             gameData = new GameData();
-            cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = whoFirst; });
+            cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = (ePlayerPosition)whoFirst; });
+            //cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = 0; });
             dropArea = new DropCardArea();
             _cardStackComponent.CreateCard(cardStack.getAllNumber());
+            foreach (var pComponent in _playerComponents)
+            {
+                opponent[pComponent.position] = new Player(pComponent.position, pComponent);
+            }
         }
 
         private void dealCardsToPlayer()
@@ -64,15 +77,17 @@ namespace Assets.Scripts.Handler
 
         public void onDropCardClick()
         {
-            if (_playerComponents[isWhoseTurn].getDropCardsData() == null) return;
-            DropResult drop = dropArea.checkCardType(_playerComponents[isWhoseTurn].getDropCardsData());
+            int whoseTurn = (int) isWhoseTurn;
+            if (_playerComponents[whoseTurn].getDropCardsData() == null) return;
+            DropResult drop = dropArea.checkCardType(_playerComponents[whoseTurn].getDropCardsData());
             if (drop != null)
             {
                 if (dropArea.canDropCard(drop))
                 {
-                    Debug.Log($"玩家丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}{(eCardNumber)drop.maxCard.cardNumber}");
-                    _dropAreaComponent.GetDropCards(_playerComponents[isWhoseTurn].getDropCards());
-                    _playerComponents[isWhoseTurn].CardReset();
+                    Debug.Log($"玩家丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
+                        $"{(eCardNumber)drop.maxCard.cardNumber}");
+                    _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCards());
+                    _playerComponents[whoseTurn].CardReset();
                 }
                 else
                 {

@@ -55,23 +55,35 @@ namespace Assets.Scripts.Game
                 item.Value.Reset(cardOrder);
                 cardOrder++;
             }
-        }        
+        }
 
-        public Card FindCardById(int cardIndex)
+        public Card findBiggerIndex(int cardIndex)
         {
             Card info = allCardInfo.Find((Card i) => i.cardIndex > cardIndex);
             return info;
         }
 
-        public Card FindCardByFlower(int cardFlower)
+        public Card findBiggerFlower(int cardFlower)
         {
             Card info = allCardInfo.Find((Card i) => i.cardFlower > cardFlower);
             return info;
         }
 
-        public Card FindCardByNumber(int cardNumber)
+        public Card findBiggerNumber(int cardNumber)
         {
             Card info = allCardInfo.Find((Card i) => i.cardNumber > cardNumber);
+            return info;
+        }
+
+        public Card findSameFlower(int cardFlower)
+        {
+            Card info = allCardInfo.Find((Card i) => i.cardFlower == cardFlower);
+            return info;
+        }
+
+        public Card findSameNumber(int cardNumber)
+        {
+            Card info = allCardInfo.Find((Card i) => i.cardNumber == cardNumber);
             return info;
         }
     }

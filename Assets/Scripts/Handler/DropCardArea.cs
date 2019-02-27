@@ -1,12 +1,18 @@
 ﻿using Assets.Scripts.Game;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Handler
 {
     public class DropCardArea
     {
         private DropResult lastDrop = null;
+
+        public DropResult getLastDrop()
+        {
+            return lastDrop;
+        }
 
         public bool canDropCard(DropResult result)
         {
@@ -46,17 +52,17 @@ namespace Assets.Scripts.Handler
 
         public DropResult checkCardType(List<Card> cards)
         {
-            sortCardList(cards);
+            cards.Sort((x, y) => { return x.cardIndex.CompareTo(y.cardIndex); });
             DropResult result = new DropResult();
             if (cards.Count == 0 || cards.Count == 4) return null;
             switch (cards.Count)
             {
                 case 1:
-                    setInfoToResult(result, eDropCardType.Single, cards[0]);
+                    setInfoToResult(result, eDropCardType.Single, cards);
                     return result;
                 case 2:
                     if (cards[0].cardNumber != cards[1].cardNumber) return null;
-                    setInfoToResult(result, eDropCardType.Pair, cards[cards.Count - 1]);
+                    setInfoToResult(result, eDropCardType.Pair, cards);
                     return result;
                 //case 3:
                 //    if (cards[0].cardNumber != cards[1].cardNumber ||
@@ -70,23 +76,6 @@ namespace Assets.Scripts.Handler
                     }
                     return result;
                 default: return null;
-            }
-        }
-
-        private void sortCardList(List<Card> cards)
-        {
-            Dictionary<int, Card> cardMap = new Dictionary<int, Card>();
-            List<int> indexList = new List<int>();
-            foreach (var card in cards)
-            {
-                indexList.Add(card.cardIndex);
-                cardMap.Add(card.cardIndex, card);
-            }
-            indexList.Sort();
-            cards.Clear();
-            foreach (int id in indexList)
-            {
-                cards.Add(cardMap[id]);
             }
         }
 
@@ -135,11 +124,11 @@ namespace Assets.Scripts.Handler
 
                 if (flowers.Count > 1)
                 {
-                    setInfoToResult(result, eDropCardType.Straight, maxCard);
+                    setInfoToResult(result, eDropCardType.Straight, cards);
                 }
                 else
                 {
-                    setInfoToResult(result, eDropCardType.FlushStraight, maxCard);
+                    setInfoToResult(result, eDropCardType.FlushStraight, cards);
                 }
             }
             //else if (flowers.Count == 1)
@@ -152,17 +141,17 @@ namespace Assets.Scripts.Handler
                 {
                     //FullHouse
                     if (cards[2].cardNumber != cards[3].cardNumber)
-                        setInfoToResult(result, eDropCardType.FullHouse, cards[2]);
+                        setInfoToResult(result, eDropCardType.FullHouse, cards);
                     else
-                        setInfoToResult(result, eDropCardType.FullHouse, cards[4]);
+                        setInfoToResult(result, eDropCardType.FullHouse, cards);
                 }
                 else
                 {
                     //FourInOne
                     if (cards[4].cardNumber != cards[3].cardNumber)
-                        setInfoToResult(result, eDropCardType.FullHouse, cards[3]);
+                        setInfoToResult(result, eDropCardType.FullHouse, cards);
                     else
-                        setInfoToResult(result, eDropCardType.FullHouse, cards[4]);
+                        setInfoToResult(result, eDropCardType.FullHouse, cards);
                 }
 
             }
@@ -170,9 +159,9 @@ namespace Assets.Scripts.Handler
             {
                 //TwoPair
                 if (cards[3].cardNumber != cards[4].cardNumber)
-                    setInfoToResult(result, eDropCardType.TwoPair, cards[3]);
+                    setInfoToResult(result, eDropCardType.TwoPair, cards);
                 else
-                    setInfoToResult(result, eDropCardType.TwoPair, cards[4]);
+                    setInfoToResult(result, eDropCardType.TwoPair, cards);
             }
             else
             {
@@ -181,9 +170,9 @@ namespace Assets.Scripts.Handler
             return result;
         }
 
-        private void setInfoToResult(DropResult result, eDropCardType type, Card maxCard)
+        private void setInfoToResult(DropResult result, eDropCardType type, List<Card> dropCards)
         {
-            result.setResult(type, maxCard);
+            result.setResult(type, dropCards);
         }
 
         /*

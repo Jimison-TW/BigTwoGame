@@ -12,7 +12,7 @@ namespace Assets.Scripts.Game.Component
         public int cardFlower { set; get; }
         public int cardNumber { set; get; }
 
-        private UnityAction<bool, ICardInfo> clickEvent;
+        private UnityAction<bool, Card> clickEvent;
         private UnityAction<CardComponent, int> resetPosEvent;
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Assets.Scripts.Game.Component
             return new Card(this);
         }
 
-        public void setClickCardAction(UnityAction<bool, ICardInfo> action)
+        public void setClickCardAction(UnityAction<bool, Card> action)
         {
             clickEvent = action;
         }
@@ -76,7 +76,7 @@ namespace Assets.Scripts.Game.Component
 
         private void OnMouseUpAsButton()
         {
-            clickEvent.Invoke(isChoosed, this);
+            clickEvent.Invoke(isChoosed, new Card(this));
         }
     }
 }

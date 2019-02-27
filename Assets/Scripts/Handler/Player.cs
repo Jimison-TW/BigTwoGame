@@ -12,8 +12,9 @@ namespace Assets.Scripts.Handler
         public HandCards playerCards { get; set; }
         private PlayerComponent component;
 
-        public void Init(PlayerComponent comp)
+        public Player(ePlayerPosition position,PlayerComponent comp)
         {
+            this.position = position;
             component = comp;
             position = comp.position;
             playerCards = comp.playerCards;
@@ -21,11 +22,18 @@ namespace Assets.Scripts.Handler
 
         public void DropCard()
         {
-            
         }
 
         public void ThinkResult(DropResult result)
         {
+            //如果是第一個出牌，直接出梅花三
+            if (result == null)
+            {
+                Card willDrop = playerCards.Find(0).getCardInfo();
+                component.setDropCardPool(willDrop);
+                return;
+            }
+
             switch (result.cardType)
             {
                 case eDropCardType.Single:
@@ -54,7 +62,7 @@ namespace Assets.Scripts.Handler
 
         private void findSingle(Card enemyMaxCard)
         {
-            Card willDrop = playerCards.FindCardById(enemyMaxCard.cardIndex);
+            Card willDrop = playerCards.findBiggerIndex(enemyMaxCard.cardIndex);
             component.setDropCardPool(willDrop);
         }
 

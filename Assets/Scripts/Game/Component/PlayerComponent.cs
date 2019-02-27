@@ -12,19 +12,20 @@ namespace Assets.Scripts.Game.Component
     {
         public ePlayerPosition position { set; get; }
         public HandCards playerCards { set; get; }
-        private List<ICardInfo> dropInfoPool = new List<ICardInfo>(); 
+        private List<Card> dropInfoPool;
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
 
-        private UnityAction<bool, ICardInfo> clickAction;
+        private UnityAction<bool, Card> clickAction;
         private UnityAction<CardComponent, int> resetPosAction;
 
         public void Init(int playerPos)
         {
             position = (ePlayerPosition)playerPos;
-            clickAction = new UnityAction<bool, ICardInfo>(clickCardAction);
+            clickAction = new UnityAction<bool, Card>(clickCardAction);
             resetPosAction = new UnityAction<CardComponent, int>(resetHandCards);
             playerCards = new HandCards();
+            dropInfoPool = new List<Card>();
         }
 
         public void GetCard(CardComponent card)
@@ -56,7 +57,8 @@ namespace Assets.Scripts.Game.Component
 
         public void setDropCardPool(List<Card> cards)
         {
-            dropInfoPool = cards.Cast<ICardInfo>().ToList();
+            dropInfoPool = cards;
+            //dropInfoPool = cards.Cast<Card>().ToList();
         }
 
         public void setDropCardPool(Card card)
@@ -101,7 +103,7 @@ namespace Assets.Scripts.Game.Component
             card.Rotate(endRotation, 1);
         }
 
-        private void clickCardAction(bool choosed, ICardInfo card)
+        private void clickCardAction(bool choosed, Card card)
         {
             if (position != ePlayerPosition.MySelf) return;
             if (!choosed && dropInfoPool.Count < 5)
@@ -112,7 +114,7 @@ namespace Assets.Scripts.Game.Component
             }
             else
             {
-                dropInfoPool.Remove(card);
+                dropInfoPool.Remove(dropInfoPool.Find((Card c) => c.cardIndex == card.cardIndex));
                 playerCards.Find(card.cardIndex).isChoosed = false;
                 playerCards.Find(card.cardIndex).transform.DOMoveY(transform.position.y, 0.1f);
             }
