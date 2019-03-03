@@ -1,9 +1,9 @@
 ﻿using Assets.Scripts.Data;
 using Assets.Scripts.Game;
-using Assets.Scripts.Type;
 using Assets.Scripts.Game.Component;
-using UnityEngine;
+using Assets.Scripts.Type;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Handler
 {
@@ -24,7 +24,7 @@ namespace Assets.Scripts.Handler
         private DropCardArea dropArea;
 
         private ePlayerPosition isWhoseTurn = 0;
-        private bool startNextTurn = true;
+        public bool startNextTurn = false;
         private Dictionary<ePlayerPosition, Player> opponent = new Dictionary<ePlayerPosition, Player>();
 
         #endregion
@@ -41,11 +41,27 @@ namespace Assets.Scripts.Handler
 
         private void Update()
         {
+            //if (startNextTurn)
+            //{
+            //    startNextTurn = false;
+            //    if (isWhoseTurn != ePlayerPosition.MySelf)
+            //    {
+            //        Debug.Log(isWhoseTurn);
+            //        Player enemy = opponent[isWhoseTurn];
+            //        enemy.ThinkResult(dropArea.getLastDrop());
+            //        onDropCardClick();
+            //    }
+            //}
+        }
+
+        private void LateUpdate()
+        {
             if (startNextTurn)
             {
                 startNextTurn = false;
                 if (isWhoseTurn != ePlayerPosition.MySelf)
                 {
+                    Debug.Log(isWhoseTurn);
                     Player enemy = opponent[isWhoseTurn];
                     enemy.ThinkResult(dropArea.getLastDrop());
                     onDropCardClick();
@@ -60,9 +76,12 @@ namespace Assets.Scripts.Handler
             //cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = 0; });
             dropArea = new DropCardArea();
             _cardStackComponent.CreateCard(cardStack.getAllNumber());
+            int pos = 0;
             foreach (var pComponent in _playerComponents)
             {
-                opponent[pComponent.position] = new Player(pComponent.position, pComponent);
+                Debug.Log((ePlayerPosition)pos);
+                opponent[(ePlayerPosition)pos] = new Player((ePlayerPosition)pos, pComponent);
+                pos++;
             }
         }
 
@@ -77,7 +96,7 @@ namespace Assets.Scripts.Handler
 
         public void onDropCardClick()
         {
-            int whoseTurn = (int) isWhoseTurn;
+            int whoseTurn = (int)isWhoseTurn;
             if (_playerComponents[whoseTurn].getDropCardsData() == null) return;
             DropResult drop = dropArea.checkCardType(_playerComponents[whoseTurn].getDropCardsData());
             if (drop != null)

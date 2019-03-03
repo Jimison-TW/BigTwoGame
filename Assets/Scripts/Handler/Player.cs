@@ -3,6 +3,7 @@ using Assets.Scripts.Game;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Interface;
+using UnityEngine;
 
 namespace Assets.Scripts.Handler
 {
@@ -29,6 +30,7 @@ namespace Assets.Scripts.Handler
             //如果是第一個出牌，直接出梅花三
             if (result == null)
             {
+                Debug.Log(playerCards);
                 Card willDrop = playerCards.Find(0).getCardInfo();
                 component.setDropCardPool(willDrop);
                 return;
