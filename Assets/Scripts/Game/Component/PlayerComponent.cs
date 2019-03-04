@@ -47,6 +47,7 @@ namespace Assets.Scripts.Game.Component
             List<CardComponent> dropArray = new List<CardComponent>();
             foreach (var drop in dropInfoPool)
             {
+                Debug.Log(drop.cardIndex);
                 CardComponent card = playerCards.Drop(drop.cardIndex);
                 dropArray.Add(card);
             }

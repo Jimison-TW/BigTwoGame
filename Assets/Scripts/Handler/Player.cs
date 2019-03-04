@@ -1,9 +1,8 @@
-﻿using Assets.Scripts.Game.Component;
-using Assets.Scripts.Game;
+﻿using Assets.Scripts.Game;
+using Assets.Scripts.Game.Component;
+using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
-using Assets.Scripts.Game.Interface;
-using UnityEngine;
 using System.Linq;
 
 namespace Assets.Scripts.Handler
@@ -71,9 +70,10 @@ namespace Assets.Scripts.Handler
         private void findPair(List<Card> enemyDropCards)
         {
             enemyDropCards.OrderBy(i => i.cardIndex);
+            HandCards tmpCards = playerCards;
             List<Card> willDrop = new List<Card>();
             int unsearchCount = playerCards.Count;
-            int lastSearchIndex = enemyDropCards[enemyDropCards.Count - 1].cardIndex;
+            Card lastSearchCard = enemyDropCards[enemyDropCards.Count - 1];
             do
             {
                 if (unsearchCount < 2)
@@ -83,15 +83,27 @@ namespace Assets.Scripts.Handler
                 }
                 if (willDrop.Count > 0)
                 {
-
+                    Card card = tmpCards.findSameNumber(lastSearchCard.cardNumber);
+                    if (card == null)
+                    {
+                        unsearchCount--;
+                        willDrop.Clear();
+                    }
+                    else
+                    {
+                        willDrop.Add(card);
+                        break;
+                    }
                 }
                 else
                 {
-                    Card card = playerCards.findBiggerIndex(lastSearchIndex);
-                    lastSearchIndex = card.cardIndex;
+                    Card card = tmpCards.findBiggerIndex(lastSearchCard.cardIndex);
+                    tmpCards.Drop(card.cardIndex);
+                    lastSearchCard = card;
+                    unsearchCount--;
                     willDrop.Add(card);
                 }
-            } while (willDrop == null);
+            } while (willDrop.Count < 2);
             component.setDropCardPool(willDrop);
         }
 
