@@ -34,7 +34,6 @@ namespace Assets.Scripts.Game.Component
         /// <param name="playerIndex"></param>
         public void dealCards(PlayerComponent pComponent, int playerIndex)
         {
-            pComponent.Init(playerIndex);
             string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {

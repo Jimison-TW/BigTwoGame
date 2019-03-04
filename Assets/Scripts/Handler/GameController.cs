@@ -41,21 +41,6 @@ namespace Assets.Scripts.Handler
 
         private void Update()
         {
-            //if (startNextTurn)
-            //{
-            //    startNextTurn = false;
-            //    if (isWhoseTurn != ePlayerPosition.MySelf)
-            //    {
-            //        Debug.Log(isWhoseTurn);
-            //        Player enemy = opponent[isWhoseTurn];
-            //        enemy.ThinkResult(dropArea.getLastDrop());
-            //        onDropCardClick();
-            //    }
-            //}
-        }
-
-        private void LateUpdate()
-        {
             if (startNextTurn)
             {
                 startNextTurn = false;
@@ -80,6 +65,7 @@ namespace Assets.Scripts.Handler
             foreach (var pComponent in _playerComponents)
             {
                 Debug.Log((ePlayerPosition)pos);
+                pComponent.Init(pos);
                 opponent[(ePlayerPosition)pos] = new Player((ePlayerPosition)pos, pComponent);
                 pos++;
             }
