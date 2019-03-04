@@ -57,8 +57,14 @@ namespace Assets.Scripts.Game.Component
 
         public void setDropCardPool(List<Card> cards)
         {
-            dropInfoPool = cards;
-            //dropInfoPool = cards.Cast<Card>().ToList();
+            if (cards == null)
+            {
+                dropInfoPool.Clear();
+            }
+            else
+            {
+                dropInfoPool = cards;
+            }
         }
 
         public void setDropCardPool(Card card)

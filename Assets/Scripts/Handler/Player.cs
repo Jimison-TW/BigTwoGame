@@ -4,6 +4,7 @@ using Assets.Scripts.Type;
 using System.Collections.Generic;
 using Assets.Scripts.Game.Interface;
 using UnityEngine;
+using System.Linq;
 
 namespace Assets.Scripts.Handler
 {
@@ -13,7 +14,7 @@ namespace Assets.Scripts.Handler
         public HandCards playerCards { get; set; }
         private PlayerComponent component;
 
-        public Player(ePlayerPosition position,PlayerComponent comp)
+        public Player(ePlayerPosition position, PlayerComponent comp)
         {
             this.position = position;
             component = comp;
@@ -69,7 +70,29 @@ namespace Assets.Scripts.Handler
 
         private void findPair(List<Card> enemyDropCards)
         {
-            
+            enemyDropCards.OrderBy(i => i.cardIndex);
+            List<Card> willDrop = new List<Card>();
+            int unsearchCount = playerCards.Count;
+            int lastSearchIndex = enemyDropCards[enemyDropCards.Count - 1].cardIndex;
+            do
+            {
+                if (unsearchCount < 2)
+                {
+                    willDrop = null;
+                    break;
+                }
+                if (willDrop.Count > 0)
+                {
+
+                }
+                else
+                {
+                    Card card = playerCards.findBiggerIndex(lastSearchIndex);
+                    lastSearchIndex = card.cardIndex;
+                    willDrop.Add(card);
+                }
+            } while (willDrop == null);
+            component.setDropCardPool(willDrop);
         }
 
         private void findTwoPair(Card enemyMaxCard)
