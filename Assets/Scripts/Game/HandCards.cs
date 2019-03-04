@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Game.Component;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Game
 {
@@ -85,6 +86,12 @@ namespace Assets.Scripts.Game
         {
             Card info = allCardInfo.Find((Card i) => i.cardNumber == cardNumber);
             return info;
+        }
+
+        public Card findMinCard()
+        {
+            allCardInfo.OrderBy(i => i.cardIndex).ToList();
+            return allCardInfo[0];
         }
     }
 }

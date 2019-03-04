@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Assets.Scripts.Game.Component
 {
@@ -8,6 +9,12 @@ namespace Assets.Scripts.Game.Component
     {
         private List<CardComponent> lastDropCard = new List<CardComponent>();
         private float offset = 0.023f;
+        private TweenCallback onDropFinishedCallback;
+
+        public void Init(TweenCallback callback)
+        {
+            onDropFinishedCallback = callback;
+        }
 
         public void GetDropCards(List<CardComponent> cards)
         {
@@ -15,16 +22,20 @@ namespace Assets.Scripts.Game.Component
             int index = 0;
             foreach (var card in cards)
             {
-                Debug.Log(card.transform.localScale.x);
                 card.transform.SetParent(transform);
                 Vector3 endPos = transform.position;
                 endPos.x += -(offset * (cards.Count - 1)) / 2 + offset * index;
                 endPos.z = card.transform.position.z - 0.01f;
                 Vector3 endRotation = transform.rotation.eulerAngles;
                 endRotation.y += 180;
-
-                card.Move(endPos, 1);
-                card.Rotate(endRotation, 1);
+                if (index < cards.Count - 1)
+                {
+                    card.TSequence(endPos, endRotation, 1);
+                }
+                else
+                {
+                    card.TSequence(endPos, endRotation, 1, onDropFinishedCallback);
+                }
                 lastDropCard.Add(card);
                 index++;
             }

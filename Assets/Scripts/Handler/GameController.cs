@@ -46,9 +46,8 @@ namespace Assets.Scripts.Handler
                 startNextTurn = false;
                 if (isWhoseTurn != ePlayerPosition.MySelf)
                 {
-                    Debug.Log(isWhoseTurn);
                     Player enemy = opponent[isWhoseTurn];
-                    enemy.ThinkResult(dropArea.getLastDrop());
+                    enemy.ThinkResult(dropArea.lastDrop);
                     onDropCardClick();
                 }
             }
@@ -60,11 +59,16 @@ namespace Assets.Scripts.Handler
             cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = (ePlayerPosition)whoFirst; });
             //cardStack = new CardStack(delegate (int whoFirst) { isWhoseTurn = 0; });
             dropArea = new DropCardArea();
+            _dropAreaComponent.Init(delegate
+            {
+                isWhoseTurn += ((int)isWhoseTurn < 3) ? 1 : -3;
+                Debug.Log($"現在是{isWhoseTurn}的回合");
+                startNextTurn = true;
+            });
             _cardStackComponent.CreateCard(cardStack.getAllNumber());
             int pos = 0;
             foreach (var pComponent in _playerComponents)
             {
-                Debug.Log((ePlayerPosition)pos);
                 pComponent.Init(pos);
                 opponent[(ePlayerPosition)pos] = new Player((ePlayerPosition)pos, pComponent);
                 pos++;
@@ -83,14 +87,18 @@ namespace Assets.Scripts.Handler
         public void onDropCardClick()
         {
             int whoseTurn = (int)isWhoseTurn;
-            if (_playerComponents[whoseTurn].getDropCardsData() == null) return;
+            if (_playerComponents[whoseTurn].getDropCardsData() == null) {
+                onPassClick(); //若dropCardPool是空的那就跳過回合
+                return;
+            }
             DropResult drop = dropArea.checkCardType(_playerComponents[whoseTurn].getDropCardsData());
             if (drop != null)
             {
                 if (dropArea.canDropCard(drop))
                 {
-                    Debug.Log($"玩家丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
+                    Debug.Log($"玩家{isWhoseTurn}丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
                         $"{(eCardNumber)drop.maxCard.cardNumber}");
+                    dropArea.lastDrop = drop;
                     _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCards());
                     _playerComponents[whoseTurn].CardReset();
                 }
@@ -105,6 +113,11 @@ namespace Assets.Scripts.Handler
                 //玩家牌型選擇錯誤的處理
                 Debug.LogWarning("玩家牌型選擇錯誤");
             }
+        }
+
+        public void onPassClick()
+        {
+            
         }
     }
 }

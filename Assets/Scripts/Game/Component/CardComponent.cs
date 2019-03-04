@@ -35,7 +35,7 @@ namespace Assets.Scripts.Game.Component
         /// </summary>
         /// <param name="endPos">移動停止的位置</param>
         /// <param name="time">移動時間</param>
-        public void Move(Vector3 endPos, float time)
+        public void TMove(Vector3 endPos, float time)
         {
             transform.DOMove(endPos, time);
         }
@@ -45,9 +45,24 @@ namespace Assets.Scripts.Game.Component
         /// </summary>
         /// <param name="endRotate">轉動停止的位置</param>
         /// <param name="time">轉動時間</param>
-        public void Rotate(Vector3 endRotate, float time)
+        public void TRotate(Vector3 endRotate, float time)
         {
             transform.DORotate(endRotate, time);
+        }
+
+        /// <summary>
+        /// 讓卡牌同時進行Tween的移動與旋轉，並在完成時進行回呼
+        /// </summary>
+        /// <param name="endPos">移動停止的位置</param>
+        /// <param name="endRotate">轉動停止的位置</param>
+        /// <param name="time">動畫時間</param>
+        /// <param name="callback">完成時執行的callback</param>
+        public void TSequence(Vector3 endPos, Vector3 endRotate, float time,TweenCallback callback = null)
+        {
+            Sequence mSequence = DOTween.Sequence();
+            mSequence.Append(transform.DOMove(endPos, time));
+            mSequence.Join(transform.DORotate(endRotate, time));
+            if (callback != null) mSequence.AppendCallback(callback);
         }
 
         /// <summary>

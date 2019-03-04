@@ -19,7 +19,8 @@ namespace Assets.Scripts.Handler
 
             randomCards();
             //回傳由誰開始
-            whoFirstCallback.Invoke(numberPool.IndexOf(0) / 13);
+            //whoFirstCallback.Invoke(numberPool.IndexOf(0) / 13);  //隨機玩家開始出牌
+            whoFirstCallback.Invoke(0);  //由玩家開始出牌
             sortCards();
         }
 

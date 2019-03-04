@@ -63,7 +63,14 @@ namespace Assets.Scripts.Game.Component
 
         public void setDropCardPool(Card card)
         {
-            dropInfoPool.Add(card);
+            if(card == null)
+            {
+                dropInfoPool.Clear();
+            }
+            else
+            {
+                dropInfoPool.Add(card);
+            }
         }
 
         public List<Card> getDropCardsData()
@@ -99,8 +106,8 @@ namespace Assets.Scripts.Game.Component
             }
             endPos.z = card.transform.position.z;
 
-            card.Move(endPos, 1);
-            card.Rotate(endRotation, 1);
+            card.TMove(endPos, 1);
+            card.TRotate(endRotation, 1);
         }
 
         private void clickCardAction(bool choosed, Card card)

@@ -7,12 +7,7 @@ namespace Assets.Scripts.Handler
 {
     public class DropCardArea
     {
-        private DropResult lastDrop = null;
-
-        public DropResult getLastDrop()
-        {
-            return lastDrop;
-        }
+        public DropResult lastDrop { set; get; }
 
         public bool canDropCard(DropResult result)
         {

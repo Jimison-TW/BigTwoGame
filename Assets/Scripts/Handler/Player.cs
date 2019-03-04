@@ -27,11 +27,10 @@ namespace Assets.Scripts.Handler
 
         public void ThinkResult(DropResult result)
         {
-            //如果是第一個出牌，直接出梅花三
+            //如果是第一個出牌，直接出單張最小的
             if (result == null)
             {
-                Debug.Log(playerCards);
-                Card willDrop = playerCards.Find(0).getCardInfo();
+                Card willDrop = playerCards.findMinCard();
                 component.setDropCardPool(willDrop);
                 return;
             }
@@ -42,7 +41,7 @@ namespace Assets.Scripts.Handler
                     findSingle(result.maxCard);
                     break;
                 case eDropCardType.Pair:
-                    findPair(result.maxCard);
+                    findPair(result.dropCards);
                     break;
                 case eDropCardType.TwoPair:
                     findTwoPair(result.maxCard);
@@ -62,15 +61,15 @@ namespace Assets.Scripts.Handler
             }
         }
 
-        private void findSingle(Card enemyMaxCard)
+        private void findSingle(Card enemyDropCard)
         {
-            Card willDrop = playerCards.findBiggerIndex(enemyMaxCard.cardIndex);
+            Card willDrop = playerCards.findBiggerIndex(enemyDropCard.cardIndex);
             component.setDropCardPool(willDrop);
         }
 
-        private void findPair(Card enemyMaxCard)
+        private void findPair(List<Card> enemyDropCards)
         {
-
+            
         }
 
         private void findTwoPair(Card enemyMaxCard)
