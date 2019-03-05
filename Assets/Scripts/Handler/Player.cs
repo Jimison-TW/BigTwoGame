@@ -141,13 +141,13 @@ namespace Assets.Scripts.Handler
 
         private void findStraight(List<Card> enemyDropCard)
         {
-            enemyDropCard.OrderBy(i => i.cardIndex).ToList();
+            enemyDropCard.OrderBy(i => i.cardNumber).ToList();
             List<Card> willDrop = new List<Card>();
             int unsearchCount = playerCards.Count;
             Card lastSearchCard = enemyDropCard[enemyDropCard.Count - 1];
             while (willDrop.Count < 5)
             {
-                if (unsearchCount < 5)
+                if (unsearchCount < 5 || lastSearchCard.cardNumber == 11)
                 {
                     willDrop = null;
                     break;
@@ -190,7 +190,7 @@ namespace Assets.Scripts.Handler
                 lastSearchCard = bigger;
                 unsearchCount--;
                 if (bigger.cardFlower > 1) continue;
-                for(int i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Card result = playerCards.findSameNumber(lastSearchCard);
                     if (result == null)
