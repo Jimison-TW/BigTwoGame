@@ -76,15 +76,15 @@ namespace Assets.Scripts.Game
             return info;
         }
 
-        public Card findSameFlower(int cardFlower)
+        public Card findSameFlower(Card other)
         {
-            Card info = allCardInfo.Find((Card i) => i.cardFlower == cardFlower);
+            Card info = allCardInfo.Find((Card self) => (self.cardFlower == other.cardFlower) && (self.cardIndex != other.cardIndex));
             return info;
         }
 
-        public Card findSameNumber(int cardNumber)
+        public Card findSameNumber(Card other)
         {
-            Card info = allCardInfo.Find((Card i) => i.cardNumber == cardNumber);
+            Card info = allCardInfo.Find((Card self) => (self.cardNumber == other.cardNumber) && (self.cardIndex != other.cardIndex));
             return info;
         }
 
@@ -92,6 +92,19 @@ namespace Assets.Scripts.Game
         {
             allCardInfo.OrderBy(i => i.cardIndex).ToList();
             return allCardInfo[0];
+        }
+
+        public Card findMinCard(List<Card> doNotInclude)
+        {
+            Card target = findMinCard();
+            foreach(var card in doNotInclude)
+            {
+                if (target.cardIndex == card.cardIndex)
+                {
+                    target = findBiggerIndex(target.cardIndex);
+                }
+            }
+            return target;
         }
     }
 }

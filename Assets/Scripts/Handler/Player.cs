@@ -41,13 +41,13 @@ namespace Assets.Scripts.Handler
                     findSingle(result.maxCard);
                     break;
                 case eDropCardType.Pair:
-                    findPair(result.dropCards);
+                    findPair(result.maxCard);
                     break;
                 case eDropCardType.TwoPair:
                     findTwoPair(result.maxCard);
                     break;
                 case eDropCardType.Straight:
-                    findStraight(result.maxCard);
+                    findStraight(result.dropCards);
                     break;
                 case eDropCardType.FullHouse:
                     findFullHouse(result.maxCard);
@@ -67,13 +67,11 @@ namespace Assets.Scripts.Handler
             component.setDropCardPool(willDrop);
         }
 
-        private void findPair(List<Card> enemyDropCards)
+        private List<Card> findPair(Card enemyDropCard, bool isAddPool = true)
         {
-            enemyDropCards.OrderBy(i => i.cardIndex);
-            HandCards tmpCards = playerCards;
             List<Card> willDrop = new List<Card>();
             int unsearchCount = playerCards.Count;
-            Card lastSearchCard = enemyDropCards[enemyDropCards.Count - 1];
+            Card lastSearchCard = enemyDropCard;
             do
             {
                 if (unsearchCount < 2)
@@ -83,7 +81,7 @@ namespace Assets.Scripts.Handler
                 }
                 if (willDrop.Count > 0)
                 {
-                    Card card = tmpCards.findSameNumber(lastSearchCard.cardNumber);
+                    Card card = playerCards.findSameNumber(lastSearchCard);
                     if (card == null)
                     {
                         unsearchCount--;
@@ -97,34 +95,158 @@ namespace Assets.Scripts.Handler
                 }
                 else
                 {
-                    Card card = tmpCards.findBiggerIndex(lastSearchCard.cardIndex);
-                    tmpCards.Drop(card.cardIndex);
+                    Card card = playerCards.findBiggerIndex(lastSearchCard.cardIndex);
                     lastSearchCard = card;
                     unsearchCount--;
                     willDrop.Add(card);
                 }
             } while (willDrop.Count < 2);
-            component.setDropCardPool(willDrop);
+            if (isAddPool) component.setDropCardPool(willDrop);
+            return willDrop;
         }
 
         private void findTwoPair(Card enemyMaxCard)
         {
-
+            List<Card> willDrop = new List<Card>();
+            int unsearchCount = playerCards.Count;
+            Card lastSearchCard = enemyMaxCard;
+            while (willDrop.Count < 5)
+            {
+                if (unsearchCount < 5)
+                {
+                    willDrop = null;
+                    break;
+                }
+                if (willDrop.Count == 4)
+                {
+                    Card lastOne = playerCards.findMinCard(willDrop);
+                    willDrop.Add(lastOne);
+                    break;
+                }
+                List<Card> result = findPair(lastSearchCard, false);
+                if (result == null)
+                {
+                    willDrop.Clear();
+                    continue;
+                }
+                foreach (var card in result)
+                {
+                    lastSearchCard = card;
+                    willDrop.Add(card);
+                    unsearchCount--;
+                }
+            }
+            component.setDropCardPool(willDrop);
         }
 
-        private void findStraight(Card enemyMaxCard)
+        private void findStraight(List<Card> enemyDropCard)
         {
+            enemyDropCard.OrderBy(i => i.cardIndex).ToList();
+            List<Card> willDrop = new List<Card>();
+            int unsearchCount = playerCards.Count;
+            Card lastSearchCard = enemyDropCard[enemyDropCard.Count - 1];
+            while (willDrop.Count < 5)
+            {
+                if (unsearchCount < 5)
+                {
+                    willDrop = null;
+                    break;
+                }
 
+            }
+            component.setDropCardPool(willDrop);
         }
 
         private void findFullHouse(Card enemyMaxCard)
         {
-
+            List<Card> willDrop = new List<Card>();
+            int unsearchCount = playerCards.Count;
+            Card lastSearchCard = enemyMaxCard;
+            while (willDrop.Count < 5)
+            {
+                if (unsearchCount < 5)
+                {
+                    willDrop = null;
+                    break;
+                }
+                if (willDrop.Count == 3)
+                {
+                    List<Card> pair = findPair(lastSearchCard, false);
+                    if (pair[0].cardNumber == willDrop[0].cardNumber)
+                    {
+                        lastSearchCard = pair[1];
+                        unsearchCount -= 2;
+                        continue;
+                    }
+                    foreach (var card in pair)
+                    {
+                        willDrop.Add(card);
+                        lastSearchCard = card;
+                        unsearchCount--;
+                    }
+                    break;
+                }
+                Card bigger = playerCards.findBiggerNumber(lastSearchCard.cardNumber);
+                lastSearchCard = bigger;
+                unsearchCount--;
+                if (bigger.cardFlower > 1) continue;
+                for(int i = 0; i < 3; i++)
+                {
+                    Card result = playerCards.findSameNumber(lastSearchCard);
+                    if (result == null)
+                    {
+                        willDrop.Clear();
+                        break;
+                    }
+                    else
+                    {
+                        lastSearchCard = result;
+                        willDrop.Add(result);
+                        unsearchCount--;
+                    }
+                }
+                if (willDrop.Count < 3) willDrop.Clear();
+                else
+                {
+                    unsearchCount = playerCards.Count;
+                    lastSearchCard = playerCards.findMinCard();
+                }
+            }
+            component.setDropCardPool(willDrop);
         }
 
         private void findFourInOne(Card enemyMaxCard)
         {
-
+            List<Card> willDrop = new List<Card>();
+            int unsearchCount = playerCards.Count;
+            Card lastSearchCard = enemyMaxCard;
+            while (willDrop.Count < 5)
+            {
+                if (unsearchCount < 5)
+                {
+                    willDrop = null;
+                    break;
+                }
+                if (willDrop.Count == 4)
+                {
+                    Card lastOne = playerCards.findMinCard(willDrop);
+                    willDrop.Add(lastOne);
+                    break;
+                }
+                Card bigger = playerCards.findBiggerNumber(lastSearchCard.cardNumber);
+                lastSearchCard = bigger;
+                unsearchCount--;
+                if (bigger.cardFlower != 0) continue;
+                willDrop.Add(bigger);
+                for (int i = 0; i < 3; i++)
+                {
+                    Card sameFlower = playerCards.Find(bigger.cardIndex + 1).getCardInfo();
+                    lastSearchCard = sameFlower;
+                    willDrop.Add(sameFlower);
+                    unsearchCount--;
+                }
+            }
+            component.setDropCardPool(willDrop);
         }
 
         private void findFlushStraight(Card enemyMaxCard)

@@ -43,6 +43,7 @@ namespace Assets.Scripts.Handler
         {
             if (startNextTurn)
             {
+                Debug.Log($"回合開始，輪到{isWhoseTurn}出牌");
                 startNextTurn = false;
                 if (isWhoseTurn != ePlayerPosition.MySelf)
                 {
@@ -62,7 +63,6 @@ namespace Assets.Scripts.Handler
             _dropAreaComponent.Init(delegate
             {
                 isWhoseTurn += ((int)isWhoseTurn < 3) ? 1 : -3;
-                Debug.Log($"現在是{isWhoseTurn}的回合");
                 startNextTurn = true;
             });
             _cardStackComponent.CreateCard(cardStack.getAllNumber());
@@ -73,6 +73,7 @@ namespace Assets.Scripts.Handler
                 opponent[(ePlayerPosition)pos] = new Player((ePlayerPosition)pos, pComponent);
                 pos++;
             }
+            Debug.Log("完成所有初始化流程");
         }
 
         private void dealCardsToPlayer()
@@ -87,7 +88,8 @@ namespace Assets.Scripts.Handler
         public void onDropCardClick()
         {
             int whoseTurn = (int)isWhoseTurn;
-            if (_playerComponents[whoseTurn].getDropCardsData() == null) {
+            if (_playerComponents[whoseTurn].getDropCardsData() == null)
+            {
                 onPassClick(); //若dropCardPool是空的那就跳過回合
                 return;
             }
@@ -99,8 +101,8 @@ namespace Assets.Scripts.Handler
                     Debug.Log($"玩家{isWhoseTurn}丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
                         $"{(eCardNumber)drop.maxCard.cardNumber}");
                     dropArea.lastDrop = drop;
-                    _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCards());
-                    _playerComponents[whoseTurn].CardReset();
+                    _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCardsBody());
+                    _playerComponents[whoseTurn].ResetCards();
                 }
                 else
                 {
@@ -117,7 +119,9 @@ namespace Assets.Scripts.Handler
 
         public void onPassClick()
         {
-            
+            dropArea.lastDrop = null;
+            isWhoseTurn += ((int)isWhoseTurn < 3) ? 1 : -3;
+            startNextTurn = true;
         }
     }
 }

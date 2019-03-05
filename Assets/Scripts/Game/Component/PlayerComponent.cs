@@ -28,6 +28,10 @@ namespace Assets.Scripts.Game.Component
             dropInfoPool = new List<Card>();
         }
 
+        /// <summary>
+        /// 取得麻將牌的遊戲物件，設定點擊牌的Action，重新整理位置，並存入HandCards
+        /// </summary>
+        /// <param name="card"></param>
         public void GetCard(CardComponent card)
         {
             playerCards.Add(card);
@@ -37,25 +41,34 @@ namespace Assets.Scripts.Game.Component
             resetHandCards(card, playerCards.Count);
         }
 
-        public void CardReset()
+        /// <summary>
+        /// 重新整理所有手牌的位置
+        /// </summary>
+        public void ResetCards()
         {
             playerCards.resetHandCards();
         }
 
-        public List<CardComponent> getDropCards()
+        /// <summary>
+        /// 將要出的牌放入牌池中
+        /// </summary>
+        /// <param name="card">單張牌的資訊</param>
+        public void setDropCardPool(Card card)
         {
-            List<CardComponent> dropArray = new List<CardComponent>();
-            foreach (var drop in dropInfoPool)
+            if (card == null)
             {
-                Debug.Log(drop.cardIndex);
-                CardComponent card = playerCards.Drop(drop.cardIndex);
-                dropArray.Add(card);
+                dropInfoPool.Clear();
             }
-            dropInfoPool.Clear();
-
-            return dropArray;
+            else
+            {
+                dropInfoPool.Add(card);
+            }
         }
 
+        /// <summary>
+        /// 將要出的牌放入牌池中
+        /// </summary>
+        /// <param name="cards">多張牌的資訊，以List的形式傳入</param>
         public void setDropCardPool(List<Card> cards)
         {
             if (cards == null)
@@ -68,27 +81,31 @@ namespace Assets.Scripts.Game.Component
             }
         }
 
-        public void setDropCardPool(Card card)
-        {
-            if(card == null)
-            {
-                dropInfoPool.Clear();
-            }
-            else
-            {
-                dropInfoPool.Add(card);
-            }
-        }
-
+        /// <summary>
+        /// 取得要出牌的資訊，提供給DropCardArea來判斷是否能出牌
+        /// </summary>
+        /// <returns>要出的手牌List，泛型型態為Card，如果沒有能出的牌，則回傳null</returns>
         public List<Card> getDropCardsData()
         {
             if (dropInfoPool.Count == 0) return null;
-            List<Card> dropCards = new List<Card>();
-            foreach (var info in dropInfoPool)
+            else return dropInfoPool;
+        }
+
+        /// <summary>
+        /// 將牌的物件從HandCards取出
+        /// </summary>
+        /// <returns>要出的手牌List，泛型型態為CardComponent</returns>
+        public List<CardComponent> getDropCardsBody()
+        {
+            List<CardComponent> dropArray = new List<CardComponent>();
+            foreach (var drop in dropInfoPool)
             {
-                dropCards.Add(new Card(info));
+                CardComponent card = playerCards.Drop(drop.cardIndex);
+                dropArray.Add(card);
             }
-            return dropCards;
+            dropInfoPool.Clear();
+
+            return dropArray;
         }
 
         private void resetHandCards(CardComponent card, int cardOrder)
