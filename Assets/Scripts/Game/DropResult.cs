@@ -8,7 +8,9 @@ namespace Assets.Scripts.Game
     {
         public eDropCardType cardType { get; private set; }
         public List<Card> dropCards { get; private set; }
-        public Card maxCard { get { return dropCards[dropCards.Count - 1]; } private set { } }
+        public Card maxCard { get {
+                Debug.Log(dropCards[dropCards.Count - 1].cardIndex);
+                return dropCards[dropCards.Count - 1]; } private set { } }
         public Card minCard { get { return dropCards[0]; } private set { } }
 
         public void setResult(eDropCardType type, List<Card> cards)
@@ -16,6 +18,10 @@ namespace Assets.Scripts.Game
             cards.Sort((x, y) => { return x.cardIndex.CompareTo(y.cardIndex); });
             cardType = type;
             dropCards = cards;
+            foreach (var card in dropCards)
+            {
+                Debug.Log($"id={card.cardIndex}");
+            }
         }
     }
 }

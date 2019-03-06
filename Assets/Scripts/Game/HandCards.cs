@@ -88,16 +88,22 @@ namespace Assets.Scripts.Game
             return info;
         }
 
+        public Card findSameNumber(int number)
+        {
+            Card info = allCardInfo.Find((Card self) => (self.cardNumber == number));
+            return info;
+        }
+
         public Card findMinCard()
         {
             allCardInfo.OrderBy(i => i.cardIndex).ToList();
             return allCardInfo[0];
         }
 
-        public Card findMinCard(List<Card> doNotInclude)
+        public Card findMinNotInclude(List<Card> doNotInclude)
         {
             Card target = findMinCard();
-            foreach(var card in doNotInclude)
+            foreach (var card in doNotInclude)
             {
                 if (target.cardIndex == card.cardIndex)
                 {
@@ -105,6 +111,36 @@ namespace Assets.Scripts.Game
                 }
             }
             return target;
+        }
+
+        public List<Card> findStraight(int[] cardNumbers)
+        {
+            List<Card> result = new List<Card>();
+            foreach (var i in cardNumbers)
+            {
+                Card card = findSameNumber(i);
+                if (card == null) return null;
+                else result.Add(card);
+            }
+            return result;
+        }
+
+        public List<Card> findFlushStraight(int[] cardNumbers)
+        {
+            List<Card> result = new List<Card>();
+            Card tmpCard = null;
+            foreach (var i in cardNumbers)
+            {
+                Card card = findSameNumber(i);
+                if (card == null) return null;
+                else if (card != null && tmpCard != null)
+                {
+                    if (card.cardFlower != tmpCard.cardFlower) return null;
+                }
+                tmpCard = card;
+                result.Add(card);
+            }
+            return result;
         }
     }
 }

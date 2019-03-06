@@ -21,10 +21,6 @@ namespace Assets.Scripts.Handler
             playerCards = comp.playerCards;
         }
 
-        public void DropCard()
-        {
-        }
-
         public void ThinkResult(DropResult result)
         {
             //如果是第一個出牌，直接出單張最小的
@@ -56,7 +52,7 @@ namespace Assets.Scripts.Handler
                     findFourInOne(result.maxCard);
                     break;
                 case eDropCardType.FlushStraight:
-                    findFlushStraight(result.maxCard);
+                    findFlushStraight(result.dropCards);
                     break;
             }
         }
@@ -119,7 +115,7 @@ namespace Assets.Scripts.Handler
                 }
                 if (willDrop.Count == 4)
                 {
-                    Card lastOne = playerCards.findMinCard(willDrop);
+                    Card lastOne = playerCards.findMinNotInclude(willDrop);
                     willDrop.Add(lastOne);
                     break;
                 }
@@ -139,21 +135,64 @@ namespace Assets.Scripts.Handler
             component.setDropCardPool(willDrop);
         }
 
+        List<int[]> straightList = new List<int[]> {
+            new int[] { 3, 4, 5, 6, 7 } ,
+            new int[] { 4, 5, 6, 7, 8 } ,
+            new int[] { 5, 6, 7, 8, 9 } ,
+            new int[] { 6, 7, 8, 9,10 } ,
+            new int[] { 7, 8, 9,10,11 } ,
+            new int[] { 8, 9,10,11,12 } ,
+            new int[] { 9,10,11,12,13 } ,
+            new int[] { 10,11,12,13,1 } ,
+            new int[] { 1, 2, 3, 4, 5 } ,
+            new int[] { 2, 3, 4, 5, 6 }
+        };
         private void findStraight(List<Card> enemyDropCard)
         {
-            enemyDropCard.OrderBy(i => i.cardNumber).ToList();
-            List<Card> willDrop = new List<Card>();
-            int unsearchCount = playerCards.Count;
-            Card lastSearchCard = enemyDropCard[enemyDropCard.Count - 1];
-            while (willDrop.Count < 5)
+            List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
+            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardNumber).ToList();
+            List<Card> willDrop = null;
+            bool firstRound = true;
+            int index = -1;
+            switch (sortByNumber[0].cardNumber)
             {
-                if (unsearchCount < 5 || lastSearchCard.cardNumber == 11)
+                case 1:
+                    if (sortByNumber[1].cardNumber == 10) index = 8;
+                    else index = 9;
+                    break;
+                case 2:
+                    index = 10;
+                    break;
+                default:
+                    index = sortByNumber[0].cardNumber - 3;
+                    break;
+            }
+
+            for (int i = index; i < straightList.Count; i++)
+            {
+                willDrop = playerCards.findStraight(straightList[index]);
+                willDrop.OrderBy(card => card.cardIndex).ToList();
+                if (!firstRound && willDrop != null)
                 {
-                    willDrop = null;
                     break;
                 }
-
+                else if (firstRound && willDrop != null && willDrop[5].compareTo(sortByIndex[5]))
+                {
+                    break;
+                }
+                else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
+                {
+                    Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
+                    if (replace != null && replace.cardNumber == sortByIndex[5].cardNumber)
+                    {
+                        willDrop[5] = replace;
+                        break;
+                    }
+                }
+                firstRound = false;
+                index++;
             }
+
             component.setDropCardPool(willDrop);
         }
 
@@ -229,7 +268,7 @@ namespace Assets.Scripts.Handler
                 }
                 if (willDrop.Count == 4)
                 {
-                    Card lastOne = playerCards.findMinCard(willDrop);
+                    Card lastOne = playerCards.findMinNotInclude(willDrop);
                     willDrop.Add(lastOne);
                     break;
                 }
@@ -249,9 +288,52 @@ namespace Assets.Scripts.Handler
             component.setDropCardPool(willDrop);
         }
 
-        private void findFlushStraight(Card enemyMaxCard)
+        private void findFlushStraight(List<Card> enemyDropCard)
         {
+            List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
+            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardNumber).ToList();
+            List<Card> willDrop = null;
+            bool firstRound = true;
+            int index = -1;
+            switch (sortByNumber[0].cardNumber)
+            {
+                case 1:
+                    if (sortByNumber[1].cardNumber == 10) index = 8;
+                    else index = 9;
+                    break;
+                case 2:
+                    index = 10;
+                    break;
+                default:
+                    index = sortByNumber[1].cardNumber - 3;
+                    break;
+            }
 
+            for (int i = index; i < straightList.Count; i++)
+            {
+                willDrop = playerCards.findFlushStraight(straightList[index]);
+                willDrop.OrderBy(card => card.cardIndex).ToList();
+                if (!firstRound && willDrop != null)
+                {
+                    break;
+                }
+                else if (firstRound && willDrop != null && willDrop[5].compareTo(sortByIndex[5]))
+                {
+                    break;
+                }
+                else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
+                {
+                    Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
+                    if (replace != null && replace.cardNumber == sortByIndex[5].cardNumber)
+                    {
+                        willDrop[5] = replace;
+                        break;
+                    }
+                }
+                firstRound = false;
+                index++;
+            }
+            component.setDropCardPool(willDrop);
         }
     }
 }
