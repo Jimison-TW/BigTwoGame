@@ -85,10 +85,10 @@ namespace Assets.Scripts.Game.Component
         /// 取得要出牌的資訊，提供給DropCardArea來判斷是否能出牌
         /// </summary>
         /// <returns>要出的手牌List，泛型型態為Card，如果沒有能出的牌，則回傳null</returns>
-        public List<Card> getDropCardsData()
+        public List<Card> getDropCardPool()
         {
             if (dropInfoPool.Count == 0) return null;
-            else return dropInfoPool;
+            return dropInfoPool;
         }
 
         /// <summary>

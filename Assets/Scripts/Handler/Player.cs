@@ -4,6 +4,7 @@ using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets.Scripts.Handler
 {
@@ -68,7 +69,7 @@ namespace Assets.Scripts.Handler
             List<Card> willDrop = new List<Card>();
             int unsearchCount = playerCards.Count;
             Card lastSearchCard = enemyDropCard;
-            do
+            while (willDrop.Count < 2)
             {
                 if (unsearchCount < 2)
                 {
@@ -92,11 +93,19 @@ namespace Assets.Scripts.Handler
                 else
                 {
                     Card card = playerCards.findBiggerIndex(lastSearchCard.cardIndex);
-                    lastSearchCard = card;
-                    unsearchCount--;
-                    willDrop.Add(card);
+                    if (card == null)
+                    {
+                        unsearchCount--;
+                        willDrop.Clear();
+                    }
+                    else
+                    {
+                        lastSearchCard = card;
+                        unsearchCount--;
+                        willDrop.Add(card);
+                    }
                 }
-            } while (willDrop.Count < 2);
+            } 
             if (isAddPool) component.setDropCardPool(willDrop);
             return willDrop;
         }

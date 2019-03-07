@@ -142,5 +142,22 @@ namespace Assets.Scripts.Game
             }
             return result;
         }
+
+        public List<Card> findFourCard(int cardNumber)
+        {
+            var result = from item in allCardInfo   //每一项                        
+                         group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                         orderby gro.Count() descending   //按照每组的数量进行排序              
+                                                          //返回匿名类型对象，输出这个组的值和这个值出现的次数以及所有的牌           
+                         select new { num = gro.Key, count = gro.Count(), items = gro.ToList() };
+            foreach (var group in result)
+            {
+                if (group.count == 4 && group.num >= cardNumber)
+                {
+                    return group.items;
+                }
+            }
+            return null;
+        }
     }
 }
