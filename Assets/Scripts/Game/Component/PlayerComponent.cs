@@ -116,7 +116,7 @@ namespace Assets.Scripts.Game.Component
             {
                 case ePlayerPosition.MySelf:
                     endPos.x += zeroPos + Offset * cardOrder;
-                    endRotation.y += 180;
+                    //endRotation.y += 180;
                     break;
                 case ePlayerPosition.RightSide:
                     endPos.y += zeroPos + Offset * cardOrder;
@@ -128,6 +128,7 @@ namespace Assets.Scripts.Game.Component
                     endPos.y -= zeroPos + Offset * cardOrder;
                     break;
             }
+            endRotation.y += 180;  //將所有牌翻開
             endPos.z = card.transform.position.z;
 
             card.TMove(endPos, 1);

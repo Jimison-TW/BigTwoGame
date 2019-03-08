@@ -6,39 +6,40 @@ namespace Assets.Scripts.Handler
 {
     public class DropCardArea
     {
-        public DropResult lastDrop { set; get; }
+        public ePlayerPosition lastDropPosition { set; get; }
+        public DropResult lastDropResult { set; get; }
 
         public bool canDropCard(DropResult result)
         {
-            if (lastDrop == null) return true;
+            if (lastDropResult == null) return true;
             switch (result.cardType)
             {
                 case eDropCardType.Single:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     else return false;
                 case eDropCardType.Pair:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     else return false;
                 //case eDropCardType.Triple:
                 //    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                 //    return false;
                 case eDropCardType.TwoPair:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     return false;
                 case eDropCardType.Straight:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     return false;
                 case eDropCardType.FullHouse:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     return false;
                 //case eDropCardType.Flush:
                 //    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
                 //    return false;
                 case eDropCardType.FourInOne:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     return false;
                 case eDropCardType.FlushStraight:
-                    if (result.maxCard.compareTo(lastDrop.maxCard)) return true;
+                    if (result.maxCard.compareTo(lastDropResult.maxCard)) return true;
                     return false;
                 default: return false;
             }

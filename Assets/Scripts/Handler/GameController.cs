@@ -39,39 +39,45 @@ namespace Assets.Scripts.Handler
         {
             //test
             List<Card> testList = new List<Card>();
-            testList.Add(new Card(0, 1, 3)); //梅花三
-            testList.Add(new Card(1, 2, 3)); //方塊三
-            testList.Add(new Card(2, 3, 3)); //紅心三
-            //testList.Add(new Card(3, 4, 3)); //黑桃三
+            //testList.Add(new Card(0, 1, 3)); //梅花三
+            //testList.Add(new Card(1, 2, 3)); //方塊三
+            //testList.Add(new Card(2, 3, 3)); //紅心三
+            testList.Add(new Card(3, 4, 3)); //黑桃三
             testList.Add(new Card(4, 1, 4)); //梅花四
             testList.Add(new Card(5, 2, 4)); //方塊四
             testList.Add(new Card(6, 3, 4)); //紅心四
             //testList.Add(new Card(7, 4, 4)); //黑桃四
-            //testList.Add(new Card(8, 1, 5)); //梅花五
-            //testList.Add(new Card(9, 2, 5)); //方塊五
-            //testList.Add(new Card(10, 3, 5)); //紅心五
-            //testList.Add(new Card(11, 4, 5)); //黑桃五
-            //testList.Add(new Card(12, 1, 6)); //梅花六
+            testList.Add(new Card(8, 1, 5)); //梅花五
+            testList.Add(new Card(9, 2, 5)); //方塊五
+            testList.Add(new Card(10, 3, 5)); //紅心五
+            testList.Add(new Card(11, 4, 5)); //黑桃五
+            testList.Add(new Card(12, 1, 6)); //梅花六
             //testList.Add(new Card(13, 2, 6)); //方塊六
             //testList.Add(new Card(14, 3, 6)); //紅心六
             testList.Add(new Card(15, 4, 6)); //黑桃六
-            //testList.Add(new Card(16, 1, 7)); //梅花七
-            //testList.Add(new Card(17, 2, 7)); //方塊七
-            //testList.Add(new Card(18, 3, 7)); //紅心七
+            testList.Add(new Card(16, 1, 7)); //梅花七
+            testList.Add(new Card(17, 2, 7)); //方塊七
+            testList.Add(new Card(18, 3, 7)); //紅心七
             testList.Add(new Card(19, 4, 7)); //黑桃七
 
-            var result = from item in testList   //每一项                        
-                         group item by item.cardNumber into gro   //按项分组，没组就是gro                        
-                         orderby gro.Count() descending   //按照每组的数量进行排序                        
-                         select new { num = gro.Key, count = gro.Count(), max = gro.OrderBy(i=>i.cardIndex).Last() };   //返回匿名类型对象，输出这个组的值和这个值出现的次数 
-            result = result.Take(2).OrderByDescending(i => i.num);
-            foreach (var r in result)
+            List<Card> result = findCardGroup(testList, new Card(2, 3, 3), 2);
+            foreach (var card in result)
             {
-                Debug.Log($"數字{r.num}出現了{r.count}次");
+                Debug.Log(result[result.Count - 1].cardIndex);
             }
 
-            Card ca = testList.FindAll(c => c.cardNumber == result.ElementAt(0).num).Last();
-            Debug.Log($"ca.cardIndex = {result.ElementAt(0).max.cardIndex}");
+            //var result = from item in testList   //每一项                        
+            //             group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+            //             orderby gro.Count() descending   //按照每组的数量进行排序                        
+            //             select new { num = gro.Key, count = gro.Count(), max = gro.OrderBy(i=>i.cardIndex).Last() };   //返回匿名类型对象，输出这个组的值和这个值出现的次数 
+            //result = result.Take(2).OrderByDescending(i => i.num);
+            //foreach (var r in result)
+            //{
+            //    Debug.Log($"數字{r.num}出現了{r.count}次");
+            //}
+
+            //Card ca = testList.FindAll(c => c.cardNumber == result.ElementAt(0).num).Last();
+            //Debug.Log($"ca.cardIndex = {result.ElementAt(0).max.cardIndex}");
 
             dealCardsToPlayer();
         }
@@ -85,7 +91,7 @@ namespace Assets.Scripts.Handler
                 if (isWhoseTurn != ePlayerPosition.MySelf)
                 {
                     Player enemy = opponent[isWhoseTurn];
-                    enemy.ThinkResult(dropArea.lastDrop);
+                    enemy.ThinkResult(dropArea.lastDropResult);
                     onDropCardClick();
                 }
             }
@@ -137,7 +143,8 @@ namespace Assets.Scripts.Handler
                 {
                     Debug.Log($"玩家{isWhoseTurn}丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
                         $"{(eCardNumber)drop.maxCard.cardNumber}");
-                    dropArea.lastDrop = drop;
+                    dropArea.lastDropPosition = isWhoseTurn;
+                    dropArea.lastDropResult = drop;
                     _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCardsBody());
                     _playerComponents[whoseTurn].ResetCards();
                 }
@@ -157,9 +164,33 @@ namespace Assets.Scripts.Handler
         public void onPassClick()
         {
             Debug.Log("玩家跳過回合");
-            //dropArea.lastDrop = null;
-            //isWhoseTurn += ((int)isWhoseTurn < 3) ? 1 : -3;
-            //startNextTurn = true;
+            isWhoseTurn += ((int)isWhoseTurn < 3) ? 1 : -3;
+            if (dropArea.lastDropPosition == isWhoseTurn) dropArea.lastDropResult = null;
+            startNextTurn = true;
+        }
+
+        public List<Card> findCardGroup(List<Card> allCard,Card other, int count)
+        {
+            var cardGroup = from item in allCard   //每一项                        
+                            group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count()    //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
+            foreach (var element in cardGroup.Take(13))
+            {
+                Debug.Log($"element.num = {element.num},element.count = {element.count}");
+                if (element.count >= count &&
+                    element.max.cardNumber >= other.cardNumber &&
+                    element.max.cardIndex >= other.cardIndex) return element.result;
+            }
+
+            return null;
         }
     }
 }

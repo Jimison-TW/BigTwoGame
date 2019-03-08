@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Game.Component;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
@@ -9,6 +10,7 @@ namespace Assets.Scripts.Game
         public int Count { get { return allCards.Count; } private set { } }
         private List<Card> allCardInfo = new List<Card>();
         private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
+        private Dictionary<int, List<Card>> gropByNumber = new Dictionary<int, List<Card>>();
 
         /// <summary>
         /// 取得手牌中牌的物件實例
@@ -157,6 +159,31 @@ namespace Assets.Scripts.Game
                     return group.items;
                 }
             }
+            return null;
+        }
+
+        public List<Card> findMultiCards(Card other, int count)
+        {
+            var cardGroup = from item in allCardInfo   //每一项                        
+                            group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count() descending   //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
+
+
+            foreach (var element in cardGroup)
+            {
+                if (element.count >= count && 
+                    element.max.cardNumber >= other.cardNumber && 
+                    element.max.cardIndex >= other.cardIndex) return element.result;
+            }
+
             return null;
         }
     }
