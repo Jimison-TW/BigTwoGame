@@ -8,9 +8,9 @@ namespace Assets.Scripts.Game.Component
     public class CardComponent : MonoBehaviour, ICardInfo
     {
         public bool isChoosed = false;
-        public int cardIndex { set; get; }
-        public int cardFlower { set; get; }
-        public int cardNumber { set; get; }
+        [SerializeField] public int cardIndex { set; get; }
+        [SerializeField] public int cardFlower { set; get; }
+        [SerializeField] public int cardValue { set; get; }
 
         private UnityAction<bool, Card> clickEvent;
         private UnityAction<CardComponent, int> resetPosEvent;
@@ -27,7 +27,7 @@ namespace Assets.Scripts.Game.Component
             isChoosed = choosed;
             cardIndex = index;
             cardFlower = flower;
-            cardNumber = number;
+            cardValue = number;
         }
 
         /// <summary>

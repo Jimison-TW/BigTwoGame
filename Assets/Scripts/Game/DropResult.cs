@@ -25,7 +25,7 @@ namespace Assets.Scripts.Game
                     case eDropCardType.FullHouse:
                     case eDropCardType.FourInOne:
                         var result = from item in dropCards   //每一项                        
-                                     group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                                     group item by item.cardValue into gro   //按项分组，没组就是gro                        
                                      orderby gro.Count() descending   //按照每组的数量进行排序              
                                      //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
                                      select new { num = gro.Key, count = gro.Count(), max = gro.OrderBy(i => i.cardIndex).Last() };

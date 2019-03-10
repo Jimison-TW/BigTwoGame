@@ -6,20 +6,20 @@ namespace Assets.Scripts.Game
     {
         public int cardIndex { set; get; }
         public int cardFlower { set; get; }
-        public int cardNumber { set; get; }
+        public int cardValue { set; get; }
 
         public Card(int index, int flower, int number)
         {
             cardIndex = index;
             cardFlower = flower;
-            cardNumber = number;
+            cardValue = number;
         }
 
         public Card(ICardInfo info)
         {
             cardIndex = info.cardIndex;
             cardFlower = info.cardFlower;
-            cardNumber = info.cardNumber;
+            cardValue = info.cardValue;
         }
 
         public bool compareTo(ICardInfo info)

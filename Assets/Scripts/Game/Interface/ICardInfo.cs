@@ -4,6 +4,6 @@
     {
         int cardIndex { set; get; }
         int cardFlower { set; get; }
-        int cardNumber { set; get; }
+        int cardValue { set; get; }
     }
 }

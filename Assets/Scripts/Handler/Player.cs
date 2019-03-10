@@ -4,7 +4,6 @@ using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Assets.Scripts.Handler
 {
@@ -58,31 +57,53 @@ namespace Assets.Scripts.Handler
             }
         }
 
-        private void findSingle(Card enemyDropCard)
+        private void findSingle(Card enemyMaxCard)
         {
-            Card willDrop = playerCards.findBiggerIndex(enemyDropCard.cardIndex);
+            Card willDrop = playerCards.findBiggerIndex(enemyMaxCard.cardIndex);
             component.setDropCardPool(willDrop);
         }
 
-        private void findPair(Card enemyDropCard, bool isAddPool = true)
+        private void findPair(Card enemyMaxCard)
         {
-            List<Card> willDrop = null;
-            List<Card> result = playerCards.findMultiCards(enemyDropCard, 2);
-            if (result != null)
+            List<Card> willDrop = new List<Card>();
+            int index = enemyMaxCard.cardValue;
+            if (enemyMaxCard.cardValue < 3) index += 13;
+            for (int i = index; i <= 15; i++)
             {
-                willDrop = new List<Card>();
-
-                for (int i = result.Count - 1; i > result.Count - 3; i--)
+                if (i > 13 && index > 3) index -= 13;
+                List<Card> result = playerCards.findSameNumberGroup(index, 2);
+                index++;
+                if (result != null)
                 {
-                    willDrop.Add(result.ElementAt(i));
+                    for (int j = result.Count - 1; j >= 0; j--)
+                    {
+                        if (willDrop.Count == 2) break;
+                        willDrop.Add(result[j]);
+                    }
+                    break;
                 }
             }
+            if (willDrop.Count == 0) willDrop = null;
             component.setDropCardPool(willDrop);
         }
 
         private void findTwoPair(Card enemyMaxCard)
         {
-
+            List<Card> willDrop = null;
+            List<Card> result = playerCards.findMinorCardGroup(3, 2);
+            if (result != null)
+            {
+                willDrop = new List<Card>();
+                for (int i = result.Count - 1; i > result.Count - 3; i--)
+                {
+                    willDrop.Add(result.ElementAt(i));
+                }
+            }
+            if (willDrop != null && willDrop[0].cardValue < enemyMaxCard.cardValue)
+            {
+                //result = playerCards.findMajorCardGroup()
+            }
+            component.setDropCardPool(willDrop);
         }
 
         List<int[]> straightList = new List<int[]> {
@@ -100,21 +121,21 @@ namespace Assets.Scripts.Handler
         private void findStraight(List<Card> enemyDropCard)
         {
             List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
-            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardNumber).ToList();
+            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardValue).ToList();
             List<Card> willDrop = null;
             bool firstRound = true;
             int index = -1;
-            switch (sortByNumber[0].cardNumber)
+            switch (sortByNumber[0].cardValue)
             {
                 case 1:
-                    if (sortByNumber[1].cardNumber == 10) index = 8;
+                    if (sortByNumber[1].cardValue == 10) index = 8;
                     else index = 9;
                     break;
                 case 2:
                     index = 10;
                     break;
                 default:
-                    index = sortByNumber[0].cardNumber - 3;
+                    index = sortByNumber[0].cardValue - 3;
                     break;
             }
 
@@ -133,7 +154,7 @@ namespace Assets.Scripts.Handler
                 else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
                 {
                     Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
-                    if (replace != null && replace.cardNumber == sortByIndex[5].cardNumber)
+                    if (replace != null && replace.cardValue == sortByIndex[5].cardValue)
                     {
                         willDrop[5] = replace;
                         break;
@@ -149,7 +170,7 @@ namespace Assets.Scripts.Handler
         private void findFullHouse(Card enemyMaxCard)
         {
             List<Card> willDrop = null;
-            List<Card> tripleResult = playerCards.findMultiCards(enemyMaxCard, 3);
+            List<Card> tripleResult = playerCards.findMajorCardGroup(enemyMaxCard, 3);
             if (tripleResult != null)
             {
                 willDrop = new List<Card>();
@@ -182,7 +203,7 @@ namespace Assets.Scripts.Handler
                     willDrop.Add(lastOne);
                     break;
                 }
-                Card bigger = playerCards.findBiggerNumber(lastSearchCard.cardNumber);
+                Card bigger = playerCards.findBiggerNumber(lastSearchCard.cardValue);
                 lastSearchCard = bigger;
                 unsearchCount--;
                 if (bigger.cardFlower != 0) continue;
@@ -201,21 +222,21 @@ namespace Assets.Scripts.Handler
         private void findFlushStraight(List<Card> enemyDropCard)
         {
             List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
-            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardNumber).ToList();
+            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardValue).ToList();
             List<Card> willDrop = null;
             bool firstRound = true;
             int index = -1;
-            switch (sortByNumber[0].cardNumber)
+            switch (sortByNumber[0].cardValue)
             {
                 case 1:
-                    if (sortByNumber[1].cardNumber == 10) index = 8;
+                    if (sortByNumber[1].cardValue == 10) index = 8;
                     else index = 9;
                     break;
                 case 2:
                     index = 10;
                     break;
                 default:
-                    index = sortByNumber[1].cardNumber - 3;
+                    index = sortByNumber[1].cardValue - 3;
                     break;
             }
 
@@ -234,7 +255,7 @@ namespace Assets.Scripts.Handler
                 else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
                 {
                     Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
-                    if (replace != null && replace.cardNumber == sortByIndex[5].cardNumber)
+                    if (replace != null && replace.cardValue == sortByIndex[5].cardValue)
                     {
                         willDrop[5] = replace;
                         break;

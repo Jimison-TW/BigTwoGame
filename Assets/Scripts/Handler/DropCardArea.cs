@@ -54,7 +54,7 @@ namespace Assets.Scripts.Handler
                 case 1:
                     return new DropResult(eDropCardType.Single, cards);
                 case 2:
-                    if (cards[0].cardNumber != cards[1].cardNumber) return null;
+                    if (cards[0].cardValue != cards[1].cardValue) return null;
                     return new DropResult(eDropCardType.Pair, cards);
                 //case 3:
                 //    if (cards[0].cardNumber != cards[1].cardNumber ||
@@ -82,7 +82,7 @@ namespace Assets.Scripts.Handler
             foreach (var card in cards)
             {
                 flowers.Add(card.cardFlower);
-                numbers.Add(card.cardNumber);
+                numbers.Add(card.cardValue);
             }
 
             if (numbers.Count == 5)
@@ -109,7 +109,7 @@ namespace Assets.Scripts.Handler
 
                 /* 將上方簡化為 */
                 Card maxCard = null;
-                if (cards[4].cardNumber == 2 && cards[3].cardNumber == 1)
+                if (cards[4].cardValue == 2 && cards[3].cardValue == 1)
                 {
                     maxCard = cards[2];
                 }
@@ -133,10 +133,10 @@ namespace Assets.Scripts.Handler
             //}
             else if (numbers.Count == 2)
             {
-                if (cards[3].cardNumber == cards[4].cardNumber && cards[1].cardNumber == cards[0].cardNumber)
+                if (cards[3].cardValue == cards[4].cardValue && cards[1].cardValue == cards[0].cardValue)
                 {
                     //FullHouse
-                    if (cards[2].cardNumber != cards[3].cardNumber)
+                    if (cards[2].cardValue != cards[3].cardValue)
                         new DropResult(eDropCardType.FullHouse, cards);
                     else
                         new DropResult(eDropCardType.FullHouse, cards);
@@ -144,7 +144,7 @@ namespace Assets.Scripts.Handler
                 else
                 {
                     //FourInOne
-                    if (cards[4].cardNumber != cards[3].cardNumber)
+                    if (cards[4].cardValue != cards[3].cardValue)
                         new DropResult(eDropCardType.FullHouse, cards);
                     else
                         new DropResult(eDropCardType.FullHouse, cards);
@@ -154,7 +154,7 @@ namespace Assets.Scripts.Handler
             else if (numbers.Count == 3)
             {
                 //TwoPair
-                if (cards[3].cardNumber != cards[4].cardNumber)
+                if (cards[3].cardValue != cards[4].cardValue)
                     new DropResult(eDropCardType.TwoPair, cards);
                 else
                     new DropResult(eDropCardType.TwoPair, cards);

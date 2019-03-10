@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Game.Component;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
@@ -10,7 +9,7 @@ namespace Assets.Scripts.Game
         public int Count { get { return allCards.Count; } private set { } }
         private List<Card> allCardInfo = new List<Card>();
         private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
-        private Dictionary<int, List<Card>> gropByNumber = new Dictionary<int, List<Card>>();
+        private Dictionary<int, List<Card>> infoGroupByNumber = new Dictionary<int, List<Card>>();
 
         /// <summary>
         /// 取得手牌中牌的物件實例
@@ -28,8 +27,19 @@ namespace Assets.Scripts.Game
         /// <param name="card">要加入手牌的卡牌物件</param>
         public void Add(CardComponent card)
         {
+            Card info = card.getCardInfo();
             allCards[card.cardIndex] = card;
-            allCardInfo.Add(card.getCardInfo());
+            allCardInfo.Add(info);
+            if (infoGroupByNumber.ContainsKey(info.cardValue))
+            {
+                infoGroupByNumber[info.cardValue].Add(info);
+            }
+            else
+            {
+                List<Card> group = new List<Card>();
+                group.Add(info);
+                infoGroupByNumber[info.cardValue] = group;
+            }
         }
 
         /// <summary>
@@ -43,6 +53,7 @@ namespace Assets.Scripts.Game
             Card info = allCardInfo.Find((Card i) => i.cardIndex == cardIndex);
             allCards.Remove(cardIndex);
             allCardInfo.Remove(info);
+            infoGroupByNumber[info.cardValue].Remove(info);
 
             return card;
         }
@@ -74,7 +85,7 @@ namespace Assets.Scripts.Game
 
         public Card findBiggerNumber(int cardNumber)
         {
-            Card info = allCardInfo.Find((Card i) => i.cardNumber > cardNumber);
+            Card info = allCardInfo.Find((Card i) => i.cardValue > cardNumber);
             return info;
         }
 
@@ -86,13 +97,13 @@ namespace Assets.Scripts.Game
 
         public Card findSameNumber(Card other)
         {
-            Card info = allCardInfo.Find((Card self) => (self.cardNumber == other.cardNumber) && (self.cardIndex != other.cardIndex));
+            Card info = allCardInfo.Find((Card self) => (self.cardValue == other.cardValue) && (self.cardIndex != other.cardIndex));
             return info;
         }
 
         public Card findSameNumber(int number)
         {
-            Card info = allCardInfo.Find((Card self) => (self.cardNumber == number));
+            Card info = allCardInfo.Find((Card self) => (self.cardValue == number));
             return info;
         }
 
@@ -148,7 +159,7 @@ namespace Assets.Scripts.Game
         public List<Card> findFourCard(int cardNumber)
         {
             var result = from item in allCardInfo   //每一项                        
-                         group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                         group item by item.cardValue into gro   //按项分组，没组就是gro                        
                          orderby gro.Count() descending   //按照每组的数量进行排序              
                                                           //返回匿名类型对象，输出这个组的值和这个值出现的次数以及所有的牌           
                          select new { num = gro.Key, count = gro.Count(), items = gro.ToList() };
@@ -162,10 +173,10 @@ namespace Assets.Scripts.Game
             return null;
         }
 
-        public List<Card> findMultiCards(Card other, int count)
+        public List<Card> findMajorCardGroup(Card other, int count)
         {
             var cardGroup = from item in allCardInfo   //每一项                        
-                            group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
                             orderby gro.Count() descending   //按照每组的数量进行排序              
                             //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
                             select new
@@ -179,12 +190,47 @@ namespace Assets.Scripts.Game
 
             foreach (var element in cardGroup)
             {
-                if (element.count >= count && 
-                    element.max.cardNumber >= other.cardNumber && 
+                if (element.count >= count &&
+                    element.max.cardValue >= other.cardValue &&
                     element.max.cardIndex >= other.cardIndex) return element.result;
             }
 
             return null;
+        }
+
+        public List<Card> findMinorCardGroup(int number, int count)
+        {
+            var cardGroup = from item in allCardInfo   //每一项                        
+                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count() descending   //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
+
+
+            foreach (var element in cardGroup)
+            {
+                if (element.count >= count) return element.result;
+            }
+
+            return null;
+        }
+
+        public List<Card> findSameNumberGroup(int numberKey, int count)
+        {
+            if (infoGroupByNumber.ContainsKey(numberKey) && infoGroupByNumber[numberKey].Count >= count)
+            {
+                return infoGroupByNumber[numberKey];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

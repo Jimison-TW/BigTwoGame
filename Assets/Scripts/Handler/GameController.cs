@@ -142,7 +142,7 @@ namespace Assets.Scripts.Handler
                 if (dropArea.canDropCard(drop))
                 {
                     Debug.Log($"玩家{isWhoseTurn}丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
-                        $"{(eCardNumber)drop.maxCard.cardNumber}");
+                        $"{(eCardNumber)drop.maxCard.cardValue}");
                     dropArea.lastDropPosition = isWhoseTurn;
                     dropArea.lastDropResult = drop;
                     _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCardsBody());
@@ -172,7 +172,7 @@ namespace Assets.Scripts.Handler
         public List<Card> findCardGroup(List<Card> allCard,Card other, int count)
         {
             var cardGroup = from item in allCard   //每一项                        
-                            group item by item.cardNumber into gro   //按项分组，没组就是gro                        
+                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
                             orderby gro.Count()    //按照每组的数量进行排序              
                             //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
                             select new
@@ -186,7 +186,7 @@ namespace Assets.Scripts.Handler
             {
                 Debug.Log($"element.num = {element.num},element.count = {element.count}");
                 if (element.count >= count &&
-                    element.max.cardNumber >= other.cardNumber &&
+                    element.max.cardValue >= other.cardValue &&
                     element.max.cardIndex >= other.cardIndex) return element.result;
             }
 

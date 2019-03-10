@@ -39,7 +39,7 @@ namespace Assets.Scripts.Game.Component
             {
                 pComponent.GetCard(cardObjects[i]);
                 cardId++;
-                logTxt += cardObjects[i].cardIndex + cardObjects[i].cardFlower + cardObjects[i].cardNumber + ",";
+                logTxt += cardObjects[i].cardIndex + cardObjects[i].cardFlower + cardObjects[i].cardValue + ",";
             }
             Debug.Log($"{pComponent.name}收到編號第{logTxt}張牌");
         }
