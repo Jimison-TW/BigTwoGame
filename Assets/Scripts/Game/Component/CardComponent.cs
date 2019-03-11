@@ -9,7 +9,7 @@ namespace Assets.Scripts.Game.Component
         public bool isChoosed = false;
         [SerializeField] private Card cardInfo;
 
-        private UnityAction<bool, Card> clickEvent;
+        private UnityAction<bool, CardComponent> clickEvent;
         private UnityAction<CardComponent, int> resetPosEvent;
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Game.Component
             return cardInfo;
         }
 
-        public void setClickCardAction(UnityAction<bool, Card> action)
+        public void setClickCardAction(UnityAction<bool, CardComponent> action)
         {
             clickEvent = action;
         }

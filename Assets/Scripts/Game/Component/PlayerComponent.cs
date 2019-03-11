@@ -8,102 +8,64 @@ namespace Assets.Scripts.Game.Component
 {
     public class PlayerComponent : MonoBehaviour
     {
-        public ePlayerPosition position { set; get; }
-        public HandCards playerCards { set; get; }
-        private List<Card> dropInfoPool;
+        public ePlayerPosition position;
+        private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
+        private List<CardComponent> chosedCards;
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
-
-        private UnityAction<bool, Card> clickAction;
-        private UnityAction<CardComponent, int> resetPosAction;
-
-        public void Init(int playerPos)
-        {
-            position = (ePlayerPosition)playerPos;
-            clickAction = new UnityAction<bool, Card>(clickCardAction);
-            resetPosAction = new UnityAction<CardComponent, int>(resetHandCards);
-            playerCards = new HandCards();
-            dropInfoPool = new List<Card>();
-        }
 
         /// <summary>
         /// 取得麻將牌的遊戲物件，設定點擊牌的Action，重新整理位置，並存入HandCards
         /// </summary>
         /// <param name="card"></param>
-        public void GetCard(CardComponent card)
+        public void SaveCard(CardComponent card)
         {
-            playerCards.Add(card);
-            card.setClickCardAction(clickAction);
-            card.setResetPosAction(resetPosAction);
+            allCards.Add(card.getCardInfo().cardIndex, card);
+            card.setClickCardAction(new UnityAction<bool, CardComponent>(clickCardAction));
+            card.setResetPosAction(new UnityAction<CardComponent, int>(resetHandCards));
             card.transform.SetParent(transform);
-            resetHandCards(card, playerCards.Count);
+            resetHandCards(card, allCards.Count);
         }
 
-        /// <summary>
-        /// 重新整理所有手牌的位置
-        /// </summary>
-        public void ResetCards()
+        public List<CardComponent> getChosedCards()
         {
-            playerCards.resetHandCards();
+            List<CardComponent> tmp = chosedCards;
+            chosedCards.Clear();
+            return tmp;
         }
 
         /// <summary>
         /// 將要出的牌放入牌池中
         /// </summary>
         /// <param name="card">單張牌的資訊</param>
-        public void setDropCardPool(Card card)
+        public void setChosedCards(int cardIndex)
         {
-            if (card == null)
-            {
-                dropInfoPool.Clear();
-            }
-            else
-            {
-                dropInfoPool.Add(card);
-            }
+            chosedCards.Add(allCards[cardIndex]);
         }
 
         /// <summary>
         /// 將要出的牌放入牌池中
         /// </summary>
         /// <param name="cards">多張牌的資訊，以List的形式傳入</param>
-        public void setDropCardPool(List<Card> cards)
+        public void setChosedCards(List<Card> cards)
         {
-            if (cards == null)
+            foreach (var card in cards)
             {
-                dropInfoPool.Clear();
-            }
-            else
-            {
-                dropInfoPool = cards;
+                chosedCards.Add(allCards[card.cardIndex]);
             }
         }
 
         /// <summary>
-        /// 取得要出牌的資訊，提供給DropCardArea來判斷是否能出牌
+        /// 呼叫所有手牌中牌的resetPosEvent
         /// </summary>
-        /// <returns>要出的手牌List，泛型型態為Card，如果沒有能出的牌，則回傳null</returns>
-        public List<Card> getDropCardPool()
+        public void ResetCards()
         {
-            if (dropInfoPool.Count == 0) return null;
-            return dropInfoPool;
-        }
-
-        /// <summary>
-        /// 將牌的物件從HandCards取出
-        /// </summary>
-        /// <returns>要出的手牌List，泛型型態為CardComponent</returns>
-        public List<CardComponent> getDropCardsBody()
-        {
-            List<CardComponent> dropArray = new List<CardComponent>();
-            foreach (var drop in dropInfoPool)
+            int cardOrder = 0;
+            foreach (KeyValuePair<int, CardComponent> item in allCards)
             {
-                CardComponent card = playerCards.Drop(drop.cardIndex);
-                dropArray.Add(card);
+                item.Value.Reset(cardOrder);
+                cardOrder++;
             }
-            dropInfoPool.Clear();
-
-            return dropArray;
         }
 
         private void resetHandCards(CardComponent card, int cardOrder)
@@ -133,20 +95,20 @@ namespace Assets.Scripts.Game.Component
             card.TRotate(endRotation, 1);
         }
 
-        private void clickCardAction(bool choosed, Card card)
+        private void clickCardAction(bool choosed, CardComponent card)
         {
             if (position != ePlayerPosition.MySelf) return;
-            if (!choosed && dropInfoPool.Count < 5)
+            if (!choosed && chosedCards.Count < 5)
             {
-                dropInfoPool.Add(card);
-                playerCards.Find(card.cardIndex).isChoosed = true;
-                playerCards.Find(card.cardIndex).transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
+                chosedCards.Add(card);
+                card.isChoosed = true;
+                card.transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
             }
             else
             {
-                dropInfoPool.Remove(dropInfoPool.Find((Card c) => c.cardIndex == card.cardIndex));
-                playerCards.Find(card.cardIndex).isChoosed = false;
-                playerCards.Find(card.cardIndex).transform.DOMoveY(transform.position.y, 0.1f);
+                chosedCards.Remove(card);
+                card.isChoosed = false;
+                card.transform.DOMoveY(transform.position.y, 0.1f);
             }
         }
     }

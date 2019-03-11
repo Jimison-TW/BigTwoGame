@@ -6,29 +6,19 @@ namespace Assets.Scripts.Game
 {
     public class HandCards
     {
-        public int Count { get { return allCards.Count; } private set { } }
+        public int Count { get { return allCardInfo.Count; } private set { } }
+        public List<Card> willDrop { get; private set; } = null;
+
         private List<Card> allCardInfo = new List<Card>();
-        private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
         private Dictionary<int, List<Card>> infoGroupByNumber = new Dictionary<int, List<Card>>();
 
-        /// <summary>
-        /// 取得手牌中牌的物件實例
-        /// </summary>
-        /// <param name="index">牌的id編號</param>
-        /// <returns>要找的卡牌物件</returns>
-        public CardComponent Find(int index)
-        {
-            return allCards[index];
-        }
 
         /// <summary>
-        /// 加入牌到手牌中
+        /// 將牌的資訊加到手牌中
         /// </summary>
         /// <param name="card">要加入手牌的卡牌物件</param>
-        public void Add(CardComponent card)
+        public void Add(Card info)
         {
-            Card info = card.getCardInfo();
-            allCards[info.cardIndex] = card;
             allCardInfo.Add(info);
             if (infoGroupByNumber.ContainsKey(info.cardValue))
             {
@@ -47,61 +37,138 @@ namespace Assets.Scripts.Game
         /// </summary>
         /// <param name="cardIndex">卡牌的id編號</param>
         /// <returns>要出得卡牌物件</returns>
-        public CardComponent Drop(int cardIndex)
+        public void Remove(Card info)
         {
-            CardComponent card = allCards[cardIndex];
-            Card info = allCardInfo.Find((Card i) => i.cardIndex == cardIndex);
-            allCards.Remove(cardIndex);
             allCardInfo.Remove(info);
             infoGroupByNumber[info.cardValue].Remove(info);
-
-            return card;
         }
 
-        /// <summary>
-        /// 呼叫所有手牌中牌的resetPosEvent
-        /// </summary>
-        public void resetHandCards()
+        public void findSingle(Card enemyMaxCard)
         {
-            int cardOrder = 0;
-            foreach (KeyValuePair<int, CardComponent> item in allCards)
+            Card card = findBiggerIndex(enemyMaxCard.cardIndex);
+            if(card!=null)
             {
-                item.Value.Reset(cardOrder);
-                cardOrder++;
+                willDrop = new List<Card>();
+                willDrop.Add(card);
             }
         }
 
-        public Card findBiggerIndex(int cardIndex)
+        public void findPair(Card enemyMaxCard)
+        {
+            List<Card> willDrop = new List<Card>();
+            int index = enemyMaxCard.cardValue;
+            if (enemyMaxCard.cardValue < 3) index += 13;
+            for (int i = index; i <= 15; i++)
+            {
+                if (i > 13 && index > 3) index -= 13;
+                List<Card> result = findSameNumberGroup(index, 2);
+                index++;
+                if (result != null)
+                {
+                    for (int j = result.Count - 1; j >= 0; j--)
+                    {
+                        if (willDrop.Count == 2) break;
+                        willDrop.Add(result[j]);
+                    }
+                    break;
+                }
+            }
+            if (willDrop.Count == 0) willDrop = null;
+        }
+
+        public void findTwoPair(Card enemyMaxCard)
+        {
+            List<Card> willDrop = null;
+            List<Card> result = findMinorCardGroup(3, 2);
+            if (result != null)
+            {
+                willDrop = new List<Card>();
+                for (int i = result.Count - 1; i > result.Count - 3; i--)
+                {
+                    willDrop.Add(result.ElementAt(i));
+                }
+            }
+            if (willDrop != null && willDrop[0].cardValue < enemyMaxCard.cardValue)
+            {
+                //result = playerCards.findMajorCardGroup()
+            }
+        }
+
+        List<int[]> straightList = new List<int[]> {
+            new int[] { 3, 4, 5, 6, 7 } ,
+            new int[] { 4, 5, 6, 7, 8 } ,
+            new int[] { 5, 6, 7, 8, 9 } ,
+            new int[] { 6, 7, 8, 9,10 } ,
+            new int[] { 7, 8, 9,10,11 } ,
+            new int[] { 8, 9,10,11,12 } ,
+            new int[] { 9,10,11,12,13 } ,
+            new int[] { 10,11,12,13,1 } ,
+            new int[] { 1, 2, 3, 4, 5 } ,
+            new int[] { 2, 3, 4, 5, 6 }
+        };
+        public void findStraight(List<Card> enemyDropCard)
+        {
+            
+        }
+
+        public void findFullHouse(Card enemyMaxCard)
+        {
+            List<Card> willDrop = null;
+            List<Card> tripleResult = findMajorCardGroup(enemyMaxCard, 3);
+            if (tripleResult != null)
+            {
+                willDrop = new List<Card>();
+
+                for (int i = tripleResult.Count - 1; i > tripleResult.Count - 4; i--)
+                {
+                    willDrop.Add(tripleResult.ElementAt(i));
+                }
+
+                //List<Card> pairResult = playerCards.findMultiCards(tripleResult, 2);
+            }
+        }
+
+        public void findFourInOne(Card enemyMaxCard)
+        {
+
+        }
+
+        public void findFlushStraight(List<Card> enemyDropCard)
+        {
+
+        }
+
+        private Card findBiggerIndex(int cardIndex)
         {
             Card info = allCardInfo.Find((Card i) => i.cardIndex > cardIndex);
             return info;
         }
 
-        public Card findBiggerFlower(int cardFlower)
+        private Card findBiggerFlower(int cardFlower)
         {
             Card info = allCardInfo.Find((Card i) => (int)i.cardFlower > cardFlower);
             return info;
         }
 
-        public Card findBiggerNumber(int cardNumber)
+        private Card findBiggerNumber(int cardNumber)
         {
             Card info = allCardInfo.Find((Card i) => i.cardValue > cardNumber);
             return info;
         }
 
-        public Card findSameFlower(Card other)
+        private Card findSameFlower(Card other)
         {
             Card info = allCardInfo.Find((Card self) => (self.cardFlower == other.cardFlower) && (self.cardIndex != other.cardIndex));
             return info;
         }
 
-        public Card findSameNumber(Card other)
+        private Card findSameNumber(Card other)
         {
             Card info = allCardInfo.Find((Card self) => (self.cardValue == other.cardValue) && (self.cardIndex != other.cardIndex));
             return info;
         }
 
-        public Card findSameNumber(int number)
+        private Card findSameNumber(int number)
         {
             Card info = allCardInfo.Find((Card self) => (self.cardValue == number));
             return info;
@@ -113,7 +180,7 @@ namespace Assets.Scripts.Game
             return allCardInfo[0];
         }
 
-        public Card findMinNotInclude(List<Card> doNotInclude)
+        private Card findMinNotInclude(List<Card> doNotInclude)
         {
             Card target = findMinCard();
             foreach (var card in doNotInclude)
@@ -126,7 +193,7 @@ namespace Assets.Scripts.Game
             return target;
         }
 
-        public List<Card> findStraight(int[] cardNumbers)
+        private List<Card> findStraight(int[] cardNumbers)
         {
             List<Card> result = new List<Card>();
             foreach (var i in cardNumbers)
@@ -138,7 +205,7 @@ namespace Assets.Scripts.Game
             return result;
         }
 
-        public List<Card> findFlushStraight(int[] cardNumbers)
+        private List<Card> findFlushStraight(int[] cardNumbers)
         {
             List<Card> result = new List<Card>();
             Card tmpCard = null;
@@ -156,7 +223,7 @@ namespace Assets.Scripts.Game
             return result;
         }
 
-        public List<Card> findFourCard(int cardNumber)
+        private List<Card> findFourCard(int cardNumber)
         {
             var result = from item in allCardInfo   //每一项                        
                          group item by item.cardValue into gro   //按项分组，没组就是gro                        
@@ -173,7 +240,7 @@ namespace Assets.Scripts.Game
             return null;
         }
 
-        public List<Card> findMajorCardGroup(Card other, int count)
+        private List<Card> findMajorCardGroup(Card other, int count)
         {
             var cardGroup = from item in allCardInfo   //每一项                        
                             group item by item.cardValue into gro   //按项分组，没组就是gro                        
@@ -198,7 +265,7 @@ namespace Assets.Scripts.Game
             return null;
         }
 
-        public List<Card> findMinorCardGroup(int number, int count)
+        private List<Card> findMinorCardGroup(int number, int count)
         {
             var cardGroup = from item in allCardInfo   //每一项                        
                             group item by item.cardValue into gro   //按项分组，没组就是gro                        
@@ -221,7 +288,7 @@ namespace Assets.Scripts.Game
             return null;
         }
 
-        public List<Card> findSameNumberGroup(int numberKey, int count)
+        private List<Card> findSameNumberGroup(int numberKey, int count)
         {
             if (infoGroupByNumber.ContainsKey(numberKey) && infoGroupByNumber[numberKey].Count >= count)
             {

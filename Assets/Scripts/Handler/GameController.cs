@@ -112,7 +112,6 @@ namespace Assets.Scripts.Handler
             int pos = 0;
             foreach (var pComponent in _playerComponents)
             {
-                pComponent.Init(pos);
                 opponent[(ePlayerPosition)pos] = new Player((ePlayerPosition)pos, pComponent);
                 pos++;
             }
@@ -131,12 +130,12 @@ namespace Assets.Scripts.Handler
         public void onDropCardClick()
         {
             int whoseTurn = (int)isWhoseTurn;
-            if (_playerComponents[whoseTurn].getDropCardPool() == null)
+            if (opponent[isWhoseTurn].getDropInfo() == null)
             {
                 onPassClick(); //若dropCardPool是空的那就跳過回合
                 return;
             }
-            DropResult drop = dropArea.checkCardType(_playerComponents[whoseTurn].getDropCardPool());
+            DropResult drop = dropArea.checkCardType(opponent[isWhoseTurn].getDropInfo());
             if (drop != null)
             {
                 if (dropArea.canDropCard(drop))
@@ -145,7 +144,7 @@ namespace Assets.Scripts.Handler
                         $"{(eCardNumber)drop.maxCard.cardValue}");
                     dropArea.lastDropPosition = isWhoseTurn;
                     dropArea.lastDropResult = drop;
-                    _dropAreaComponent.GetDropCards(_playerComponents[whoseTurn].getDropCardsBody());
+                    _dropAreaComponent.GetDropCards(opponent[isWhoseTurn].DropCard());
                     _playerComponents[whoseTurn].ResetCards();
                 }
                 else
