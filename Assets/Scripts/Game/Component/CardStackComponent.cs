@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Type;
+using Assets.Scripts.Handler;
 
 namespace Assets.Scripts.Game.Component
 {
@@ -31,18 +32,18 @@ namespace Assets.Scripts.Game.Component
         /// </summary>
         /// <param name="pComponent"></param>
         /// <param name="playerIndex"></param>
-        public void dealCards(PlayerComponent pComponent, int playerIndex)
+        public void dealCards(Player player, int playerIndex)
         {
             string logTxt = "";
             for (int i = cardId; i < 13 * (playerIndex + 1); i++)
             {
-                pComponent.GetCard(cardObjects[i]);
+                player.GetCard(cardObjects[i]);
                 cardId++;
                 logTxt += cardObjects[i].getCardInfo().cardIndex + 
                     cardObjects[i].getCardInfo().cardFlower.ToString() + 
                     cardObjects[i].getCardInfo().cardNumber.ToString() + " , ";
             }
-            Debug.Log($"{pComponent.name}收到編號第{logTxt}張牌");
+            Debug.Log($"{player.position}收到編號第{logTxt}張牌");
         }
 
         //private void initailCardInfo(int index, CardComponent card)

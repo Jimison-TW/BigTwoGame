@@ -2,7 +2,6 @@
 using Assets.Scripts.Game.Component;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
-using UnityEngine.Events;
 
 namespace Assets.Scripts.Handler
 {
@@ -44,7 +43,7 @@ namespace Assets.Scripts.Handler
         /// <returns>要出的手牌List，泛型型態為Card，如果沒有能出的牌，則回傳null</returns>
         public List<Card> getDropInfo()
         {
-            if (handCards.willDrop.Count == 0) return null;
+            if (handCards.willDrop != null && handCards.willDrop.Count == 0) return null;
             return handCards.willDrop;
         }
 

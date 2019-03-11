@@ -73,7 +73,7 @@ namespace Assets.Scripts.Game.Component
 
         private void OnMouseUpAsButton()
         {
-            clickEvent.Invoke(isChoosed, cardInfo);
+            clickEvent.Invoke(isChoosed, this);
         }
     }
 }

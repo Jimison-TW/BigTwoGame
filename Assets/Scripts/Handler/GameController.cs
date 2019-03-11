@@ -123,7 +123,7 @@ namespace Assets.Scripts.Handler
             for (int i = 0; i < gameData.playerCount; i++)
             {
                 Debug.Log("開始發牌給玩家" + _playerComponents[i].name);
-                _cardStackComponent.dealCards(_playerComponents[i], i);
+                _cardStackComponent.dealCards(opponent[_playerComponents[i].position], i);
             }
         }
 

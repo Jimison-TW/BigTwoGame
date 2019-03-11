@@ -10,7 +10,7 @@ namespace Assets.Scripts.Game.Component
     {
         public ePlayerPosition position;
         private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
-        private List<CardComponent> chosedCards;
+        private List<CardComponent> chosedCards = new List<CardComponent>();
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
 
