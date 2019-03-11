@@ -7,7 +7,6 @@ namespace Assets.Scripts.Handler
     public class CardStack
     {
         private List<int> numberPool = new List<int>();
-        private int getCardPlayer = 1;
         private int whoIsFirst;
 
         //自訂玩家手牌，想要什麼牌直接在下方填入cardIndex(0-51)
@@ -62,28 +61,9 @@ namespace Assets.Scripts.Handler
             }
         }
 
-        public List<int> getAllNumber()
+        public List<int> getNumberPool()
         {
             return numberPool;
         }
-
-        /// <summary>
-        /// 玩家取得13張手牌
-        /// </summary>
-        /// <returns></returns>
-        //public int[] getCards()
-        //{
-        //    if (getCardPlayer > 4) return null;
-
-        //    int[] cards = new int[13];
-        //    for (int i = 0; i < 13; i++)
-        //    {
-        //        cards[i] = numberPool[i * getCardPlayer];
-        //    }
-        //    Debug.Log($"第{getCardPlayer}位玩家拿牌");
-        //    getCardPlayer++;
-
-        //    return cards;
-        //}
     }
 }

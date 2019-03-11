@@ -81,7 +81,7 @@ namespace Assets.Scripts.Handler
             HashSet<int> numbers = new HashSet<int>();
             foreach (var card in cards)
             {
-                flowers.Add(card.cardFlower);
+                flowers.Add((int)card.cardFlower);
                 numbers.Add(card.cardValue);
             }
 

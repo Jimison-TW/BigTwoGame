@@ -1,13 +1,12 @@
 ﻿using Assets.Scripts.Game;
 using Assets.Scripts.Game.Component;
-using Assets.Scripts.Game.Interface;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Assets.Scripts.Handler
 {
-    public class Player : IPlayerInfo
+    public class Player
     {
         public ePlayerPosition position { get; set; }
         public HandCards playerCards { get; set; }
@@ -120,51 +119,51 @@ namespace Assets.Scripts.Handler
         };
         private void findStraight(List<Card> enemyDropCard)
         {
-            List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
-            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardValue).ToList();
-            List<Card> willDrop = null;
-            bool firstRound = true;
-            int index = -1;
-            switch (sortByNumber[0].cardValue)
-            {
-                case 1:
-                    if (sortByNumber[1].cardValue == 10) index = 8;
-                    else index = 9;
-                    break;
-                case 2:
-                    index = 10;
-                    break;
-                default:
-                    index = sortByNumber[0].cardValue - 3;
-                    break;
-            }
+            //List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
+            //List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardValue).ToList();
+            //List<Card> willDrop = null;
+            //bool firstRound = true;
+            //int index = -1;
+            //switch (sortByNumber[0].cardValue)
+            //{
+            //    case 1:
+            //        if (sortByNumber[1].cardValue == 10) index = 8;
+            //        else index = 9;
+            //        break;
+            //    case 2:
+            //        index = 10;
+            //        break;
+            //    default:
+            //        index = sortByNumber[0].cardValue - 3;
+            //        break;
+            //}
 
-            for (int i = index; i < straightList.Count; i++)
-            {
-                willDrop = playerCards.findStraight(straightList[index]);
-                willDrop.OrderBy(card => card.cardIndex).ToList();
-                if (!firstRound && willDrop != null)
-                {
-                    break;
-                }
-                else if (firstRound && willDrop != null && willDrop[5].compareTo(sortByIndex[5]))
-                {
-                    break;
-                }
-                else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
-                {
-                    Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
-                    if (replace != null && replace.cardValue == sortByIndex[5].cardValue)
-                    {
-                        willDrop[5] = replace;
-                        break;
-                    }
-                }
-                firstRound = false;
-                index++;
-            }
+            //for (int i = index; i < straightList.Count; i++)
+            //{
+            //    willDrop = playerCards.findStraight(straightList[index]);
+            //    willDrop.OrderBy(card => card.cardIndex).ToList();
+            //    if (!firstRound && willDrop != null)
+            //    {
+            //        break;
+            //    }
+            //    else if (firstRound && willDrop != null && willDrop[5].compareTo(sortByIndex[5]))
+            //    {
+            //        break;
+            //    }
+            //    else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
+            //    {
+            //        Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
+            //        if (replace != null && replace.cardValue == sortByIndex[5].cardValue)
+            //        {
+            //            willDrop[5] = replace;
+            //            break;
+            //        }
+            //    }
+            //    firstRound = false;
+            //    index++;
+            //}
 
-            component.setDropCardPool(willDrop);
+            //component.setDropCardPool(willDrop);
         }
 
         private void findFullHouse(Card enemyMaxCard)
@@ -221,50 +220,50 @@ namespace Assets.Scripts.Handler
 
         private void findFlushStraight(List<Card> enemyDropCard)
         {
-            List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
-            List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardValue).ToList();
-            List<Card> willDrop = null;
-            bool firstRound = true;
-            int index = -1;
-            switch (sortByNumber[0].cardValue)
-            {
-                case 1:
-                    if (sortByNumber[1].cardValue == 10) index = 8;
-                    else index = 9;
-                    break;
-                case 2:
-                    index = 10;
-                    break;
-                default:
-                    index = sortByNumber[1].cardValue - 3;
-                    break;
-            }
+            //List<Card> sortByIndex = enemyDropCard.OrderBy(i => i.cardIndex).ToList();
+            //List<Card> sortByNumber = enemyDropCard.OrderBy(i => i.cardValue).ToList();
+            //List<Card> willDrop = null;
+            //bool firstRound = true;
+            //int index = -1;
+            //switch (sortByNumber[0].cardValue)
+            //{
+            //    case 1:
+            //        if (sortByNumber[1].cardValue == 10) index = 8;
+            //        else index = 9;
+            //        break;
+            //    case 2:
+            //        index = 10;
+            //        break;
+            //    default:
+            //        index = sortByNumber[1].cardValue - 3;
+            //        break;
+            //}
 
-            for (int i = index; i < straightList.Count; i++)
-            {
-                willDrop = playerCards.findFlushStraight(straightList[index]);
-                willDrop.OrderBy(card => card.cardIndex).ToList();
-                if (!firstRound && willDrop != null)
-                {
-                    break;
-                }
-                else if (firstRound && willDrop != null && willDrop[5].compareTo(sortByIndex[5]))
-                {
-                    break;
-                }
-                else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
-                {
-                    Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
-                    if (replace != null && replace.cardValue == sortByIndex[5].cardValue)
-                    {
-                        willDrop[5] = replace;
-                        break;
-                    }
-                }
-                firstRound = false;
-                index++;
-            }
-            component.setDropCardPool(willDrop);
+            //for (int i = index; i < straightList.Count; i++)
+            //{
+            //    willDrop = playerCards.findFlushStraight(straightList[index]);
+            //    willDrop.OrderBy(card => card.cardIndex).ToList();
+            //    if (!firstRound && willDrop != null)
+            //    {
+            //        break;
+            //    }
+            //    else if (firstRound && willDrop != null && willDrop[5].compareTo(sortByIndex[5]))
+            //    {
+            //        break;
+            //    }
+            //    else if (firstRound && willDrop != null && !willDrop[5].compareTo(sortByIndex[5]))
+            //    {
+            //        Card replace = playerCards.findBiggerIndex(sortByIndex[5].cardIndex);
+            //        if (replace != null && replace.cardValue == sortByIndex[5].cardValue)
+            //        {
+            //            willDrop[5] = replace;
+            //            break;
+            //        }
+            //    }
+            //    firstRound = false;
+            //    index++;
+            //}
+            //component.setDropCardPool(willDrop);
         }
     }
 }

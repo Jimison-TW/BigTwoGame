@@ -91,6 +91,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 273efd1aca2b4a74c9006123f00d5d47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isChoosed: 0
+  cardInfo:
+    cardIndex: 25
+    cardValue: 7
+    cardFlower: 2
+    cardNumber: 7
 --- !u!65 &571518744152225282
 BoxCollider:
   m_ObjectHideFlags: 0

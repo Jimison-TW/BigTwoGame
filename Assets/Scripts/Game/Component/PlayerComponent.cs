@@ -1,14 +1,12 @@
-﻿using Assets.Scripts.Game.Interface;
-using Assets.Scripts.Type;
+﻿using Assets.Scripts.Type;
 using DG.Tweening;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts.Game.Component
 {
-    public class PlayerComponent : MonoBehaviour, IPlayerInfo
+    public class PlayerComponent : MonoBehaviour
     {
         public ePlayerPosition position { set; get; }
         public HandCards playerCards { set; get; }

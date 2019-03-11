@@ -1,34 +1,16 @@
-﻿using Assets.Scripts.Game.Interface;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Assets.Scripts.Game.Component
 {
-    public class CardComponent : MonoBehaviour, ICardInfo
+    public class CardComponent : MonoBehaviour
     {
         public bool isChoosed = false;
-        [SerializeField] public int cardIndex { set; get; }
-        [SerializeField] public int cardFlower { set; get; }
-        [SerializeField] public int cardValue { set; get; }
+        [SerializeField] private Card cardInfo;
 
         private UnityAction<bool, Card> clickEvent;
         private UnityAction<CardComponent, int> resetPosEvent;
-
-        /// <summary>
-        /// 填入卡牌物件的資訊
-        /// </summary>
-        /// <param name="choosed">是否被點選，預設為false</param>
-        /// <param name="index">卡牌編號，0為梅花三，51為大老二</param>
-        /// <param name="flower">卡牌花色</param>
-        /// <param name="number">卡牌數字</param>
-        public void Init(bool choosed, int index, int flower, int number)
-        {
-            isChoosed = choosed;
-            cardIndex = index;
-            cardFlower = flower;
-            cardValue = number;
-        }
 
         /// <summary>
         /// 讓卡牌進行Tween動畫移動
@@ -76,7 +58,7 @@ namespace Assets.Scripts.Game.Component
 
         public Card getCardInfo()
         {
-            return new Card(this);
+            return cardInfo;
         }
 
         public void setClickCardAction(UnityAction<bool, Card> action)
@@ -91,7 +73,7 @@ namespace Assets.Scripts.Game.Component
 
         private void OnMouseUpAsButton()
         {
-            clickEvent.Invoke(isChoosed, new Card(this));
+            clickEvent.Invoke(isChoosed, cardInfo);
         }
     }
 }

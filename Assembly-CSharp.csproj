@@ -68,8 +68,6 @@
     <Compile Include="Assets\Scripts\Game\Component\PlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Game\DropResult.cs" />
     <Compile Include="Assets\Scripts\Game\HandCards.cs" />
-    <Compile Include="Assets\Scripts\Game\Interface\ICardInfo.cs" />
-    <Compile Include="Assets\Scripts\Game\Interface\IPlayerInfo.cs" />
     <Compile Include="Assets\Scripts\Handler\CardStack.cs" />
     <Compile Include="Assets\Scripts\Handler\DropCardArea.cs" />
     <Compile Include="Assets\Scripts\Handler\GameController.cs" />

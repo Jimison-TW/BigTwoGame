@@ -28,7 +28,7 @@ namespace Assets.Scripts.Game
         public void Add(CardComponent card)
         {
             Card info = card.getCardInfo();
-            allCards[card.cardIndex] = card;
+            allCards[info.cardIndex] = card;
             allCardInfo.Add(info);
             if (infoGroupByNumber.ContainsKey(info.cardValue))
             {
@@ -79,7 +79,7 @@ namespace Assets.Scripts.Game
 
         public Card findBiggerFlower(int cardFlower)
         {
-            Card info = allCardInfo.Find((Card i) => i.cardFlower > cardFlower);
+            Card info = allCardInfo.Find((Card i) => (int)i.cardFlower > cardFlower);
             return info;
         }
 

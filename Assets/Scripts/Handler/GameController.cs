@@ -42,29 +42,29 @@ namespace Assets.Scripts.Handler
             //testList.Add(new Card(0, 1, 3)); //梅花三
             //testList.Add(new Card(1, 2, 3)); //方塊三
             //testList.Add(new Card(2, 3, 3)); //紅心三
-            testList.Add(new Card(3, 4, 3)); //黑桃三
-            testList.Add(new Card(4, 1, 4)); //梅花四
-            testList.Add(new Card(5, 2, 4)); //方塊四
-            testList.Add(new Card(6, 3, 4)); //紅心四
+            //testList.Add(new Card(3, 4, 3)); //黑桃三
+            //testList.Add(new Card(4, 1, 4)); //梅花四
+            //testList.Add(new Card(5, 2, 4)); //方塊四
+            //testList.Add(new Card(6, 3, 4)); //紅心四
             //testList.Add(new Card(7, 4, 4)); //黑桃四
-            testList.Add(new Card(8, 1, 5)); //梅花五
-            testList.Add(new Card(9, 2, 5)); //方塊五
-            testList.Add(new Card(10, 3, 5)); //紅心五
-            testList.Add(new Card(11, 4, 5)); //黑桃五
-            testList.Add(new Card(12, 1, 6)); //梅花六
+            //testList.Add(new Card(8, 1, 5)); //梅花五
+            //testList.Add(new Card(9, 2, 5)); //方塊五
+            //testList.Add(new Card(10, 3, 5)); //紅心五
+            //testList.Add(new Card(11, 4, 5)); //黑桃五
+            //testList.Add(new Card(12, 1, 6)); //梅花六
             //testList.Add(new Card(13, 2, 6)); //方塊六
             //testList.Add(new Card(14, 3, 6)); //紅心六
-            testList.Add(new Card(15, 4, 6)); //黑桃六
-            testList.Add(new Card(16, 1, 7)); //梅花七
-            testList.Add(new Card(17, 2, 7)); //方塊七
-            testList.Add(new Card(18, 3, 7)); //紅心七
-            testList.Add(new Card(19, 4, 7)); //黑桃七
+            //testList.Add(new Card(15, 4, 6)); //黑桃六
+            //testList.Add(new Card(16, 1, 7)); //梅花七
+            //testList.Add(new Card(17, 2, 7)); //方塊七
+            //testList.Add(new Card(18, 3, 7)); //紅心七
+            //testList.Add(new Card(19, 4, 7)); //黑桃七
 
-            List<Card> result = findCardGroup(testList, new Card(2, 3, 3), 2);
-            foreach (var card in result)
-            {
-                Debug.Log(result[result.Count - 1].cardIndex);
-            }
+            //List<Card> result = findCardGroup(testList, new Card(2, 3, 3), 2);
+            //foreach (var card in result)
+            //{
+            //    Debug.Log(result[result.Count - 1].cardIndex);
+            //}
 
             //var result = from item in testList   //每一项                        
             //             group item by item.cardNumber into gro   //按项分组，没组就是gro                        
@@ -79,7 +79,7 @@ namespace Assets.Scripts.Handler
             //Card ca = testList.FindAll(c => c.cardNumber == result.ElementAt(0).num).Last();
             //Debug.Log($"ca.cardIndex = {result.ElementAt(0).max.cardIndex}");
 
-            dealCardsToPlayer();
+            StartDealCard();
         }
 
         private void Update()
@@ -108,7 +108,7 @@ namespace Assets.Scripts.Handler
                 isWhoseTurn += ((int)isWhoseTurn < 3) ? 1 : -3;
                 startNextTurn = true;
             });
-            _cardStackComponent.CreateCard(cardStack.getAllNumber());
+            _cardStackComponent.CreateCard(cardStack.getNumberPool());
             int pos = 0;
             foreach (var pComponent in _playerComponents)
             {
@@ -119,7 +119,7 @@ namespace Assets.Scripts.Handler
             Debug.Log("完成所有初始化流程");
         }
 
-        private void dealCardsToPlayer()
+        private void StartDealCard()
         {
             for (int i = 0; i < gameData.playerCount; i++)
             {
