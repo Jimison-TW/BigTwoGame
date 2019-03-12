@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Type;
+using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
@@ -29,11 +30,27 @@ namespace Assets.Scripts.Game
                                      orderby gro.Count() descending   //按照每组的数量进行排序              
                                      //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
                                      select new { num = gro.Key, count = gro.Count(), max = gro.OrderBy(i => i.cardIndex).Last() };
-                        if (result.ElementAt(0).count == result.ElementAt(1).count)
+                        int index = 0;
+                        int count = 0;
+                        int value = result.ElementAt(0).max.cardValue;
+                        foreach (var r in result)
                         {
-                            result = result.Take(2).OrderBy(i => i.num);
+                            if (r.count < count) break;
+                            else
+                            {
+                                count = r.count;
+                                if (r.max.cardValue > value)
+                                {
+                                    value = r.max.cardValue;
+                                    index++;
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            }
                         }
-                        card = result.ElementAt(0).max;
+                        card = result.ElementAt(index).max;
                         break;
                 }
                 return card;

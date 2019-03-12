@@ -27,7 +27,7 @@ namespace Assets.Scripts.Game
         //    cardNumber = info.cardNumber;
         //}
 
-        public bool compareTo(Card info)
+        public bool isBigger(Card info)
         {
             if (cardIndex > info.cardIndex) return true;
             else return false;

@@ -135,13 +135,19 @@ namespace Assets.Scripts.Handler
                 onPassClick(); //若dropCardPool是空的那就跳過回合
                 return;
             }
+            string logTxt = "";
+            foreach (var card in opponent[isWhoseTurn].getDropInfo())
+            {
+                logTxt += card.cardIndex + "_" + card.cardFlower + " " + (int)card.cardNumber + "  ";
+            }
+            Debug.Log($"玩家{isWhoseTurn}想出{logTxt}");
             DropResult drop = dropArea.checkCardType(opponent[isWhoseTurn].getDropInfo());
             if (drop != null)
             {
                 if (dropArea.canDropCard(drop))
                 {
                     Debug.Log($"玩家{isWhoseTurn}丟出了{drop.cardType}，最大的牌是{(eCardFlower)drop.maxCard.cardFlower}" +
-                        $"{(eCardNumber)drop.maxCard.cardValue}");
+                        $"{(int)drop.maxCard.cardNumber}");
                     dropArea.lastDropPosition = isWhoseTurn;
                     dropArea.lastDropResult = drop;
                     _dropAreaComponent.GetDropCards(opponent[isWhoseTurn].DropCard());

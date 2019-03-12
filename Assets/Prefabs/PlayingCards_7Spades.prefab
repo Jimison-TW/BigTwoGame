@@ -96,7 +96,7 @@ MonoBehaviour:
     cardIndex: 19
     cardValue: 5
     cardFlower: 4
-    cardNumber: 5
+    cardNumber: 7
 --- !u!65 &3234977633152429379
 BoxCollider:
   m_ObjectHideFlags: 0

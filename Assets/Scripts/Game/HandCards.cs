@@ -1,13 +1,14 @@
 ﻿using Assets.Scripts.Game.Component;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets.Scripts.Game
 {
     public class HandCards
     {
         public int Count { get { return allCardInfo.Count; } private set { } }
-        public List<Card> willDrop { get; private set; } = null;
+        public List<Card> willDrop { get; private set; } = new List<Card>();
 
         private List<Card> allCardInfo = new List<Card>();
         private Dictionary<int, List<Card>> infoGroupByNumber = new Dictionary<int, List<Card>>();
@@ -37,30 +38,30 @@ namespace Assets.Scripts.Game
         /// </summary>
         /// <param name="cardIndex">卡牌的id編號</param>
         /// <returns>要出得卡牌物件</returns>
-        public void Remove(Card info)
+        public void Remove()
         {
-            allCardInfo.Remove(info);
-            infoGroupByNumber[info.cardValue].Remove(info);
+            foreach (var info in willDrop)
+            {
+                allCardInfo.Remove(info);
+                infoGroupByNumber[info.cardValue].Remove(info);
+            }
+            willDrop.Clear();
         }
 
         public void findSingle(Card enemyMaxCard)
         {
             Card card = findBiggerIndex(enemyMaxCard.cardIndex);
-            if(card!=null)
+            if (card != null)
             {
-                willDrop = new List<Card>();
                 willDrop.Add(card);
             }
         }
 
         public void findPair(Card enemyMaxCard)
         {
-            List<Card> willDrop = new List<Card>();
             int index = enemyMaxCard.cardValue;
-            if (enemyMaxCard.cardValue < 3) index += 13;
-            for (int i = index; i <= 15; i++)
+            for (int i = index; i <= 13; i++)
             {
-                if (i > 13 && index > 3) index -= 13;
                 List<Card> result = findSameNumberGroup(index, 2);
                 index++;
                 if (result != null)
@@ -73,25 +74,62 @@ namespace Assets.Scripts.Game
                     break;
                 }
             }
-            if (willDrop.Count == 0) willDrop = null;
         }
 
         public void findTwoPair(Card enemyMaxCard)
         {
-            List<Card> willDrop = null;
-            List<Card> result = findMinorCardGroup(3, 2);
-            if (result != null)
+            var cardGroup = from item in allCardInfo   //每一项                        
+                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count() descending   //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
+            Card tmp = null;
+            foreach (var group in cardGroup)
             {
-                willDrop = new List<Card>();
-                for (int i = result.Count - 1; i > result.Count - 3; i--)
+                if (group.count < 2)
                 {
-                    willDrop.Add(result.ElementAt(i));
+                    Debug.LogWarning("超出搜尋範圍");
+                    break;
+                }
+                if (willDrop.Count < 2)
+                {
+                    Debug.LogWarning($"0張牌{willDrop.Count}");
+                    tmp = group.max;
+                    for (int i = group.count - 1; i > group.count - 3; i--)
+                    {
+                        willDrop.Add(group.result.ElementAt(i));
+                    }
+                }
+                else if (willDrop.Count < 4)
+                {
+                    Debug.LogWarning($"2張牌{willDrop.Count}");
+                    if ((!tmp.isBigger(enemyMaxCard) && group.max.isBigger(enemyMaxCard)) || tmp.isBigger(enemyMaxCard))
+                    {
+                        for (int i = group.count - 1; i > group.count - 3; i--)
+                        {
+                            willDrop.Add(group.result.ElementAt(i));
+                        }
+                    }
                 }
             }
-            if (willDrop != null && willDrop[0].cardValue < enemyMaxCard.cardValue)
+            if (willDrop.Count < 4)
             {
-                //result = playerCards.findMajorCardGroup()
+                willDrop.Clear();
+                return;
             }
+            Debug.LogWarning($"4張牌{willDrop.Count}");
+            tmp = allCardInfo.Find(card => card.cardNumber != willDrop[0].cardNumber && card.cardNumber != willDrop[2].cardNumber);
+            if (tmp != null)
+            {
+                willDrop.Add(tmp);
+            }
+            else willDrop.Clear();
         }
 
         List<int[]> straightList = new List<int[]> {
@@ -108,29 +146,93 @@ namespace Assets.Scripts.Game
         };
         public void findStraight(List<Card> enemyDropCard)
         {
-            
+
         }
 
         public void findFullHouse(Card enemyMaxCard)
         {
-            List<Card> willDrop = null;
-            List<Card> tripleResult = findMajorCardGroup(enemyMaxCard, 3);
-            if (tripleResult != null)
+            var cardGroup = from item in allCardInfo   //每一项                        
+                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count() descending   //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
+
+            Card tmp = null;
+            foreach (var group in cardGroup)
             {
-                willDrop = new List<Card>();
-
-                for (int i = tripleResult.Count - 1; i > tripleResult.Count - 4; i--)
+                if (group.count >= 3 && willDrop.Count < 3 && group.max.isBigger(enemyMaxCard))
                 {
-                    willDrop.Add(tripleResult.ElementAt(i));
+                    tmp = group.max;
+                    for (int i = group.count - 1; i > group.count - 4; i--)
+                    {
+                        willDrop.Add(group.result.ElementAt(i));
+                    }
+                    break;
                 }
-
-                //List<Card> pairResult = playerCards.findMultiCards(tripleResult, 2);
             }
+            if (willDrop.Count < 3)
+            {
+                willDrop.Clear();
+                return;
+            }
+            foreach (var group in cardGroup)
+            {
+                if (group.count >= 2 && group.max.cardNumber != tmp.cardNumber)
+                {
+                    for (int i = group.count - 1; i > group.count - 2; i--)
+                    {
+                        willDrop.Add(group.result.ElementAt(i));
+                    }
+                    break;
+                }
+            }
+            if (willDrop.Count < 5) willDrop.Clear();
         }
 
         public void findFourInOne(Card enemyMaxCard)
         {
+            var cardGroup = from item in allCardInfo   //每一项                        
+                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count() descending   //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
 
+            Card tmp = null;
+            foreach (var group in cardGroup)
+            {
+                if (group.count == 4 && willDrop.Count < 4 && group.max.isBigger(enemyMaxCard))
+                {
+                    tmp = group.max;
+                    for (int i = group.count - 1; i > group.count - 5; i--)
+                    {
+                        willDrop.Add(group.result.ElementAt(i));
+                    }
+                    break;
+                }
+            }
+            if (willDrop.Count < 4)
+            {
+                willDrop.Clear();
+                return;
+            }
+            tmp = allCardInfo.Find(card => card.cardNumber != willDrop[0].cardNumber);
+            if (tmp != null)
+            {
+                willDrop.Add(tmp);
+            }
+            else willDrop.Clear();
         }
 
         public void findFlushStraight(List<Card> enemyDropCard)

@@ -2,6 +2,9 @@
 using Assets.Scripts.Game.Component;
 using Assets.Scripts.Type;
 using System.Collections.Generic;
+using UnityEngine;
+using System;
+using DG.Tweening;
 
 namespace Assets.Scripts.Handler
 {
@@ -21,6 +24,7 @@ namespace Assets.Scripts.Handler
 
         public void GetCard(CardComponent card)
         {
+            card.setClickCardAction(new UnityEngine.Events.UnityAction<bool, CardComponent>(clickCardAction));
             handCards.Add(card.getCardInfo());
             component.SaveCard(card);
         }
@@ -31,9 +35,8 @@ namespace Assets.Scripts.Handler
         /// <returns>要出的手牌List，泛型型態為CardComponent</returns>
         public List<CardComponent> DropCard()
         {
-            component.setChosedCards(handCards.willDrop);
-            List<CardComponent> dropArray = component.getChosedCards();
-
+            List<CardComponent> dropArray = component.GetCardComponent(handCards.willDrop);
+            handCards.Remove();
             return dropArray;
         }
 
@@ -52,9 +55,11 @@ namespace Assets.Scripts.Handler
             //如果是第一個出牌，直接出單張最小的
             if (result == null)
             {
-                component.setChosedCards(handCards.findMinCard().cardIndex);
+                handCards.findSingle(handCards.findMinCard());
                 return;
             }
+            
+            Debug.Log($"上一個出牌的牌型是{result.cardType}，最大的牌是{result.maxCard.cardFlower}{(int)result.maxCard.cardNumber}");
 
             switch (result.cardType)
             {
@@ -79,6 +84,23 @@ namespace Assets.Scripts.Handler
                 case eDropCardType.FlushStraight:
                     handCards.findFlushStraight(result.dropCards);
                     break;
+            }
+        }
+
+        private void clickCardAction(bool choosed, CardComponent card)
+        {
+            if (position != ePlayerPosition.MySelf) return;
+            if (!choosed && handCards.willDrop.Count < 5)
+            {
+                handCards.willDrop.Add(card.getCardInfo());
+                card.isChoosed = true;
+                card.transform.DOMoveY(component.transform.position.y + 0.01f, 0.1f);
+            }
+            else
+            {
+                handCards.willDrop.Remove(card.getCardInfo());
+                card.isChoosed = false;
+                card.transform.DOMoveY(component.transform.position.y, 0.1f);
             }
         }
     }

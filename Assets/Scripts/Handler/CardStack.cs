@@ -10,7 +10,7 @@ namespace Assets.Scripts.Handler
         private int whoIsFirst;
 
         //自訂玩家手牌，想要什麼牌直接在下方填入cardIndex(0-51)
-        private int[] myCardNumber = { };
+        private int[] myCardNumber = { 0, 1, 2, 6, 5};
 
         public CardStack(UnityAction<int> whoFirstCallback)
         {
@@ -20,6 +20,10 @@ namespace Assets.Scripts.Handler
             }
 
             randomCards();
+            foreach (var i in numberPool)
+            {
+                Debug.Log(i);
+            }
             //回傳由誰開始
             //whoFirstCallback.Invoke(numberPool.IndexOf(0) / 13);  //隨機玩家開始出牌
             whoFirstCallback.Invoke(0);  //由玩家開始出牌
@@ -33,7 +37,7 @@ namespace Assets.Scripts.Handler
             for (int i = 0; i < myCardNumber.Length; i++)
             {
                 int tmp = numberPool[i];
-                numberPool[i] = myCardNumber[i];
+                numberPool[i] = numberPool[myCardNumber[i]];
                 numberPool[myCardNumber[i]] = tmp;
                 index++;
             }
@@ -41,7 +45,7 @@ namespace Assets.Scripts.Handler
             {
                 int tmp = numberPool[j];
                 int intRnd = Mathf.FloorToInt(Random.value * (52 - index));
-                numberPool[j] = numberPool[intRnd];
+                numberPool[j] = numberPool[intRnd + index];
                 numberPool[intRnd + index] = tmp;
             }
         }

@@ -10,19 +10,19 @@
 
     public enum eCardNumber
     {
-        Ace = 12,
-        Two = 13,
-        Three = 1,
-        Four = 2,
-        Five = 3,
-        Six = 4,
-        Seven = 5,
-        Eight = 6,
-        Nine = 7,
-        Ten = 8,
-        Jack = 9,
-        Queen = 10,
-        King = 11
+        Ace = 1,
+        Two = 2,
+        Three = 3,
+        Four = 4,
+        Five = 5,
+        Six = 6,
+        Seven = 7,
+        Eight = 8,
+        Nine = 9,
+        Ten = 10,
+        Jack = 11,
+        Queen = 12,
+        King = 13
     }
 
     public enum eDropCardType

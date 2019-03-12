@@ -10,7 +10,6 @@ namespace Assets.Scripts.Game.Component
     {
         public ePlayerPosition position;
         private Dictionary<int, CardComponent> allCards = new Dictionary<int, CardComponent>();
-        private List<CardComponent> chosedCards = new List<CardComponent>();
         private float zeroPos = -0.16f;
         private float Offset = 0.023f;
 
@@ -20,40 +19,45 @@ namespace Assets.Scripts.Game.Component
         /// <param name="card"></param>
         public void SaveCard(CardComponent card)
         {
-            allCards.Add(card.getCardInfo().cardIndex, card);
-            card.setClickCardAction(new UnityAction<bool, CardComponent>(clickCardAction));
             card.setResetPosAction(new UnityAction<CardComponent, int>(resetHandCards));
+            allCards.Add(card.getCardInfo().cardIndex, card);
             card.transform.SetParent(transform);
             resetHandCards(card, allCards.Count);
         }
 
-        public List<CardComponent> getChosedCards()
+        public List<CardComponent> GetCardComponent(List<Card> dropCards)
         {
-            List<CardComponent> tmp = chosedCards;
-            chosedCards.Clear();
-            return tmp;
-        }
-
-        /// <summary>
-        /// 將要出的牌放入牌池中
-        /// </summary>
-        /// <param name="card">單張牌的資訊</param>
-        public void setChosedCards(int cardIndex)
-        {
-            chosedCards.Add(allCards[cardIndex]);
-        }
-
-        /// <summary>
-        /// 將要出的牌放入牌池中
-        /// </summary>
-        /// <param name="cards">多張牌的資訊，以List的形式傳入</param>
-        public void setChosedCards(List<Card> cards)
-        {
-            foreach (var card in cards)
+            List<CardComponent> cardComponents = new List<CardComponent>();
+            foreach (var card in dropCards)
             {
-                chosedCards.Add(allCards[card.cardIndex]);
+                cardComponents.Add(allCards[card.cardIndex]);
+                allCards.Remove(card.cardIndex);
             }
+            return cardComponents;
         }
+
+        ///// <summary>
+        ///// 將要出的牌放入牌池中
+        ///// </summary>
+        ///// <param name="card">單張牌的資訊</param>
+        //public void setChosedCards(int cardIndex)
+        //{
+        //    Debug.Log("setChosedCards(int cardIndex)");
+        //    chosedCards.Add(allCards[cardIndex]);
+        //}
+
+        ///// <summary>
+        ///// 將要出的牌放入牌池中
+        ///// </summary>
+        ///// <param name="cards">多張牌的資訊，以List的形式傳入</param>
+        //public void setChosedCards(List<Card> cards)
+        //{
+        //    Debug.Log($"setChosedCards(List<Card> cards) = {cards.Count}");
+        //    foreach (var card in cards)
+        //    {
+        //        chosedCards.Add(allCards[card.cardIndex]);
+        //    }
+        //}
 
         /// <summary>
         /// 呼叫所有手牌中牌的resetPosEvent
@@ -95,21 +99,5 @@ namespace Assets.Scripts.Game.Component
             card.TRotate(endRotation, 1);
         }
 
-        private void clickCardAction(bool choosed, CardComponent card)
-        {
-            if (position != ePlayerPosition.MySelf) return;
-            if (!choosed && chosedCards.Count < 5)
-            {
-                chosedCards.Add(card);
-                card.isChoosed = true;
-                card.transform.DOMoveY(transform.position.y + 0.01f, 0.1f);
-            }
-            else
-            {
-                chosedCards.Remove(card);
-                card.isChoosed = false;
-                card.transform.DOMoveY(transform.position.y, 0.1f);
-            }
-        }
     }
 }
