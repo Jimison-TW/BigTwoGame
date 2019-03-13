@@ -73,7 +73,7 @@ namespace Assets.Scripts.Handler
                     handCards.findTwoPair(result.maxCard);
                     break;
                 case eDropCardType.Straight:
-                    handCards.findStraight(result.dropCards);
+                    handCards.findStraight(result.maxCard);
                     break;
                 case eDropCardType.FullHouse:
                     handCards.findFullHouse(result.maxCard);
@@ -82,7 +82,7 @@ namespace Assets.Scripts.Handler
                     handCards.findFourInOne(result.maxCard);
                     break;
                 case eDropCardType.FlushStraight:
-                    handCards.findFlushStraight(result.dropCards);
+                    handCards.findFlushStraight(result.maxCard);
                     break;
             }
         }

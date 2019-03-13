@@ -141,12 +141,28 @@ namespace Assets.Scripts.Game
             new int[] { 8, 9,10,11,12 } ,
             new int[] { 9,10,11,12,13 } ,
             new int[] { 10,11,12,13,1 } ,
-            new int[] { 1, 2, 3, 4, 5 } ,
-            new int[] { 2, 3, 4, 5, 6 }
+            new int[] { 1, 3, 4, 5, 2 } ,
+            new int[] { 3, 4, 5, 6, 2 }
         };
-        public void findStraight(List<Card> enemyDropCard)
+        public void findStraight(Card enemyDropCard)
         {
-
+            for (int i = enemyDropCard.cardValue - 1; i < straightList.Count; i++)
+            {
+                if (willDrop.Count == 5) break;
+                for (int j = 0; j < 5; j++)
+                {
+                    Card card = (j != 4) ?
+                        allCardInfo.Find(c => (int)c.cardNumber == j) :
+                        allCardInfo.Find(c => (int)c.cardNumber == j && c.cardIndex > enemyDropCard.cardIndex);
+                    if (card != null) willDrop.Add(card);
+                    else
+                    {
+                        Debug.Log(willDrop.Count);
+                        willDrop.Clear();
+                        break;
+                    }
+                }
+            }
         }
 
         public void findFullHouse(Card enemyMaxCard)
@@ -166,6 +182,7 @@ namespace Assets.Scripts.Game
             Card tmp = null;
             foreach (var group in cardGroup)
             {
+                Debug.Log(group.count >= 3);
                 if (group.count >= 3 && willDrop.Count < 3 && group.max.isBigger(enemyMaxCard))
                 {
                     tmp = group.max;
@@ -178,6 +195,7 @@ namespace Assets.Scripts.Game
             }
             if (willDrop.Count < 3)
             {
+                Debug.Log("willDrop.Count < 3");
                 willDrop.Clear();
                 return;
             }
@@ -185,7 +203,7 @@ namespace Assets.Scripts.Game
             {
                 if (group.count >= 2 && group.max.cardNumber != tmp.cardNumber)
                 {
-                    for (int i = group.count - 1; i > group.count - 2; i--)
+                    for (int i = group.count - 1; i > group.count - 3; i--)
                     {
                         willDrop.Add(group.result.ElementAt(i));
                     }
@@ -235,9 +253,39 @@ namespace Assets.Scripts.Game
             else willDrop.Clear();
         }
 
-        public void findFlushStraight(List<Card> enemyDropCard)
+        public void findFlushStraight(Card enemyDropCard)
         {
-
+            var cardGroup = from item in allCardInfo   //每一项                        
+                            group item by item.cardFlower into gro   //按项分组，没组就是gro                        
+                            orderby gro.Count() descending   //按照每组的数量进行排序              
+                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
+                            select new
+                            {
+                                num = gro.Key,
+                                count = gro.Count(),
+                                result = gro.ToList(),
+                                max = gro.OrderBy(i => i.cardIndex).Last()
+                            };
+            for (int i = 0; i < cardGroup.Count(); i++)
+            {
+                if (cardGroup.ElementAt(i).count < 5) break;
+                for (int j = enemyDropCard.cardValue - 1; j < straightList.Count; j++)
+                {
+                    if (willDrop.Count == 5) break;
+                    for (int k = 0; k < 5; k++)
+                    {
+                        Card card = (k != 4) ?
+                            cardGroup.ElementAt(i).result.Find(c => (int)c.cardNumber == k) :
+                            cardGroup.ElementAt(i).result.Find(c => (int)c.cardNumber == k && c.cardIndex > enemyDropCard.cardIndex);
+                        if (card != null) willDrop.Add(card);
+                        else
+                        {
+                            willDrop.Clear();
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         private Card findBiggerIndex(int cardIndex)
