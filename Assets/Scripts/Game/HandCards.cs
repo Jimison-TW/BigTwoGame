@@ -50,7 +50,7 @@ namespace Assets.Scripts.Game
 
         public void findSingle(Card enemyMaxCard)
         {
-            Card card = findBiggerIndex(enemyMaxCard.cardIndex);
+            Card card = allCardInfo.Find((Card i) => i.cardIndex > enemyMaxCard.cardIndex);
             if (card != null)
             {
                 willDrop.Add(card);
@@ -62,7 +62,11 @@ namespace Assets.Scripts.Game
             int index = enemyMaxCard.cardValue;
             for (int i = index; i <= 13; i++)
             {
-                List<Card> result = findSameNumberGroup(index, 2);
+                List<Card> result = null;
+                if (infoGroupByNumber.ContainsKey(index) && infoGroupByNumber[index].Count >= 2)
+                {
+                    result = infoGroupByNumber[index];
+                }
                 index++;
                 if (result != null)
                 {
@@ -288,166 +292,10 @@ namespace Assets.Scripts.Game
             }
         }
 
-        private Card findBiggerIndex(int cardIndex)
-        {
-            Card info = allCardInfo.Find((Card i) => i.cardIndex > cardIndex);
-            return info;
-        }
-
-        private Card findBiggerFlower(int cardFlower)
-        {
-            Card info = allCardInfo.Find((Card i) => (int)i.cardFlower > cardFlower);
-            return info;
-        }
-
-        private Card findBiggerNumber(int cardNumber)
-        {
-            Card info = allCardInfo.Find((Card i) => i.cardValue > cardNumber);
-            return info;
-        }
-
-        private Card findSameFlower(Card other)
-        {
-            Card info = allCardInfo.Find((Card self) => (self.cardFlower == other.cardFlower) && (self.cardIndex != other.cardIndex));
-            return info;
-        }
-
-        private Card findSameNumber(Card other)
-        {
-            Card info = allCardInfo.Find((Card self) => (self.cardValue == other.cardValue) && (self.cardIndex != other.cardIndex));
-            return info;
-        }
-
-        private Card findSameNumber(int number)
-        {
-            Card info = allCardInfo.Find((Card self) => (self.cardValue == number));
-            return info;
-        }
-
         public Card findMinCard()
         {
             allCardInfo.OrderBy(i => i.cardIndex).ToList();
             return allCardInfo[0];
-        }
-
-        private Card findMinNotInclude(List<Card> doNotInclude)
-        {
-            Card target = findMinCard();
-            foreach (var card in doNotInclude)
-            {
-                if (target.cardIndex == card.cardIndex)
-                {
-                    target = findBiggerIndex(target.cardIndex);
-                }
-            }
-            return target;
-        }
-
-        private List<Card> findStraight(int[] cardNumbers)
-        {
-            List<Card> result = new List<Card>();
-            foreach (var i in cardNumbers)
-            {
-                Card card = findSameNumber(i);
-                if (card == null) return null;
-                else result.Add(card);
-            }
-            return result;
-        }
-
-        private List<Card> findFlushStraight(int[] cardNumbers)
-        {
-            List<Card> result = new List<Card>();
-            Card tmpCard = null;
-            foreach (var i in cardNumbers)
-            {
-                Card card = findSameNumber(i);
-                if (card == null) return null;
-                else if (card != null && tmpCard != null)
-                {
-                    if (card.cardFlower != tmpCard.cardFlower) return null;
-                }
-                tmpCard = card;
-                result.Add(card);
-            }
-            return result;
-        }
-
-        private List<Card> findFourCard(int cardNumber)
-        {
-            var result = from item in allCardInfo   //每一项                        
-                         group item by item.cardValue into gro   //按项分组，没组就是gro                        
-                         orderby gro.Count() descending   //按照每组的数量进行排序              
-                                                          //返回匿名类型对象，输出这个组的值和这个值出现的次数以及所有的牌           
-                         select new { num = gro.Key, count = gro.Count(), items = gro.ToList() };
-            foreach (var group in result)
-            {
-                if (group.count == 4 && group.num >= cardNumber)
-                {
-                    return group.items;
-                }
-            }
-            return null;
-        }
-
-        private List<Card> findMajorCardGroup(Card other, int count)
-        {
-            var cardGroup = from item in allCardInfo   //每一项                        
-                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
-                            orderby gro.Count() descending   //按照每组的数量进行排序              
-                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
-                            select new
-                            {
-                                num = gro.Key,
-                                count = gro.Count(),
-                                result = gro.ToList(),
-                                max = gro.OrderBy(i => i.cardIndex).Last()
-                            };
-
-
-            foreach (var element in cardGroup)
-            {
-                if (element.count >= count &&
-                    element.max.cardValue >= other.cardValue &&
-                    element.max.cardIndex >= other.cardIndex) return element.result;
-            }
-
-            return null;
-        }
-
-        private List<Card> findMinorCardGroup(int number, int count)
-        {
-            var cardGroup = from item in allCardInfo   //每一项                        
-                            group item by item.cardValue into gro   //按项分组，没组就是gro                        
-                            orderby gro.Count() descending   //按照每组的数量进行排序              
-                            //返回匿名类型对象，输出这个组的值和这个值出现的次数以及index最大的那張牌           
-                            select new
-                            {
-                                num = gro.Key,
-                                count = gro.Count(),
-                                result = gro.ToList(),
-                                max = gro.OrderBy(i => i.cardIndex).Last()
-                            };
-
-
-            foreach (var element in cardGroup)
-            {
-                if (element.count >= count) return element.result;
-            }
-
-            return null;
-        }
-
-        private List<Card> findSameNumberGroup(int numberKey, int count)
-        {
-            if (infoGroupByNumber.ContainsKey(numberKey) && infoGroupByNumber[numberKey].Count >= count)
-            {
-                return infoGroupByNumber[numberKey];
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }

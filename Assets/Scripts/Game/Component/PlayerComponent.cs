@@ -36,29 +36,6 @@ namespace Assets.Scripts.Game.Component
             return cardComponents;
         }
 
-        ///// <summary>
-        ///// 將要出的牌放入牌池中
-        ///// </summary>
-        ///// <param name="card">單張牌的資訊</param>
-        //public void setChosedCards(int cardIndex)
-        //{
-        //    Debug.Log("setChosedCards(int cardIndex)");
-        //    chosedCards.Add(allCards[cardIndex]);
-        //}
-
-        ///// <summary>
-        ///// 將要出的牌放入牌池中
-        ///// </summary>
-        ///// <param name="cards">多張牌的資訊，以List的形式傳入</param>
-        //public void setChosedCards(List<Card> cards)
-        //{
-        //    Debug.Log($"setChosedCards(List<Card> cards) = {cards.Count}");
-        //    foreach (var card in cards)
-        //    {
-        //        chosedCards.Add(allCards[card.cardIndex]);
-        //    }
-        //}
-
         /// <summary>
         /// 呼叫所有手牌中牌的resetPosEvent
         /// </summary>
