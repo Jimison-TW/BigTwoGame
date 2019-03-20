@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Type;
-using DG.Tweening;
+﻿using Assets.Scripts.Type.Enum;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;

@@ -1,36 +1,18 @@
-﻿using Assets.Scripts.Game.Component;
+﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Game
 {
+    [Serializable]
     public class Timer
     {
+        [SerializeField] private Image timerBody;
+        [SerializeField] private Text timerTxt;
+
         private int remainTime;
         private UnityAction onTimesUpCallback;
-
-        public Timer(int time,UnityAction callback) {
-
-        }
-
-        public void Start()
-        {
-
-        }
-
-        public void Pause()
-        {
-
-        }
-
-        public void Stop()
-        {
-
-        }
-
-        public void Reset()
-        {
-
-        }
+        
     }
 }

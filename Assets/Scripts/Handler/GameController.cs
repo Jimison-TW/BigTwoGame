@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Data;
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Component;
-using Assets.Scripts.Type;
+using Assets.Scripts.Type.Enum;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +15,7 @@ namespace Assets.Scripts.Handler
         [SerializeField] private CardStackComponent _cardStackComponent = null;
         [SerializeField] private PlayerComponent[] _playerComponents = null;
         [SerializeField] private DropAreaComponent _dropAreaComponent = null;
+        [SerializeField] private UIController _uiController = null;
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace Assets.Scripts.Handler
         private DropCardArea dropArea;
 
         private ePlayerPosition isWhoseTurn = 0;
-        public bool startNextTurn = false;
+        private bool startNextTurn = false;
         private Dictionary<ePlayerPosition, Player> opponent = new Dictionary<ePlayerPosition, Player>();
 
         #endregion

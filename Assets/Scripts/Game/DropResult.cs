@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Type;
+using Assets.Scripts.Type.Enum;
 using UnityEngine;
 
 namespace Assets.Scripts.Game

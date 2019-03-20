@@ -1,14 +1,18 @@
 ﻿using Assets.Scripts.Game;
-using Assets.Scripts.Game.Component;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Scripts.Handler
 {
-    public class UIController
+    public class UIController : MonoBehaviour
     {
-        private UIComponent ui;
-        private Timer timer;
+        #region
+
+        [SerializeField] private Timer timer;
+        [SerializeField] private PauseMenu menu;
+        [SerializeField] private Dialog dialog;
+        [SerializeField] private Setting setting;
+
+        #endregion
         
     }
 }

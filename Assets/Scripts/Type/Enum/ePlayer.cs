@@ -1,4 +1,4 @@
-﻿namespace Assets.Scripts.Type
+﻿namespace Assets.Scripts.Type.Enum
 {
     public enum ePlayerPosition
     {

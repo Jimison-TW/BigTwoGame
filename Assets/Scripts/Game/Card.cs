@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Type;
+﻿using Assets.Scripts.Type.Enum;
 using System;
 
 namespace Assets.Scripts.Game
