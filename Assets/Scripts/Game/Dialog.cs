@@ -8,6 +8,7 @@ namespace Assets.Scripts.Game
     [Serializable]
     public class Dialog
     {
+        #pragma warning disable
         [SerializeField] private Image dialogBody;
         [SerializeField] private Text dialogTxt;
         [SerializeField] private Button dialogYesBtn;
@@ -15,9 +16,16 @@ namespace Assets.Scripts.Game
 
         private UnityAction onYesClickAction;
         private UnityAction onNoClickAction;
+        private UnityAction onOpenAction;
+
+        public void initDialogAction(UnityAction action)
+        {
+            onOpenAction = action;
+        }
 
         public void Open(string content, UnityAction yesAction)
         {
+            onOpenAction.Invoke();
             dialogBody.enabled = true;
             dialogTxt.text = content;
             dialogYesBtn.onClick.AddListener(yesAction);

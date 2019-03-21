@@ -7,6 +7,7 @@ namespace Assets.Scripts.Game.Component
     public class CardComponent : MonoBehaviour
     {
         public bool isChoosed = false;
+        #pragma warning disable
         [SerializeField] private Card cardInfo;
 
         private UnityAction<bool, CardComponent> clickEvent;

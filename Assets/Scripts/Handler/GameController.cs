@@ -2,6 +2,7 @@
 using Assets.Scripts.Game;
 using Assets.Scripts.Game.Component;
 using Assets.Scripts.Type.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,6 +31,18 @@ namespace Assets.Scripts.Handler
         private Dictionary<ePlayerPosition, Player> opponent = new Dictionary<ePlayerPosition, Player>();
 
         #endregion
+
+        private static GameController instance;
+        public static void AddUpdateCallback(Action updateMethod)
+        {
+            if (instance == null)
+            {
+                instance = new GameObject("[Update Caller]").AddComponent<GameController>();
+            }
+            instance.updateCallback += updateMethod;
+        }
+
+        private Action updateCallback;
 
         private void Awake()
         {
@@ -158,12 +171,14 @@ namespace Assets.Scripts.Handler
                 {
                     //玩家出牌未超過上一位玩家
                     Debug.LogWarning("玩家出牌未超過上一位玩家");
+                    _uiController.OpenMessageDialog("玩家出牌未超過上一位玩家");
                 }
             }
             else
             {
                 //玩家牌型選擇錯誤的處理
                 Debug.LogWarning("玩家牌型選擇錯誤");
+                _uiController.OpenMessageDialog("玩家牌型選擇錯誤");
             }
         }
 
